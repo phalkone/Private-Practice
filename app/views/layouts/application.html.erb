@@ -1,49 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-  "http://www.w3.org/TR/html4/strict.dtd">
+"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>PrivatePractice</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
+<title>PrivatePractice</title>
+<%= stylesheet_link_tag :all %>
+<%= javascript_include_tag :defaults %>
+<%= csrf_meta_tag %>
 </head>
 <body>
-  <div id="container">
-    <div id="login_box">
-      <form>
-        <div>
-          <input value="E-mail" type="text" name="email" id="email" size="30"/>
-        </div>
-        <div>
-          <input value="Password" type="password" name="password" id="password" size="30"/>
-        </div>
-        <div>
-          <label for="chkremember"><span class="small">Remember me</span></label>
-          <input type="checkbox" name="chkremember" id="chkremember"/>
-          <input type="submit" name="login" id="login" value="Login">
-        </div>
-      </form>
-    </div> 
-    <div id="header">
-      <p>Private Practice</p>
-    </div>
-    <div id="menu_container">
-      <ul id="menu">
-        <li><a href="#">item 1</a></li>
-        <li><a href="#">item 2</a></li>
-          <ul>
-            <li><a href="#">subitem 1</a></li>
-            <li><a href="#">subitem 2</a></li>
-          </ul>
-        <li><a href="#">item 3</a></li>
-      </ul>
-    </div>
-    <div id="content">
-      <%= yield %>
-    </div>
-    <div id="footer">
-      <p>Copyright 2010 (c) Tim Pintens</p>
-    </div>
+<div id="container">
+  <div id="login_box">
+    <form>
+      <div>
+        <input value="E-mail" type="text" name="email" id="email" size="33"/>
+      </div>
+      <div>
+        <input value="Password" type="password" name="password" id="password" size="33"/>
+      </div>
+      <div>
+        <input type="submit" name="login" id="login" value="Login">
+        <input type="checkbox" name="chkremember" id="chkremember"/>
+        <label for="chkremember"><span class="small">Remember me</span></label>
+        <a href="#" alt="Forgot login"><span class="small">Forgot login?</span></a>
+      </div>
+    </form>
+  </div> 
+  <div id="header">
+    <p class="title"><span class="red">Private</span>Practice<p>
   </div>
+  <ul id="menu">
+    <li class="active"><a href="#">Home</a></li>
+    <li><a href="#">Appointment</a></li>
+    <li><a href="#">General</a></li>
+    <li><a href="#">Route</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div id="content">
+    <%= yield %>
+  </div>
+  <div id="footer">
+    <p>Copyright &copy; 2010 <a href="#">Tim Pintens</a></p>
+  </div>
+</div>
 </body>
 </html>
