@@ -1,0 +1,78 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0; 
+  padding: 0; 
+  border: 0px;        
+}
+body {
+  font-family: "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
+}
+a {
+  text-decoration: none;
+}
+#container {
+  width: 900px;
+  margin: auto;
+}
+#login_box {
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+  float: right;
+  background-color: #999999;
+  width: 200px;
+}
+#header {
+  clear: both;  
+  margin-top; 15px;
+  border-width:0px 0px 2px 0px;
+  border-color: #999999;
+  border-style: solid;
+  font-family: georgia, sans-serif;
+  font-size: 54pt;
+  font-weight: normal;
+}
+#login_box input {
+  margin-top: 5px;
+}
+#menu_container {
+  float: right;
+  width: 200px;
+  font-family: georgia, sans-serif;
+  font-size: 16pt;
+}
+#menu, #menu ul {
+  list-style-type: none;
+}
+#menu li { 
+  cursor: pointer;
+  background: #999999;
+  border-bottom: 1px solid #444;
+}
+#menu li a {
+  text-decoration: none;
+  color: black;
+}
+#menu > li > a { 
+  padding: 2px 10px; 
+  font-weight: bold;
+}
+#menu li li { 
+  cursor: auto;
+  padding: 0 14px;
+  background-color: #fff;
+}
+#content {
+  width: 700px;
+  margin-top: 10px;
+}
+#footer {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 9pt;
+  border-width: 2px 0px 0px 0px;
+  border-color: #999999;
+  border-style: solid;
+}
+.small{
+  font-size: 9pt;
+}

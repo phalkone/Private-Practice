@@ -8,8 +8,42 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
-
+  <div id="container">
+    <div id="login_box">
+      <form>
+        <div>
+          <input value="E-mail" type="text" name="email" id="email" size="30"/>
+        </div>
+        <div>
+          <input value="Password" type="password" name="password" id="password" size="30"/>
+        </div>
+        <div>
+          <label for="chkremember"><span class="small">Remember me</span></label>
+          <input type="checkbox" name="chkremember" id="chkremember"/>
+          <input type="submit" name="login" id="login" value="Login">
+        </div>
+      </form>
+    </div> 
+    <div id="header">
+      <p>Private Practice</p>
+    </div>
+    <div id="menu_container">
+      <ul id="menu">
+        <li><a href="#">item 1</a></li>
+        <li><a href="#">item 2</a></li>
+          <ul>
+            <li><a href="#">subitem 1</a></li>
+            <li><a href="#">subitem 2</a></li>
+          </ul>
+        <li><a href="#">item 3</a></li>
+      </ul>
+    </div>
+    <div id="content">
+      <%= yield %>
+    </div>
+    <div id="footer">
+      <p>Copyright 2010 (c) Tim Pintens</p>
+    </div>
+  </div>
 </body>
 </html>
