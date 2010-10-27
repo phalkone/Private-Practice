@@ -12,26 +12,34 @@ h1 { font-size: 2em; font-weight: normal; font-style: italic;
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px 10px;}
 h3 { font-size: 1.7em; font-weight: normal; margin: 0 0 20px; }
 
-#container { width: 900px; margin: 0 auto;}
+#container { width: 900px; margin: 0 auto; }
 
-#login_box { padding: 0px 4px 4px 4px; float: right; background-color: #999999;
+#login_box { float: right; padding: 0px 4px 4px 4px; background-color: #999999;
              font-family: "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
              width: 220px; margin-bottom:10px; }
   #login_box input { margin-top: 5px; }
 
-#header { padding-top: 50px; border-bottom: 1px solid #ddd; } 
+#header { padding: 50px 0px 10px 0px; border-bottom: 1px solid #ddd; } 
 
 #menu { float: right; margin: 10px 10px 10px 0; }
   #menu li { display: inline; list-style: none; }
-  #menu li a { float: left; margin: 0 0 0 20px;  color: #888; }
+  #menu li a { float: left; margin-left: 20px;  color: #888; }
   #menu li a:hover { color: #555; border-bottom: 2px solid #ccc; }
-  #menu .active a { border-bottom: 2px solid #d40000; color: #d40000;}
+  #menu .active a { border-bottom: 2px solid #d40000; color: #d40000; }
 
-#content { clear: both; margin-top: 30px; } 
+#submenu { padding: 20px 20px 0px 10px;}
+  #submenu li {list-style: none; margin-bottom:15px; }
 
-#footer { margin-top: 15px; padding: 15px 0px 15px 0px; font-size: 9pt;
-          border-top: 1px solid #ddd;}
+#content { float: right; width: 700px;  border-left: 1px solid #ddd;
+           margin: 10px 0px 20px 0px; padding-left: 20px } 
 
-.title{ font-size: 54pt; font-weight: normal; }
-.small{ font-size: 8pt;}
-.red{ color: #d40000;}
+#footer { padding: 15px 0px 15px 0px; font-size: 9pt;
+          border-top: 1px solid #ddd; }
+  #footer .right { float: right; }
+  #footer .right a { color: #888; }
+  #footer .right a:hover { color: #555; }
+
+.title{ font-size: 54pt; font-weight: normal; line-height: 0.9; }
+.small{ font-size: 8pt; }
+.red{ color: #d40000; }
+.x{ clear:both; }
