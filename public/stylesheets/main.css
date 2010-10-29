@@ -27,11 +27,13 @@ h3 { font-size: 1.7em; font-weight: normal; margin: 0 0 20px; }
   #menu li a:hover { color: #555; border-bottom: 2px solid #ccc; }
   #menu .active a { border-bottom: 2px solid #d40000; color: #d40000; }
 
+#content { margin: 10px 0px 20px 0px;} 
+
 #submenu { padding: 20px 20px 0px 10px;}
   #submenu li {list-style: none; margin-bottom:15px; }
 
-#content { float: right; width: 700px;  border-left: 1px solid #ddd;
-           margin: 10px 0px 20px 0px; padding-left: 20px } 
+#subcontent { float: right; width: 700px;  border-left: 1px solid #ddd;
+              padding-left: 20px; margin-bottom: 20px; } 
 
 #footer { padding: 15px 0px 15px 0px; font-size: 9pt;
           border-top: 1px solid #ddd; }
