@@ -1,2 +1,5 @@
-nl:
-  title: Dit is een titel
+"nl":
+  pages:
+    new: Nieuwe pagina
+    create: Maak nieuwe pagina aan
+    successful: Pagina is succesvol aangemaakt.

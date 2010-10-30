@@ -1,2 +1,34 @@
-<h2><%= t :title %></h2>
-  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut <a href="#">laoreet dolore magna</a> aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla <a href="#">facilisis at vero</a> eros et accumsan et iusto odio dignissim.</p>
+<h2><%= t("pages.new") %></h2>
+  <% if @page.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @page.errors.count %>
+          <%= if @page.errors.count == 1 
+                t("activerecord.errors.template.header.one") + Page.human_name.downcase + t("activerecord.errors.template.header.second")
+              else
+                t("activerecord.errors.template.header.other") + Page.human_name.downcase + t("activerecord.errors.template.header.second")
+              end %> </h2>
+      <p><%= t("activerecord.errors.template.body") %></p>
+      <ul>
+        <% @page.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form_for(@page) do |f| %>
+    <div class="field">
+      <%= f.label :title %><br />
+      <%= f.text_field :title %>
+    </div>
+    <div class="field">
+      <%= f.label :body %><br />
+      <%= f.text_area :body %>
+    </div>
+    <div class="field">
+      <%= f.label :locale %><br />
+      <%= f.select(:locale, options_for_select(available_locales)) %>
+    </div>
+    <div class="actions">
+      <%= f.submit t("pages.create") %>
+    </div>
+  <% end %>

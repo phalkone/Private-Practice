@@ -1,6 +1,6 @@
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
-pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol,
-ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, 
+pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, 
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, 
 tr, th, td { margin: 0; padding: 0; border: 0px; }
 body { font-family: georgia, "Times New Roman", sans-serif; color: #777;
        background-color: #fff; }
@@ -41,6 +41,21 @@ h3 { font-size: 1.7em; font-weight: normal; margin: 0 0 20px; }
   #footer .right a { color: #888; }
   #footer .right a:hover { color: #555; }
 
+#error_explanation { width: 450px; border: 2px solid red; padding: 7px;
+                     padding-bottom: 0; margin: 0 0 20px 20px;
+                     background-color: #f0f0f0; }
+
+#error_explanation h2 { text-align: left; font-weight: bold; 
+                        padding: 5px 5px 5px 15px; font-size: 12px; margin: -7px;
+                        margin-bottom: 0px; background-color: #c00; color: #fff; }
+
+#error_explanation ul li { font-size: 12px; list-style: square; }
+
+#notice { color: green; }
+
+.field_with_errors { padding: 2px; background-color: red; display: table; }
+.field_with_errors label { padding: 2px; background-color: #ffffff; display: table; }
+div.field, div.actions { margin: 0 0 10px 20px; }
 .title{ font-size: 54pt; font-weight: normal; line-height: 0.9; }
 .small{ font-size: 8pt; }
 .red{ color: #d40000; }
