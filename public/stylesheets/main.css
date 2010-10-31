@@ -10,7 +10,7 @@ p { margin-left: 10px; }
 h1 { font-size: 2em; font-weight: normal; font-style: italic;
      padding: 0 0 15px 10px; margin: 0 0 10px; }
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px 10px;}
-h3 { font-size: 1.7em; font-weight: normal; margin: 0 0 20px; }
+h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #container { width: 900px; margin: 0 auto; }
 
@@ -41,20 +41,21 @@ h3 { font-size: 1.7em; font-weight: normal; margin: 0 0 20px; }
   #footer .right a { color: #888; }
   #footer .right a:hover { color: #555; }
 
-#error_explanation { width: 450px; border: 2px solid red; padding: 7px;
+#error_explanation { width: 450px; border: 2px solid #d40000; padding: 7px;
                      padding-bottom: 0; margin: 0 0 20px 20px;
                      background-color: #f0f0f0; }
 
-#error_explanation h2 { text-align: left; font-weight: bold; 
-                        padding: 5px 5px 5px 15px; font-size: 12px; margin: -7px;
-                        margin-bottom: 0px; background-color: #c00; color: #fff; }
+#error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
+                        padding: 5px 5px 5px 15px; margin-bottom: 0px; 
+                        background-color: #d40000; color: #fff; }
 
-#error_explanation ul li { font-size: 12px; list-style: square; }
+#error_explanation ul li { list-style: square; }
 
-#notice { color: green; }
+#notice { padding: 5px 8px; margin: 10px 0; background-color: #CFC;
+          border: solid 1px #6C6; }
 
-.field_with_errors { padding: 2px; background-color: red; display: table; }
-.field_with_errors label { padding: 2px; background-color: #ffffff; display: table; }
+.field_with_errors { display: inline; }
+.field_with_errors > label { font-weight: bold; color:#d40000; } 
 div.field, div.actions { margin: 0 0 10px 20px; }
 .title{ font-size: 54pt; font-weight: normal; line-height: 0.9; }
 .small{ font-size: 8pt; }

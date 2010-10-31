@@ -1,0 +1,13 @@
+<% if @page.errors.any? %>
+  <div id="error_explanation">
+    <h3><%= t("activerecord.errors.template.header", 
+              :model => Page.human_name.downcase,
+              :count => @page.errors.count) %></h3>
+    <p><%= t("activerecord.errors.template.body") %></p>
+    <ul>
+      <% @page.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

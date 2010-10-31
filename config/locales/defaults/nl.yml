@@ -83,12 +83,13 @@
         body: "HTML tekst"
         locale: "Taal"
         permalink: "Permalink"
+        nested: "Subpagina"
+        order: "Volgorde"
     errors:
       template:
         header:
-          one: " Fout zorgde ervoor dat deze "
-          other: " Fouten zorgden ervoor dat deze "
-          second: " niet opgeslagen werd"
+          one: "1 Fout zorgde ervoor dat deze %{model} niet aangemaakt werd"
+          other: "%{count} Fouten zorgden ervoor dat deze %{model} niet aangemaakt werd"
         body: "Controleer alstublieft de volgende velden:" 
       messages:
         inclusion: "is niet in de lijst opgenomen"

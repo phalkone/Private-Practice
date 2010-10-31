@@ -78,7 +78,6 @@
     errors:
       template:
         header:
-          one: " Error prohibited this "
-          other: " Errors prohibited this "
-          second: " from being saved"
+          one: "1 Error prohibited this %{model} from being created"
+          other: "%{count} Errors prohibited this %{model} from being created"
         body: "There were problems with the following fields:" 
