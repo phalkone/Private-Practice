@@ -2,4 +2,6 @@
   pages:
     new: Nieuwe pagina
     create: Maak nieuwe pagina aan
-    successful: Pagina is succesvol aangemaakt.
+    created: Pagina succesvol aangemaakt.
+    destroyed: Pagina succesvol verwijderd.
+    updated: Pagina succesvol bijgewerkt.

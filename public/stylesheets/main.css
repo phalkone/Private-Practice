@@ -1,7 +1,5 @@
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
-pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, 
-fieldset, form, label, legend, table, caption, tbody, tfoot, thead, 
-tr, th, td { margin: 0; padding: 0; border: 0px; }
+html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote 
+     { margin: 0; padding: 0; border: 0px; }
 body { font-family: georgia, "Times New Roman", sans-serif; color: #777;
        background-color: #fff; }
 a { color: #d40000; text-decoration: none; }
@@ -51,8 +49,14 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #error_explanation ul li { list-style: square; }
 
-#notice { padding: 5px 8px; margin: 10px 0; background-color: #CFC;
-          border: solid 1px #6C6; }
+#flash_notice, #flash_error, #flash_alert { padding: 5px 8px;
+                                            margin: 10px 0;}
+
+#flash_notice { background-color: #CFC; border: solid 1px #6C6; }
+
+#flash_error, #flash_alert { background-color: #FCC; border: solid 1px #C66; }
+
+#pages_list { margin-left: 20px; }
 
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 

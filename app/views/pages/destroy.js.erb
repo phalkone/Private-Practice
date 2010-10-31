@@ -1,0 +1,3 @@
+$("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
+$("#flash_notice").show(300);
+$("#pages_list").html("<%= escape_javascript( render(:partial => "list") ) %>");

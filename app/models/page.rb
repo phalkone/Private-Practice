@@ -17,4 +17,8 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def to_param
+    "#{id}-#{permalink}"
+  end
+
 end

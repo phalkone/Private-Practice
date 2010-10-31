@@ -1,0 +1,11 @@
+<table>
+  <% for page in @pages %>
+    <tr <%= raw "class=\".nested\"" unless !page.nested %>>
+      <td><%= link_to page.permalink, page_path(page) %> : <%= page.title %></td>
+      <td><%= page.locale %></td>
+      <td><%= page.sequence %></td>
+      <td><%= link_to "Edit", edit_page_path(page), :remote => true %></td>
+      <td><%= link_to "Destroy", page, :remote => true, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>

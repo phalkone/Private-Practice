@@ -1,0 +1,9 @@
+<% if @page.errors.any? -%>
+  $("#flash_notice").hide(300);
+  $("#new_page").html("<%= escape_javascript(render("form")) %>");
+<% else -%>
+  $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
+  $("#flash_notice").show(300);
+  $("#new_page").html("");
+  $("#new_page").hide();
+<% end -%>
