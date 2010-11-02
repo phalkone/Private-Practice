@@ -1,3 +1,4 @@
+<p><a href="#"><%= t("pages.close") %></a></p><br />
 <%= form_for(@page, :remote => true) do |f| %>
   <%= render 'shared/error_messages', :object => f.object %>
   <div class="field">
@@ -17,6 +18,6 @@
     <%= f.check_box :nested %>
   </div>
   <div class="actions">
-    <%= f.submit t("pages.create") %>
+    <%= f.submit @submit_text %>
   </div>
 <% end %>

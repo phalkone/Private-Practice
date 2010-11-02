@@ -4,8 +4,11 @@
       <td><%= link_to page.permalink, page_path(page) %> : <%= page.title %></td>
       <td><%= page.locale %></td>
       <td><%= page.sequence %></td>
-      <td><%= link_to "Edit", edit_page_path(page), :remote => true %></td>
-      <td><%= link_to "Destroy", page, :remote => true, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><span class="ui-icon ui-icon-arrowthick-1-e  ui-button ui-button-icon-only"></span></td> 
+      <td><span class="ui-icon ui-icon-arrowthick-1-n ui-button ui-button-icon-only"></span></td> 
+      <td><span class="ui-icon ui-icon-arrowthick-1-s ui-button ui-button-icon-only"></span></td> 
+      <td><%= link_to "", edit_page_path(page), :remote => true, :class => "ui-icon ui-icon-wrench ui-button ui-button-icon-only" %></td>
+      <td><%= link_to "", page, :remote => true, :confirm => 'Are you sure?', :method => :delete, :class => "ui-icon ui-icon-trash ui-button ui-button-icon-only" %></td>
     </tr>
   <% end %>
 </table>

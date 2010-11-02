@@ -1,7 +1,10 @@
 "nl":
   pages:
     new: Nieuwe pagina
-    create: Maak nieuwe pagina aan
+    close: Sluit pagina (zonder opslaan)
     created: Pagina succesvol aangemaakt.
     destroyed: Pagina succesvol verwijderd.
     updated: Pagina succesvol bijgewerkt.
+    submit:
+      new: Maak nieuwe pagina aan
+      edit: Sla wijzigingen op

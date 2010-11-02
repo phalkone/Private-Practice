@@ -56,12 +56,12 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #flash_error, #flash_alert { background-color: #FCC; border: solid 1px #C66; }
 
-#pages_list { margin-left: 20px; }
+#page_list { margin-left: 20px; }
 
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
 div.field, div.actions { margin: 0 0 10px 20px; }
 .title{ font-size: 54pt; font-weight: normal; line-height: 0.9; }
-.small{ font-size: 8pt; }
+.small{ font-size: 7pt; }
 .red{ color: #d40000; }
 .x{ clear:both; }

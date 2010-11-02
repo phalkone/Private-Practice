@@ -1,4 +1,3 @@
 <h2>CMS</h2>
-<div id="new_link"><p><%= link_to t("pages.new"), new_page_path, :remote => true %></p></div><br />
-<div id="new_page" style="display:none"></div>
-<div id="pages_list"><%= render "list" %></div>
+<div id="new_page"><p><%= link_to t("pages.new"), new_page_path, :remote => true %></p></div><br />
+<div id="page_list"><%= render :partial => "list" %></div>

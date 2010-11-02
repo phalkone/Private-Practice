@@ -1,0 +1,6 @@
+$("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
+$('#new_page a').click(function() {
+  $("#new_page").html("<p><%= escape_javascript(
+    link_to t("pages.new"), new_page_path, :remote => true) %></p>");
+});
+$("#new_page").slideDown();

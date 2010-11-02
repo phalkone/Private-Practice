@@ -6,11 +6,12 @@ class PagesController < ApplicationController
 
   def new
     @page = Page.new
-    flash[:notice] = "Success"
+    @submit_text = t("pages.submit.new");
   end
 
   def edit
     @page = Page.find(params[:id].to_i)
+    @submit_text = t("pages.submit.edit");
   end
 
   def show
@@ -19,9 +20,11 @@ class PagesController < ApplicationController
 
   def update
     @page = Page.find(params[:id].to_i)
-    if page.update_attributes(params[:page])
+    if @page.update_attributes(params[:page])
       flash[:notice] = t("pages.updated")
       @pages = Page.all
+    else
+      @submit_text = t("pages.submit.edit");
     end
   end
 
@@ -37,6 +40,8 @@ class PagesController < ApplicationController
     if @page.save
       flash[:notice] = t("pages.created")
       @pages = Page.all
+    else
+      @submit_text = t("pages.submit.new");
     end
   end
 end
