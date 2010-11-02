@@ -1,4 +1,4 @@
-<p><a href="#"><%= t("pages.close") %></a></p><br />
+<p><a class="ui-icon ui-icon-closethick ui-button ui-button-icon-only" title="<%= t("pages.close") %>"</a></p><br />
 <%= form_for(@page, :remote => true) do |f| %>
   <%= render 'shared/error_messages', :object => f.object %>
   <div class="field">
@@ -8,10 +8,6 @@
   <div class="field">
     <%= f.label :body %><br />
     <%= f.text_area :body, :cols => 100, :rows => 20 %>
-  </div>
-  <div class="field">
-    <%= f.label :locale %><br />
-    <%= f.select(:locale, options_for_select(available_locales)) %>
   </div>
   <div class="field">
     <%= f.label :nested %><br />

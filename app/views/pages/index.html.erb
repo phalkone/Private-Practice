@@ -1,3 +1,9 @@
 <h2>CMS</h2>
-<div id="new_page"><p><%= link_to t("pages.new"), new_page_path, :remote => true %></p></div><br />
+<div id="locale_picker"><p>
+  <% form_tag '' do %>
+    <%= Page.human_attribute_name("locale") %>: 
+    <%= select_tag("new_locale", options_for_select(available_locales, session[:locale]), { :onchange => 'this.form.submit()', :remote => true}) %>
+  <% end %></p></div>
+<div id="new_page"><p><%= link_to "", new_page_path, :remote => true, 
+  :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", :title => t("pages.new")  %></p></div><br />
 <div id="page_list"><%= render :partial => "list" %></div>

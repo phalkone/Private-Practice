@@ -2,14 +2,18 @@
   flash_hide();
   $("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
   $('#new_page a').click(function() {
-    $("#new_page").html("<p><%= escape_javascript(
-        link_to t("pages.new"), new_page_path, :remote => true) %></p>");
+  $("#new_page").html("<p><%= escape_javascript(
+    link_to "", new_page_path, :remote => true, 
+    :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", 
+    :title => t("pages.new")) %></p>");
   });
 <% else -%>
   $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
   $("#flash_notice").show(300);
   $("#new_page").html("<p><%= escape_javascript(
-    link_to t("pages.new"), new_page_path, :remote => true) %></p>");
+    link_to "", new_page_path, :remote => true, 
+    :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", 
+    :title => t("pages.new")) %></p>");
   setTimeout(flash_hide,3000);
   $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
 <% end -%>
