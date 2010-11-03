@@ -2,6 +2,9 @@
   pages:
     new: New page
     close: Close page (without saving)
+    toggle: Toggle between page en subpage
+    up: Up
+    down: Down
     edit: Edit page
     delete: Delete page
     created: Page was successfully created.

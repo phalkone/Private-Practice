@@ -4,7 +4,7 @@
   $('#new_page a').click(function() {
   $("#new_page").html("<p><%= escape_javascript(
     link_to "", new_page_path, :remote => true, 
-    :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", 
+    :class => "ui-button ui-icon-document", 
     :title => t("pages.new")) %></p>");
   });
 <% else -%>
@@ -12,8 +12,9 @@
   $("#flash_notice").show(300);
   $("#new_page").html("<p><%= escape_javascript(
     link_to "", new_page_path, :remote => true, 
-    :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", 
+    :class => "ui-button ui-icon-document", 
     :title => t("pages.new")) %></p>");
   setTimeout(flash_hide,3000);
   $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
+  $('#page_list tr:even').css('background-color','#dddddd');
 <% end -%>

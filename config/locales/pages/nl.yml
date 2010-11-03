@@ -2,6 +2,9 @@
   pages:
     new: Nieuwe pagina
     close: Sluit pagina (zonder opslaan)
+    toggle: Wissel tussen pagina en subpagina
+    up: Omhoog
+    down: Omlaag
     edit: Bewerk pagina
     delete: Verwijder pagina
     created: Pagina succesvol aangemaakt.

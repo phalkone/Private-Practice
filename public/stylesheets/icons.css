@@ -2,9 +2,7 @@
 ----------------------------------*/
 
 /* states and images */
-.ui-icon { width: 16px; height: 16px; background-image: url(../images/icons_red.png); }
-.ui-button { display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; }
-.ui-button-icon-only { width: 16px; } 
+.ui-button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);  display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; }
 
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }

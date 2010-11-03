@@ -57,7 +57,9 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #flash_error, #flash_alert { background-color: #FCC; border: solid 1px #C66; }
 
 #page_list { margin-left: 20px; }
-  #page_list table { border: 0; }
+  #page_list table { border: 0; border-collapse:separate; border-spacing:0;
+                     vertical-align:middle; width: 700px; padding: 0; }
+  #page_list table tr { height:30px; text-indent:10px; }
 
 #locale_picker { float: right; }
 
@@ -68,3 +70,5 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .small{ font-size: 7pt; }
 .red{ color: #d40000; }
 .x{ clear:both; }
+.icon { width:20px;}
+.nested { text-indent:2.5em; }

@@ -2,7 +2,7 @@ $("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
 $('#new_page a').click(function() {
   $("#new_page").html("<p><%= escape_javascript(
       link_to "", new_page_path, :remote => true, 
-      :class => "ui-icon ui-icon-document ui-button ui-button-icon-only", 
+      :class => "ui-button ui-icon-document", 
       :title => t("pages.new")) %></p>");
 });
 $("#new_page").slideDown();

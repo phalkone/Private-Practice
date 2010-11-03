@@ -1,5 +1,5 @@
 class Page < ActiveRecord::Base
-  attr_accessible :title, :body, :nested
+  attr_accessible :title, :body, :nested, :sequence
 
   validates_presence_of :title, :body
   validates_length_of :title, :maximum=>30
