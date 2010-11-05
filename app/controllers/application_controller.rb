@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :set_locale 
+  before_filter :set_locale
 
   def set_locale 
-    I18n.locale = extract_locale_from_subdomain
+    I18n.locale = (session[:locale]) ? session[:locale] : extract_locale_from_subdomain
   end
 
   def extract_locale_from_subdomain

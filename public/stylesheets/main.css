@@ -1,4 +1,4 @@
-html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote 
+html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote, ul, li 
      { margin: 0; padding: 0; border: 0px; }
 body { font-family: georgia, "Times New Roman", sans-serif; color: #777;
        background-color: #fff; }
@@ -27,8 +27,8 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #content { margin: 10px 0px 20px 0px;} 
 
-#submenu { padding: 20px 20px 0px 10px;}
-  #submenu li {list-style: none; margin-bottom:15px; }
+#submenu { margin: 0; padding: 0 10px 0 10px;}
+  #submenu li {list-style: none; margin: 0 0 15px 0; }
 
 #subcontent { float: right; width: 700px;  border-left: 1px solid #ddd;
               padding-left: 20px; margin-bottom: 20px; } 
@@ -71,4 +71,8 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .red{ color: #d40000; }
 .x{ clear:both; }
 .icon { width:20px;}
-.nested { text-indent:2.5em; }
+.nested { text-indent:3em; }
+.indent { text-indent:1em; }
+.bold { font-weight:bold; }
+.default_cursor { cursor:default; }
+.hidden { display:none; }

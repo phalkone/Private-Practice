@@ -1,4 +1,12 @@
 "nl":
+  txt:
+    private: Prive
+    practice: Praktijk
+    password: Paswoord
+    email: Email
+    login: Login
+    remember: Onthoudt mij
+    forgot: Paswoord?
   date:
     formats:
       default: "%Y-%m-%d"

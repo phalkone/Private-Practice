@@ -1,12 +1,21 @@
-<% if @page.nested? %> 
+<% if @subpages %> 
   <div id="subcontent">
     <%= raw @page.body %>
   </div>
   <div id="submenu">
     <ul>
-      <li><a href="#">Treatments for skin</a></li>
-      <li><a href="#">Medicine</a></li>
-      <li><a href="#">Doctores</a></li>
+      <% for subpage in @subpages %>
+        <% if subpage.nested and subpage == @page %>
+          <li class="indent bold">
+        <% elsif subpage.nested and subpage != @page %>
+          <li class="indent">
+        <% elsif subpage == @page %>
+          <li class="bold">
+        <% else %>
+          <li>
+        <% end %>
+        <%= link_to subpage.title, page_path(subpage) %></li>
+      <% end %>
     </ul>
   </div>
 <% else %>

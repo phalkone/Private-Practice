@@ -1,8 +1,9 @@
 <h2>CMS</h2>
 <div id="locale_picker"><p>
-  <%= form_tag "", :remote => true do %>
+  <%= form_tag("pages/changelocale", :remote => true) do %>
     <%= Page.human_attribute_name("locale") %>: 
-    <%= select_tag("new_locale", options_for_select(available_locales, session[:locale]), :onchange => 'this.form.submit()') %>
+    <%= select_tag("new_locale", options_for_select(available_locales, session[:locale])) %>
+    <%= submit_tag "", :class => "hidden" %>
   <% end %></p></div>
 <div id="new_page"><p><%= link_to "", new_page_path, :remote => true, 
   :class => "ui-button ui-icon-document", :title => t("pages.new")  %></p></div><br />

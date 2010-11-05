@@ -7,6 +7,7 @@
     down: Omlaag
     edit: Bewerk pagina
     delete: Verwijder pagina
+    clear: Wis formulier
     created: Pagina succesvol aangemaakt.
     destroyed: Pagina succesvol verwijderd.
     updated: Pagina succesvol bijgewerkt.

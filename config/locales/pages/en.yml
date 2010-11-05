@@ -7,6 +7,7 @@
     down: Down
     edit: Edit page
     delete: Delete page
+    clear: Clear form
     created: Page was successfully created.
     destroyed: Page was successfully deleted.
     updated: Page was successfully updated.

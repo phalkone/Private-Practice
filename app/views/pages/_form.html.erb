@@ -1,4 +1,5 @@
-<p><a class="ui-button ui-icon-closethick" title="<%= t("pages.close") %>"</a></p><br />
+<p><a class="ui-button ui-icon-document" title="<%= t("pages.clear") %>"</a>
+<a class="ui-button ui-icon-closethick" title="<%= t("pages.close") %>"></a></p><br />
 <%= form_for(@page, :remote => true) do |f| %>
   <%= render 'shared/error_messages', :object => f.object %>
   <div class="field">

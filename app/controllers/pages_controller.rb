@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-
+  
   def index
     set_session_locale
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
@@ -15,14 +15,46 @@ class PagesController < ApplicationController
     @submit_text = t("pages.submit.edit");
   end
 
+  def homepage
+    set_session_locale
+    redirect_to Page.where("locale = ?",session[:locale])
+      .order("sequence ASC").first
+  end
+
   def show
+    set_session_locale
+    @menu = Page.where("locale = ?",session[:locale])
+      .where("nested = ?",false).order("sequence ASC")
     @page = Page.find(params[:id].to_i)
+    if @page.nested
+      @main_page = Page.where("locale = ?",session[:locale])
+        .where("nested = ?", false).where("sequence < ?",@page.sequence)
+        .order("sequence DESC").first
+    else
+      @main_page = @page
+    end
+    next_page = Page.where("locale = ?",session[:locale])
+      .where("sequence > ?",@main_page.sequence)
+      .where("nested = ?", false).order("sequence ASC").first
+    if next_page
+      @subpages = Page.where("locale = ?",session[:locale])
+        .where("sequence >= ?",@main_page.sequence)
+        .where("sequence < ?",next_page.sequence).order("sequence ASC")
+    else
+      @subpages = Page.where("locale = ?",session[:locale])
+        .where("sequence >= ?",@main_page.sequence)
+        .order("sequence ASC")
+    end
+    if @subpages and @subpages.count == 1
+      @subpages = nil
+    end
   end
 
   def update
     @page = Page.find(params[:id].to_i)
     if @page.update_attributes(params[:page])
       flash[:notice] = t("pages.updated")
+      first_not_nested
       @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
     else
       @submit_text = t("pages.submit.edit");
@@ -33,6 +65,7 @@ class PagesController < ApplicationController
     @page = Page.find(params[:id].to_i)
     @page.destroy
     flash[:notice] = t("pages.destroyed")
+    first_not_nested
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
   end
   
@@ -73,11 +106,7 @@ class PagesController < ApplicationController
     new_seq = (next_page.sequence + next_next_sequence)/2
     @page.update_attributes(:sequence => new_seq)
     @page.save
-    if Page.where("locale = ?",session[:locale]).first.nested
-      first_page = Page.where("locale = ?",session[:locale]).first
-      first_page.update_attributes(:nested => false)
-      first_page.save
-    end
+    first_not_nested
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
   end
 
@@ -90,11 +119,24 @@ class PagesController < ApplicationController
     else
       @submit_text = t("pages.submit.new");
     end
+    first_not_nested
+  end
+  
+  def changelocale
+    set_session_locale
+    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
   end
 
   private
     def set_session_locale
       session[:locale] = (params[:new_locale]) ? params[:new_locale] : I18n.locale 
     end
-
+    
+    def first_not_nested
+      if Page.where("locale = ?",session[:locale]).first.nested
+        first_page = Page.where("locale = ?",session[:locale]).first
+        first_page.update_attributes(:nested => false)
+        first_page.save
+      end
+    end
 end

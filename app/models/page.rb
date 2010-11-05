@@ -1,12 +1,14 @@
 class Page < ActiveRecord::Base
+  before_create :perm_seq
   attr_accessible :title, :body, :nested, :sequence
+
 
   validates_presence_of :title, :body
   validates_length_of :title, :maximum=>30
   validates_length_of :locale, :maximum=>2
   validates_length_of :body, :maximum=>10000
 
-  def before_create 
+  def perm_seq
     @attributes['permalink'] = 
       title.downcase.gsub(/\s+/, '_').gsub(/[^a-zA-Z0-9_]+/, '')
     if Page.where("locale = ?",locale).count > 0 

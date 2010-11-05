@@ -1,4 +1,12 @@
 "en":
+  txt:
+    private: Private
+    practice: Practice
+    password: Password
+    email: E-mail
+    login: Login
+    remember: Remember me
+    forgot: Forgot login?
   date:
     formats:
       default: "%Y-%m-%d"
