@@ -1,0 +1,19 @@
+<%= form_for @image, :html => {:multipart => true} do |f|%>
+  <%= render 'shared/error_messages', :object => f.object, :modelname =>  Image.model_name.human.downcase %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :picture %><br />
+    <%= file_field :file, :picture %>
+  </div>
+  <%= f.hidden_field :filetype %>
+  <div class="actions">
+    <%= f.submit t("images.submit.new") %>
+  </div>
+<% end %>

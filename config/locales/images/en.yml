@@ -1,0 +1,11 @@
+"en":
+  images:
+    new: New image
+    delete: Delete image
+    edit: Edit image
+    updated: Image updated
+    confirmation: Are you sure?
+    destroyed: Image deleted
+    submit:
+      new: Save
+      edit: Save changes

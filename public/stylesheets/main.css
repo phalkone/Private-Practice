@@ -5,8 +5,8 @@ body { font-family: georgia, "Times New Roman", sans-serif; color: #777;
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 p { margin-left: 10px; }
-h1 { font-size: 2em; font-weight: normal; font-style: italic;
-     padding: 0 0 15px 10px; margin: 0 0 10px; }
+h1 { font-size: 2em; font-weight: bold; padding: 0 0 10px 10px; 
+     margin: 0 0 10px; }
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px 10px;}
 h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
@@ -56,10 +56,10 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #flash_error, #flash_alert { background-color: #FCC; border: solid 1px #C66; }
 
-#page_list { margin-left: 20px; }
-  #page_list table { border: 0; border-collapse:separate; border-spacing:0;
+.list { margin-left: 20px; }
+  .list table { border: 0; border-collapse:separate; border-spacing:0;
                      vertical-align:middle; width: 700px; padding: 0; }
-  #page_list table tr { height:30px; text-indent:10px; }
+  .list table tr { height:30px; text-indent:10px; }
 
 #locale_picker { float: right; }
 

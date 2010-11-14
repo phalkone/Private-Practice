@@ -1,5 +1,6 @@
 PrivatePractice::Application.routes.draw do
   resources :pages
+  resources :images
 
   match 'pages/:id/toggle' => 'pages#toggle', :as => :toggle
   match 'pages/:id/up' => 'pages#up', :as => :up

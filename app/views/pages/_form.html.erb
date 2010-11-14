@@ -1,7 +1,7 @@
 <p><a class="ui-button ui-icon-document" title="<%= t("pages.clear") %>"</a>
 <a class="ui-button ui-icon-closethick" title="<%= t("pages.close") %>"></a></p><br />
 <%= form_for(@page, :remote => true) do |f| %>
-  <%= render 'shared/error_messages', :object => f.object %>
+  <%= render 'shared/error_messages', :object => f.object, :modelname =>  Page.model_name.human.downcase %>
   <div class="field">
     <%= f.label :title %><br />
     <%= f.text_field :title %>

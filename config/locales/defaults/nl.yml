@@ -85,6 +85,7 @@
   activerecord:
     models:
       page: "Pagina"
+      image: "Afbeelding"
     attributes:
       page:
         title: "Titel"
@@ -93,6 +94,10 @@
         permalink: "Permalink"
         nested: "Subpagina"
         order: "Volgorde"
+      image:
+        name: "Naam"
+        description: "Omschrijving"
+        picture: "Afbeelding"
     errors:
       template:
         header:

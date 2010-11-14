@@ -1,0 +1,17 @@
+<%= form_for(@image, :remote => true) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object, :modelname =>  Image.model_name.human.downcase %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= image_tag image_url(@image), :width => "400" %>
+  </div>
+  <div class="actions">
+    <%= submit_tag t("images.submit.edit") %>
+  </div><br />
+<% end %>

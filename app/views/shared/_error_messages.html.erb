@@ -1,11 +1,11 @@
-<% if @page.errors.any? %>
+<% if object.errors.any? %>
   <div id="error_explanation">
     <h3><%= t("activerecord.errors.template.header", 
-              :model => Page.model_name.human.downcase,
-              :count => @page.errors.count) %></h3>
+              :model => modelname,
+              :count => object.errors.count) %></h3>
     <p><%= t("activerecord.errors.template.body") %></p>
     <ul>
-      <% @page.errors.full_messages.each do |msg| %>
+      <% object.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>

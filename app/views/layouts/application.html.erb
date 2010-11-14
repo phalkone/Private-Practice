@@ -11,23 +11,8 @@
 </head>
 <body>
 <div id="container">
-  <div id="login_box">
-    <form>
-      <div>
-        <input value="<%= t("txt.email") %>" type="text" name="email" id="email" size="33"/>
-      </div>
-      <div>
-        <input value="<%= t("txt.password") %>" type="password" name="password" id="password" size="33"/>
-      </div>
-      <div>
-        <input type="submit" name="<%= t("txt.login") %>" id="login" value="Login">
-        <input type="checkbox" name="chkremember" id="chkremember"/>
-        <label for="chkremember"><span class="small"><%= t("txt.remember") %></span></label>
-        <a href="#" alt="Forgot login"><span class="small"><%= t("txt.forgot") %></span></a>
-      </div>
-    </form>
-  </div> 
-  <div id="header">
+ <%= render :partial => "shared/loginform" %>
+ <div id="header">
     <p class="title"><span class="red"><%= t("txt.private") %></span><%= t("txt.practice") %><p>
   </div>
    <%= render :partial => "shared/menu" %>
