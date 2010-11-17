@@ -36,11 +36,30 @@ $(document).ready(function() {
     }
   });
   lightbox();
+  linkbox();
   zebra();
   setTimeout(flash_hide,3000);
 });
 function flash_hide(){
   $("#flash_notice").hide(300);
+}
+function linkbox() {
+  $(".link_box").each(function() {
+    $(this)
+    .data('default',$(this).val())
+    .keyup(function() {
+      $(this).val($(this).data('default'));
+    })
+    .mouseup(function() {
+      return false;
+    })
+    .mousedown(function() {
+      $(this).select();
+    })
+    .focus(function() {
+      $(this).select();
+    });
+  });
 }
 function lightbox() {
   $('a.lightbox').click(function(e) {

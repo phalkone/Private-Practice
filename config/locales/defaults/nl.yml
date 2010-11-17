@@ -89,7 +89,7 @@
     attributes:
       page:
         title: "Titel"
-        body: "HTML tekst"
+        body: "Inhoud"
         locale: "Taal"
         permalink: "Permalink"
         nested: "Subpagina"

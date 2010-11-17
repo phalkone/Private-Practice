@@ -3,8 +3,9 @@
     <tr>
       <td><%= link_to image.name, image_path(image),
         :title => image.description, :class => "lightbox" %></td>
-      <td class="icon"><%= text_field :image, :name, :value => image_url(image), :size => "45", 
-        :class => "image_link" %></td>
+      <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
+      <td class="icon"><%= text_field :image, :link, :value => image_link,  :size => "45" ,
+        :class => "link_box" %></td>
       <td class="icon"><%= link_to "", edit_image_path(image), :remote => true,
         :class => "ui-button ui-icon-wrench", :title => t("images.edit") %></td>
       <td class="icon"><%= link_to "", image, :remote => true, 

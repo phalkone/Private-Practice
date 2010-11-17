@@ -1,6 +1,6 @@
 <% if @subpages %> 
   <div id="subcontent">
-    <%= raw @page.body %>
+    <%= raw BlueCloth.new(@page.body).to_html %>
   </div>
   <div id="submenu">
     <ul>
@@ -19,5 +19,7 @@
     </ul>
   </div>
 <% else %>
- <%= raw @page.body %>
+<div id="pagecontent"> 
+ <%= raw BlueCloth.new(@page.body).to_html %>
+</div>
 <% end %>
