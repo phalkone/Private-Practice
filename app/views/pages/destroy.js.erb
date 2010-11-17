@@ -1,5 +1,5 @@
 $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
 $("#flash_notice").show(300);
 $("#page_list").html("<%= escape_javascript( render(:partial => "list") ) %>");
-$('#page_list tr:even').css('background-color','#dddddd');
+zebra();
 setTimeout(flash_hide,3000);

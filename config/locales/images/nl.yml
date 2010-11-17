@@ -1,11 +1,13 @@
 "nl":
   images:
+    title: Afbeeldingen
     new: Nieuwe afbeelding
     delete: Verwijder afbeelding
     edit: Bewerk afbeelding
     updated: Afbeelding bijgewerkt
     confirmation: Ben je zeker?
     destroyed: Afbeelding verwijderd
+    created: Afbeelding aangemaakt
     submit:
       new: Sla op
       edit: Sla wijzigingen op

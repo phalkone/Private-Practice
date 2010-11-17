@@ -6,5 +6,9 @@ module ApplicationHelper
       File.basename(File.basename(locale_file, ".rb"), ".yml")
     end.uniq.sort
   end
+  
+  def domain
+    request.domain + ":" + request.port.to_s + request.path
+  end
 
 end

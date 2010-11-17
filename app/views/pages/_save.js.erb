@@ -16,5 +16,5 @@
     :title => t("pages.new")) %></p>");
   setTimeout(flash_hide,3000);
   $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
-  $('#page_list tr:even').css('background-color','#dddddd');
+  zebra();
 <% end -%>

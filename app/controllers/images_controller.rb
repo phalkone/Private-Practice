@@ -1,10 +1,4 @@
 class ImagesController < ApplicationController
-  before_filter :load
-
-  def load
-    @image = Image.new
-    @images = Image.all
-  end
   
   def show
     @image = Image.find_by_name(params[:id])
@@ -13,14 +7,20 @@ class ImagesController < ApplicationController
 
   def create
     @image = Image.new(params[:image])
-    @image.picture = params[:file][:picture].read
+    if params[:image][:filetype] != ""
+      @image.picture = params[:file][:picture].read
+    end
     if @image.save
       flash[:notice] = t("images.created")
+      redirect_to images_path
+    else
+      @images = Image.all
+      render :template => "images/index"
     end
-    redirect_to images_path
   end
   
   def new
+    render :new, :layout => "blank"
   end
   
   def edit
@@ -28,6 +28,10 @@ class ImagesController < ApplicationController
   end
 
   def index
+    @images = Image.all
+    if !@image
+      @image = Image.new
+    end
   end
 
   def destroy

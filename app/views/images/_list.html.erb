@@ -2,7 +2,7 @@
   <% for image in @images %>
     <tr>
       <td><%= link_to image.name, image_path(image),
-        :title => image.description %></td>
+        :title => image.description, :class => "lightbox" %></td>
       <td class="icon"><%= text_field :image, :name, :value => image_url(image), :size => "45", 
         :class => "image_link" %></td>
       <td class="icon"><%= link_to "", edit_image_path(image), :remote => true,

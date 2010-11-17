@@ -18,12 +18,22 @@
    <%= render :partial => "shared/menu" %>
   <div class="x"></div>
   <div id="content">
-   <div id="flash_notice" style="display:none"></div>
-   <%= yield %>
+    <% if flash[:notice] %>
+      <div id="flash_notice"><%= flash[:notice] %></div>
+    <% else %>
+      <div id="flash_notice" style="display:none"></div>
+    <% end %>
+    <%= yield %>
   </div>
   <div class="x"></div>
   <div id="footer">
-    <p class="right"><a href="#">Route</a> · <a href="#">Contact</a></p>
+    <p class="right"><% available_locales.each do |locale| %>
+      <a href="<%= "http://" + locale +"."+domain %>"
+      <% if locale == I18n.locale.to_s %> class="red" <% else %> class="grey" <% end %>><%= locale %></a>
+        <% if locale != available_locales[available_locales.length-1] %>
+           · 
+        <% end %>
+      <% end %></p>
     <p>Copyright &copy; 2010 <a href="#">Tim Pintens</a></p>
   </div>
 </div>

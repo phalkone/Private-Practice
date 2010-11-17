@@ -1,11 +1,13 @@
 "en":
   images:
+    title: Images
     new: New image
     delete: Delete image
     edit: Edit image
     updated: Image updated
     confirmation: Are you sure?
     destroyed: Image deleted
+    created: Image created
     submit:
       new: Save
       edit: Save changes

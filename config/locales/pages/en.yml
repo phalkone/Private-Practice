@@ -1,5 +1,6 @@
 "en":
   pages:
+    title: Pages
     new: New page
     close: Close page (without saving)
     toggle: Toggle between page en subpage

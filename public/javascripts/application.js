@@ -1,10 +1,9 @@
 $(document).ready(function() {
-  $(".list tr:even").css('background-color','#dddddd');
   $("#locale_picker").change(function() {
       $("#locale_picker form :submit").submit();
   });
-  $('#image_picture').change(function() {
-    var name = $("#image_picture").val().split(".");
+  $('#file_picture').change(function() {
+    var name = $("#file_picture").val().split(".");
     var ext = name[name.length-1];
     $("#image_filetype").val(ext);
   });
@@ -36,7 +35,63 @@ $(document).ready(function() {
       $("#show_pass").hide();
     }
   });
+  lightbox();
+  zebra();
+  setTimeout(flash_hide,3000);
 });
 function flash_hide(){
   $("#flash_notice").hide(300);
+}
+function lightbox() {
+  $('a.lightbox').click(function(e) {
+    $('body').css('overflow-y', 'hidden');
+    $('body').css('overflow-x', 'hidden');
+    $('<div id="overlay"></div>')
+      .css('top', $(document).scrollTop())
+      .css('opacity', '0')
+      .animate({'opacity': '0.5'}, 'slow')
+      .appendTo('body');
+    $('<div id="lightbox"></div>')
+      .hide()
+      .appendTo('body');
+    $('<img />')
+      .attr('src', $(this).attr('href'))
+      .load(function() {
+        positionLightboxImage();
+      })
+      .click(function() {
+        removeLightbox();
+      })
+      .appendTo('#lightbox');
+    return false;
+  });
+}
+function positionLightboxImage() {
+  if ($(window).width() < $("#lightbox").width()){
+    $("#lightbox img").attr("width",$(window).width()-30);
+  }
+  if($(window).height() < $("#lightbox").height()){
+    $("#lightbox img").removeAttr("width");
+    $("#lightbox img").attr("height",$(window).height()-30);
+  }
+ 
+  var top = ($(window).height() - $('#lightbox').height()) / 2;
+  var left = ($(window).width() - $('#lightbox').width()) / 2;
+  $('#lightbox')
+  .css({
+    'top': top + $(document).scrollTop(),
+    'left': left
+  })
+  .fadeIn();
+}
+function removeLightbox() {
+  $('#overlay, #lightbox')
+  .fadeOut('slow', function() {
+    $(this).remove();
+    $('body').css('overflow-y', 'auto');
+    $('body').css('overflow-x', 'auto');
+  });
+}
+function zebra() {
+  $(".list tr:even").css('background-color','#dddddd');
 }

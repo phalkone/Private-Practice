@@ -1,11 +1,12 @@
 <% if @image.errors.any? -%>
   flash_hide();
-  $("image_form").html("<%= escape_javascript(render(:partial => "edit_form")) %>");
+  $("#image_form").html("<%= escape_javascript(render(:partial => "edit_form")) %>");
 <% else -%>
   $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
   $("#flash_notice").show(300);
   $("#image_form").html("<%= escape_javascript(render(:partial => "form")) %>");
   setTimeout(flash_hide,3000);
   $("#image_list").html("<%= escape_javascript(render(:partial => "list")) %>");
-  $('#image_list tr:even').css('background-color','#dddddd');
+  zebra();
+  lightbox();
 <% end -%>

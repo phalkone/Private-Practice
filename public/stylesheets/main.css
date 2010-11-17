@@ -36,7 +36,6 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #footer { padding: 15px 0px 15px 0px; font-size: 9pt;
           border-top: 1px solid #ddd; }
   #footer .right { float: right; }
-  #footer .right a { color: #888; }
   #footer .right a:hover { color: #555; }
 
 #error_explanation { width: 450px; border: 2px solid #d40000; padding: 7px;
@@ -47,7 +46,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
                         padding: 5px 5px 5px 15px; margin-bottom: 0px; 
                         background-color: #d40000; color: #fff; }
 
-#error_explanation ul li { list-style: square; }
+#error_explanation ul li { margin-left:30px; list-style: square; }
 
 #flash_notice, #flash_error, #flash_alert { padding: 5px 8px;
                                             margin: 10px 0;}
@@ -58,10 +57,10 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 .list { margin-left: 20px; }
   .list table { border: 0; border-collapse:separate; border-spacing:0;
-                     vertical-align:middle; width: 700px; padding: 0; }
+                     vertical-align:middle; width: 650px; padding: 0; }
   .list table tr { height:30px; text-indent:10px; }
 
-#locale_picker { float: right; }
+#locale_picker { margin-right:30px; float:right; }
 
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
@@ -69,6 +68,7 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .title{ font-size: 54pt; font-weight: normal; line-height: 0.9; }
 .small{ font-size: 7pt; }
 .red{ color: #d40000; }
+.grey { color: #888; }
 .x{ clear:both; }
 .icon { width:20px;}
 .nested { text-indent:3em; }
