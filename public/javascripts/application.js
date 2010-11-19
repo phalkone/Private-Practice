@@ -46,10 +46,7 @@ function flash_hide(){
 function linkbox() {
   $(".link_box").each(function() {
     $(this)
-    .data('default',$(this).val())
-    .keyup(function() {
-      $(this).val($(this).data('default'));
-    })
+    .attr("readOnly","readOnly")
     .mouseup(function() {
       return false;
     })
@@ -61,29 +58,77 @@ function linkbox() {
     });
   });
 }
-function lightbox() {
-  $('a.lightbox').click(function(e) {
-    $('body').css('overflow-y', 'hidden');
-    $('body').css('overflow-x', 'hidden');
-    $('<div id="overlay"></div>')
-      .css('top', $(document).scrollTop())
-      .css('opacity', '0')
-      .animate({'opacity': '0.5'}, 'slow')
-      .appendTo('body');
-    $('<div id="lightbox"></div>')
-      .hide()
-      .appendTo('body');
-    $('<img />')
-      .attr('src', $(this).attr('href'))
-      .load(function() {
-        positionLightboxImage();
-      })
-      .click(function() {
-        removeLightbox();
-      })
-      .appendTo('#lightbox');
+function markdown() {
+  $('a.markdown').click(function(e) {
+    var current = $('textarea#page_body').val();
+    $('textarea#page_body').val(current+$(this).attr("href"));
     return false;
   });
+}
+function lightbox() {
+  $('a.lightbox.picture').click(function(e) {
+    createLightbox();
+    lightboxImage(this);
+    return false;   
+  });
+  $('a.lightbox.frame').click(function(e) {
+    createLightbox();
+    lightboxFrame(this);
+    return false;   
+  });
+}
+function createLightbox(){
+ $('body').css('overflow-y', 'hidden');
+ $('body').css('overflow-x', 'hidden');
+ $('<div id="overlay"></div>')
+   .css('top', $(document).scrollTop())
+   .css('opacity', '0')
+   .animate({'opacity': '0.5'}, 'slow')
+   .click(function() {
+     removeLightbox();
+   })
+     .appendTo('body');
+  $('<div id="lightbox"></div>')
+    .hide()
+    .appendTo('body');
+}
+function lightboxImage(e){
+  $('<img />')
+    .attr('src', $(e).attr('href'))
+    .load(function() {
+      positionLightboxImage();
+    })
+    .click(function() {
+      removeLightbox();
+    })
+    .appendTo('#lightbox');
+}
+function lightboxFrame(e){
+  $('<iframe />')
+    .attr('src', $(e).attr('href'))
+    .css({
+      'background': 'white',
+      'opacity':'1'
+    })
+    .load(function() {
+      positionLightboxFrame();
+    })
+    .click(function() {
+      removeLightbox();
+    })
+    .appendTo('#lightbox');
+}
+function positionLightboxFrame() {
+  $("#lightbox iframe").attr("width",$(window).width()-300);
+  $("#lightbox iframe").attr("height",$(window).height()-30);
+  var top = ($(window).height() - $('#lightbox').height()) / 2;
+  var left = ($(window).width() - $('#lightbox').width()) / 2;
+  $('#lightbox')
+  .css({
+    'top': top + $(document).scrollTop(),
+    'left': left
+  })
+  .fadeIn();
 }
 function positionLightboxImage() {
   if ($(window).width() < $("#lightbox").width()){
@@ -113,4 +158,13 @@ function removeLightbox() {
 }
 function zebra() {
   $(".list tr:even").css('background-color','#dddddd');
+}
+function textresizable() {
+  $("textarea.resizable").resizable({
+    minWidth : 150,
+    maxWidth : 700,
+    minHeight : 30,
+    maxHeight : 1500,
+    containment: 'parent'
+  });
 }

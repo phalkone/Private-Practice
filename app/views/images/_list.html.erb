@@ -2,7 +2,7 @@
   <% for image in @images %>
     <tr>
       <td><%= link_to image.name, image_path(image),
-        :title => image.description, :class => "lightbox" %></td>
+        :title => image.description, :class => "lightbox picture" %></td>
       <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
       <td class="icon"><%= text_field :image, :link, :value => image_link,  :size => "45" ,
         :class => "link_box" %></td>

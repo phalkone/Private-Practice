@@ -8,7 +8,7 @@ module ApplicationHelper
   end
   
   def domain
-    request.domain + ":" + request.port.to_s + request.path
+    request.domain + ":" + request.port.to_s
   end
 
 end

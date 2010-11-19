@@ -41,6 +41,10 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
   #footer .right { float: right; }
   #footer .right a:hover { color: #555; }
 
+#overlay { position:absolute; top:0; left:0; height:100%; width:100%; 
+           background:black; }
+#lightbox { position:absolute; }
+
 #error_explanation { width: 450px; border: 2px solid #d40000; padding: 7px;
                      padding-bottom: 0; margin: 0 0 20px 20px;
                      background-color: #f0f0f0; }
@@ -79,3 +83,4 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .bold { font-weight:bold; }
 .default_cursor { cursor:default; }
 .hidden { display:none; }
+.markdown { font-size:10px; margin-top: 6px; }

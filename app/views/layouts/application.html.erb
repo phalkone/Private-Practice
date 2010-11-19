@@ -12,10 +12,8 @@
 <body>
 <div id="container">
  <%= render :partial => "shared/loginform" %>
- <div id="header">
-    <p class="title"><span class="red"><%= t("txt.private") %></span><%= t("txt.practice") %><p>
-  </div>
-   <%= render :partial => "shared/menu" %>
+ <%= render :partial => "shared/header" %>
+ <%= render :partial => "shared/menu" %>
   <div class="x"></div>
   <div id="content">
     <% if flash[:notice] %>
@@ -26,16 +24,7 @@
     <%= yield %>
   </div>
   <div class="x"></div>
-  <div id="footer">
-    <p class="right"><% available_locales.each do |locale| %>
-      <a href="<%= "http://" + locale +"."+domain %>"
-      <% if locale == I18n.locale.to_s %> class="red" <% else %> class="grey" <% end %>><%= locale %></a>
-        <% if locale != available_locales[available_locales.length-1] %>
-           · 
-        <% end %>
-      <% end %></p>
-    <p>Copyright &copy; 2010 <a href="#">Tim Pintens</a></p>
-  </div>
+  <%= render :partial => "shared/footer" %>
 </div>
 </body>
 </html>

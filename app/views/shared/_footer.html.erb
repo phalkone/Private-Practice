@@ -1,0 +1,15 @@
+<div id="footer">
+  <p class="right"><% available_locales.each do |locale| %>
+    <% if @page.nil? %>
+      <a href="<%= "http://" + locale +"."+domain+request.path %>"
+    <% else %>
+      <a href="<%= "http://" + locale +"."+domain %>"
+    <%end %>
+    <% if locale == I18n.locale.to_s %> class="red" <% else %> class="grey" <% end %>><%= locale %></a>
+      <% if locale != available_locales[available_locales.length-1] %>
+         · 
+      <% end %>
+    <% end %></p>
+  <p>Copyright &copy; 2010 <a href="#">Tim Pintens</a></p>
+</div>
+
