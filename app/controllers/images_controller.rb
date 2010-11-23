@@ -28,6 +28,7 @@ class ImagesController < ApplicationController
   end
 
   def index
+    @title = t("images.title")
     @images = Image.all
     if !@image
       @image = Image.new

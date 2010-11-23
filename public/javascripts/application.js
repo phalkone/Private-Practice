@@ -60,8 +60,13 @@ function linkbox() {
 }
 function markdown() {
   $('a.markdown').click(function(e) {
-    var current = $('textarea#page_body').val();
-    $('textarea#page_body').val(current+$(this).attr("href"));
+    var app = $(this).attr("href");
+    var current = $("textarea#body").val()
+    $('textarea#page_body').val(function(index, value) {
+        var last = value.substring(index);
+        var first = value.substring (index - value.length);
+        return " " + app + " " + last;
+    });
     return false;
   });
 }
@@ -105,10 +110,14 @@ function lightboxImage(e){
 }
 function lightboxFrame(e){
   $('<iframe />')
-    .attr('src', $(e).attr('href'))
+    .attr({ 'src': $(e).attr('href'),
+            'width': $(window).width()-300,
+            'height': $(window).height()-30
+    })
     .css({
       'background': 'white',
-      'opacity':'1'
+      'opacity':'1',
+      'border':'0'
     })
     .load(function() {
       positionLightboxFrame();
@@ -119,14 +128,10 @@ function lightboxFrame(e){
     .appendTo('#lightbox');
 }
 function positionLightboxFrame() {
-  $("#lightbox iframe").attr("width",$(window).width()-300);
-  $("#lightbox iframe").attr("height",$(window).height()-30);
-  var top = ($(window).height() - $('#lightbox').height()) / 2;
-  var left = ($(window).width() - $('#lightbox').width()) / 2;
   $('#lightbox')
   .css({
-    'top': top + $(document).scrollTop(),
-    'left': left
+    'top': 15 + $(document).scrollTop(),
+    'left': 150
   })
   .fadeIn();
 }

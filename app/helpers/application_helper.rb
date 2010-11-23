@@ -11,4 +11,13 @@ module ApplicationHelper
     request.domain + ":" + request.port.to_s
   end
 
+  def title
+    base_title = t("txt.private") + " " + t("txt.practice")
+    if @title.nil?
+      base_title
+    else
+      "#{base_title} | #{@title}"
+    end
+  end
+
 end

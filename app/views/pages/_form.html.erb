@@ -7,14 +7,19 @@
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :body %><br />
-    <a href="[url]" class="markdown">[url]</a><br />
+    <%= f.label :body %> <br />
+    <a href="[url]" class="markdown">[url]</a>
+    (<%= link_to "Markdown Basics", "Markdown_basics.html", :class => "lightbox frame small" %> ·  
+    <%= link_to "Markdown Syntax", "Markdown_syntax.html", :class => "lightbox frame small" %>)<br />
     <%= f.text_area :body, :class => "resizable", :cols => 80, :rows => 20 %>
-    <%= link_to "Help", "Markdown _basics.html", :class => "lightbox frame" %>
-  </div>
+      </div>
   <div class="field">
     <%= f.label :nested %><br />
     <%= f.check_box :nested %>
+  </div>
+  <div class="field">
+    <%= f.label :html %><br />
+    <%= f.check_box :html %>
   </div>
   <div class="actions">
     <%= f.submit @submit_text %>

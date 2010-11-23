@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101109123441) do
+ActiveRecord::Schema.define(:version => 20101123100821) do
 
   create_table "images", :force => true do |t|
     t.binary   "picture"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20101109123441) do
     t.datetime "updated_at"
     t.decimal  "sequence"
     t.boolean  "nested"
+    t.boolean  "html"
   end
 
 end

@@ -1,14 +1,12 @@
-<% if @menu %>
-  <ul id="menu">
-    <% for menuitem in @menu %>
-      <% if @page and @page == menuitem %>
-        <li class="active">
-      <% elsif @subpages and @subpages.first == menuitem %>
-        <li class="active">
-      <% else %>
-        <li>
-      <% end %>
-      <%= link_to menuitem.title, page_path(menuitem) %></li>
+<ul id="menu">
+  <% for menuitem in @menu %>
+    <% if @page and @page == menuitem %>
+      <li class="active">
+    <% elsif @subpages and @subpages.first == menuitem %>
+      <li class="active">
+    <% else %>
+      <li>
     <% end %>
-  </ul>
-<% end %>
+    <%= link_to menuitem.title, page_path(menuitem) %></li>
+ <% end %>
+</ul>

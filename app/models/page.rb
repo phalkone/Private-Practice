@@ -1,7 +1,6 @@
 class Page < ActiveRecord::Base
   before_create :perm_seq
-  attr_accessible :title, :body, :nested, :sequence
-
+  attr_accessible :title, :body, :nested, :sequence, :html
 
   validates_presence_of :title, :body
   validates_length_of :title, :maximum=>30

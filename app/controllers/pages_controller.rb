@@ -2,6 +2,7 @@ class PagesController < ApplicationController
   
   def index
     set_session_locale
+    @title = t("pages.title")
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
   end
  
@@ -26,6 +27,7 @@ class PagesController < ApplicationController
     @menu = Page.where("locale = ?",session[:locale])
       .where("nested = ?",false).order("sequence ASC")
     @page = Page.find(params[:id].to_i)
+    @title = @page.title
     if @page.nested
       @main_page = Page.where("locale = ?",session[:locale])
         .where("nested = ?", false).where("sequence < ?",@page.sequence)

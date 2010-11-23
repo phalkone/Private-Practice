@@ -94,6 +94,7 @@
         permalink: "Permalink"
         nested: "Subpagina"
         order: "Volgorde"
+        html: "HTML"
       image:
         name: "Naam"
         description: "Omschrijving"

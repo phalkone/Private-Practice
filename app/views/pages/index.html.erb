@@ -1,3 +1,12 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<% end %>
 <div id="subcontent">
   <h2><%= t("pages.title") %></h2>
   <div id="locale_picker"><p>
@@ -16,6 +25,3 @@
     <li><%= link_to t("images.title"), images_path %></li>
   <ul>
 </div>
-
-
-
