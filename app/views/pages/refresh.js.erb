@@ -1,0 +1,8 @@
+<% if flash[:notice] %>
+  $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
+  $("#flash_notice").show(300);
+<% end %>
+$("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
+zebra();
+lightbox();
+setTimeout(flash_hide,3000);

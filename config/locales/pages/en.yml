@@ -13,6 +13,7 @@
     destroyed: Page was successfully deleted.
     updated: Page was successfully updated.
     confirmation: Are you sure?
+    insert: Insert
     submit:
       new: Create page
       edit: Save changes

@@ -58,15 +58,9 @@ function linkbox() {
     });
   });
 }
-function markdown() {
-  $('a.markdown').click(function(e) {
-    var app = $(this).attr("href");
-    var current = $("textarea#body").val()
-    $('textarea#page_body').val(function(index, value) {
-        var last = value.substring(index);
-        var first = value.substring (index - value.length);
-        return " " + app + " " + last;
-    });
+function insertImage() {
+  $('a#insert_image').click(function(){
+    $('#page_body').insertAtCaret($("#image_select :selected").val());
     return false;
   });
 }

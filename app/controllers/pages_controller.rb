@@ -9,11 +9,15 @@ class PagesController < ApplicationController
   def new
     @page = Page.new
     @submit_text = t("pages.submit.new");
+    @images = Image.all
+    render :action => "open"
   end
 
   def edit
     @page = Page.find(params[:id].to_i)
     @submit_text = t("pages.submit.edit");
+    @images = Image.all
+    render :action => "open"
   end
 
   def homepage
@@ -61,6 +65,7 @@ class PagesController < ApplicationController
     else
       @submit_text = t("pages.submit.edit");
     end
+    render :action => "save"
   end
 
   def destroy
@@ -69,6 +74,7 @@ class PagesController < ApplicationController
     flash[:notice] = t("pages.destroyed")
     first_not_nested
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    render :action => "refresh"
   end
   
   def toggle
@@ -80,6 +86,7 @@ class PagesController < ApplicationController
     end
     @page.save
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    render :action => "refresh"
   end
   
   def up
@@ -96,6 +103,7 @@ class PagesController < ApplicationController
     end
     @page.save
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    render :action => "refresh"
   end
   
   def down
@@ -110,6 +118,7 @@ class PagesController < ApplicationController
     @page.save
     first_not_nested
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    render :action => "refresh"
   end
 
   def create
@@ -122,11 +131,22 @@ class PagesController < ApplicationController
       @submit_text = t("pages.submit.new");
     end
     first_not_nested
+    render :action => "save"
   end
   
   def changelocale
     set_session_locale
     @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    render :action => "refresh"
+  end
+  
+  def refresh
+  end
+
+  def save
+  end
+
+  def open
   end
 
   private

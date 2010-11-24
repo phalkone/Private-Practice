@@ -8,11 +8,18 @@
   </div>
   <div class="field">
     <%= f.label :body %> <br />
-    <a href="[url]" class="markdown">[url]</a>
     (<%= link_to "Markdown Basics", "Markdown_basics.html", :class => "lightbox frame small" %> ·  
     <%= link_to "Markdown Syntax", "Markdown_syntax.html", :class => "lightbox frame small" %>)<br />
     <%= f.text_area :body, :class => "resizable", :cols => 80, :rows => 20 %>
-      </div>
+  </div>
+  <div class="field">
+    <select name="images" id="image_select">
+      <% @images.each do |image| %>
+        <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
+        <option><%= image_link %></option>
+      <% end %>
+    </select> <%= link_to t("pages.insert"), "", :id => "insert_image", :class => "small" %>
+  </div>
   <div class="field">
     <%= f.label :nested %><br />
     <%= f.check_box :nested %>

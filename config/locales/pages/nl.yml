@@ -13,6 +13,7 @@
     destroyed: Pagina succesvol verwijderd.
     updated: Pagina succesvol bijgewerkt.
     confirmation: Bent u zeker?
+    insert: Invoegen
     submit:
       new: Maak nieuwe pagina aan
       edit: Sla wijzigingen op
