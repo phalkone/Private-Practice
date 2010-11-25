@@ -18,6 +18,10 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def all
+    return Page.where("locale = ?",session[:locale]).order("sequence ASC")
+  end
+
   def to_param
     "#{id}-#{permalink}"
   end

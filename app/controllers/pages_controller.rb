@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   def index
     set_session_locale
     @title = t("pages.title")
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
   end
  
   def new
@@ -61,7 +61,7 @@ class PagesController < ApplicationController
     if @page.update_attributes(params[:page])
       flash[:notice] = t("pages.updated")
       first_not_nested
-      @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+      set_pages
     else
       @submit_text = t("pages.submit.edit");
     end
@@ -73,7 +73,7 @@ class PagesController < ApplicationController
     @page.destroy
     flash[:notice] = t("pages.destroyed")
     first_not_nested
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
     render :action => "refresh"
   end
   
@@ -85,7 +85,7 @@ class PagesController < ApplicationController
       @page.update_attributes(:nested => true)
     end
     @page.save
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
     render :action => "refresh"
   end
   
@@ -102,7 +102,7 @@ class PagesController < ApplicationController
       @page.update_attributes(:nested => false)
     end
     @page.save
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
     render :action => "refresh"
   end
   
@@ -117,7 +117,7 @@ class PagesController < ApplicationController
     @page.update_attributes(:sequence => new_seq)
     @page.save
     first_not_nested
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
     render :action => "refresh"
   end
 
@@ -126,17 +126,17 @@ class PagesController < ApplicationController
     @page.locale = session[:locale]
     if @page.save
       flash[:notice] = t("pages.created")
-      @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+      first_not_nested
+      set_pages
     else
       @submit_text = t("pages.submit.new");
     end
-    first_not_nested
     render :action => "save"
   end
   
   def changelocale
     set_session_locale
-    @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
+    set_pages
     render :action => "refresh"
   end
   
@@ -152,6 +152,10 @@ class PagesController < ApplicationController
   private
     def set_session_locale
       session[:locale] = (params[:new_locale]) ? params[:new_locale] : I18n.locale 
+    end
+    
+    def set_pages
+      @pages = Page.where("locale = ?",session[:locale]).order("sequence ASC")
     end
     
     def first_not_nested

@@ -16,7 +16,7 @@
     <select name="images" id="image_select">
       <% @images.each do |image| %>
         <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
-        <option><%= image_link %></option>
+        <option value='<%= image_link %>'><%= image.name %></option>
       <% end %>
     </select> <%= link_to t("pages.insert"), "", :id => "insert_image", :class => "small" %>
   </div>
