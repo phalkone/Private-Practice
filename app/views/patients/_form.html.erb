@@ -1,0 +1,15 @@
+<%= form_for(@patient) do |f| %>
+   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Patient.model_name.human.downcase %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit @submit_text %>
+  </div>
+<% end %>

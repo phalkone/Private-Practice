@@ -1,0 +1,25 @@
+<h1><%= t('doctors.listing') %></h1>
+
+<table>
+  <tr>
+    <th><%= Doctor.human_attribute_name("first_name") %></th>
+    <th><%= Doctor.human_attribute_name("last_name") %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @doctors.each do |doctor| %>
+  <tr>
+    <td><%= doctor.first_name %></td>
+    <td><%= doctor.last_name %></td>
+    <td><%= link_to t('doctors.show'), doctor %></td>
+    <td><%= link_to t('doctors.edit'), edit_doctor_path(doctor) %></td>
+    <td><%= link_to t('doctors.destroy'), doctor, :confirm => t('doctors.confirmation'), :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to t('doctors.new'), new_doctor_path %>

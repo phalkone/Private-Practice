@@ -86,6 +86,8 @@
     models:
       page: "Pagina"
       image: "Afbeelding"
+      doctor: "Dokter"
+      patient: "Patiënt"
     attributes:
       page:
         title: "Titel"
@@ -99,6 +101,12 @@
         name: "Naam"
         description: "Omschrijving"
         picture: "Afbeelding"
+      doctor:
+        first_name: "Voornaam"
+        last_name: "Achternaam"
+      patient:
+        first_name: "Voornaam"
+        last_name: "Achternaam"
     errors:
       template:
         header:

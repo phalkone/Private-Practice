@@ -1,0 +1,17 @@
+"en":
+  patients:
+    menutitle: Patients
+    listing: Listing patients
+    editing: Editing patients
+    show: Show
+    back: Back
+    edit: Edit
+    new: New patient
+    destroy: Destroy
+    confirmation: Are you sure?
+    success_created: Patient was successfully created.
+    success_updated: Patient was successfully updated.
+    submit:
+      new: Create patient
+      edit: Save changes
+

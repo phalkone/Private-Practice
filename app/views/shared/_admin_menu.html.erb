@@ -1,3 +1,9 @@
 <ul id="menu">
-  <li class="active"><%= link_to "CMS", pages_path %></li>
+  <li class="<%= "active" if controller.controller_name == "doctors" -%>">
+    <%= link_to t("doctors.menutitle"), doctors_path %></li>
+  <li class="<%= "active" if controller.controller_name == "patients" -%>">
+    <%= link_to t("patients.menutitle"), patients_path %></li>
+  <li class="<%= "active" if (controller.controller_name == "pages") || 
+                              (controller.controller_name == "images") -%>">
+    <%= link_to t("pages.menutitle"), pages_path %></li>
 </ul>

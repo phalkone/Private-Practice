@@ -1,0 +1,17 @@
+"en":
+  doctors:
+    menutitle: Doctors
+    listing: Listing doctors
+    editing: Editing doctor
+    show: Show
+    back: Back
+    edit: Edit
+    new: New doctor
+    destroy: Destroy
+    confirmation: Are you sure?
+    success_created: Doctor was successfully created.
+    success_updated: Doctor was successfully updated.
+    submit:
+      new: Create doctor
+      edit: Save changes
+

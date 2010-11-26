@@ -1,0 +1,13 @@
+<p>
+  <b><%= Patient.human_attribute_name("first_name") %>:</b>
+  <%= @patient.first_name %>
+</p>
+
+<p>
+  <b><%= Patient.human_attribute_name("last_name") %>:</b>
+  <%= @patient.last_name %>
+</p>
+
+
+<%= link_to t('patients.edit'), edit_patient_path(@patient) %> |
+<%= link_to t('patients.back'), patients_path %>
