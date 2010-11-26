@@ -4,6 +4,7 @@
 /* states and images */
 .ui-button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);  display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; }
 .ui-button-blank { width: 16px; height: 16px; display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none; text-align: center; zoom: 1; overflow: visible; }
+.ui-icon-blank { width: 16px; height: 16px; background-image: url(../images/icons_red.png);  display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; text-align: center; zoom: 1; overflow: visible; }
 
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }

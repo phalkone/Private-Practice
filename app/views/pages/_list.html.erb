@@ -4,7 +4,7 @@
       <% icon_class = (page.nested) ? "ui-button ui-icon-arrowthick-1-w" : "ui-button ui-icon-arrowthick-1-e" %>
       <td <%= raw "class=\"nested\"" unless !page.nested %>>
         <% if page == @pages.first %>
-          <span class="ui-button ui-icon-home default_cursor"></span>
+          <span class="ui-icon-blank ui-icon-home"></span>
         <% else %><span class="ui-button-blank"></span>
         <% end %> <%= link_to page.title, page_path(page), :class => "lightbox frame" %><td>
       <td class="icon"><% if page != @pages.first %>
