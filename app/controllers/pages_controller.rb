@@ -21,33 +21,31 @@ class PagesController < ApplicationController
   end
 
   def homepage
-    set_session_locale
-    redirect_to Page.where("locale = ?",session[:locale])
+    redirect_to Page.where("locale = ?",I18n.locale)
       .order("sequence ASC").first
   end
 
   def show
-    set_session_locale
-    @menu = Page.where("locale = ?",session[:locale])
+    @menu = Page.where("locale = ?",I18n.locale)
       .where("nested = ?",false).order("sequence ASC")
     @page = Page.find(params[:id].to_i)
     @title = @page.title
     if @page.nested
-      @main_page = Page.where("locale = ?",session[:locale])
+      @main_page = Page.where("locale = ?",I18n.locale)
         .where("nested = ?", false).where("sequence < ?",@page.sequence)
         .order("sequence DESC").first
     else
       @main_page = @page
     end
-    next_page = Page.where("locale = ?",session[:locale])
+    next_page = Page.where("locale = ?",I18n.locale)
       .where("sequence > ?",@main_page.sequence)
       .where("nested = ?", false).order("sequence ASC").first
     if next_page
-      @subpages = Page.where("locale = ?",session[:locale])
+      @subpages = Page.where("locale = ?",I18n.locale)
         .where("sequence >= ?",@main_page.sequence)
         .where("sequence < ?",next_page.sequence).order("sequence ASC")
     else
-      @subpages = Page.where("locale = ?",session[:locale])
+      @subpages = Page.where("locale = ?",I18n.locale)
         .where("sequence >= ?",@main_page.sequence)
         .order("sequence ASC")
     end
