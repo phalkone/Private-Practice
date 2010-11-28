@@ -1,6 +1,11 @@
 <p><a class="ui-button ui-icon-document" title="<%= t("pages.clear") %>"</a>
 <a class="ui-button ui-icon-closethick" title="<%= t("pages.close") %>"></a></p><br />
-<%= form_for(@page, :remote => true) do |f| %>
+<% if @page then %>
+  <% url = page_path(@page) %>
+<% else %>
+  <% url = pages_path %>
+<% end %>
+<%= form_for(@page_content,:url => url, :remote => true) do |f| %>
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Page.model_name.human.downcase %>
   <div class="field">
     <%= f.label :title %><br />
@@ -21,13 +26,10 @@
     </select> <%= link_to t("pages.insert"), "", :id => "insert_image", :class => "small" %>
   </div>
   <div class="field">
-    <%= f.label :nested %><br />
-    <%= f.check_box :nested %>
-  </div>
-  <div class="field">
     <%= f.label :html %><br />
     <%= f.check_box :html %>
   </div>
+  <%= f.hidden_field :locale %>
   <div class="actions">
     <%= f.submit @submit_text %>
   </div>

@@ -1,5 +1,5 @@
 <table>
-  <% for image in @images %>
+  <% @images.each do |image| %>
     <tr>
       <td><%= link_to image.name, image_path(image),
         :title => image.description, :class => "lightbox picture" %></td>

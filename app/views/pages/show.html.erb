@@ -3,10 +3,10 @@
 <% else %>
   <div id="pagecontent">
 <% end %>
-    <% if @page.html %>
-      <%= raw @page.body %>
+    <% if @page.get_content(I18n.locale).html %>
+      <%= raw @page.get_content(I18n.locale).body %>
     <% else %>
-      <%= raw BlueCloth.new(@page.body).to_html %>
+      <%= raw BlueCloth.new(@page.get_content(I18n.locale).body).to_html %>
     <% end %>
   </div>
 <% if @subpages %> 
@@ -22,7 +22,7 @@
         <% else %>
           <li>
         <% end %>
-        <%= link_to subpage.title, page_path(subpage) %></li>
+        <%= link_to subpage.get_content(I18n.locale).title, page_path(subpage) %></li>
       <% end %>
     </ul>
   </div>

@@ -90,12 +90,13 @@
       patient: "Patiënt"
     attributes:
       page:
+        permalink: "Permalink"
+        nested: "Subpagina"
+        sequence: "Volgorde"
+      page_content:
         title: "Titel"
         body: "Inhoud"
         locale: "Taal"
-        permalink: "Permalink"
-        nested: "Subpagina"
-        order: "Volgorde"
         html: "HTML"
       image:
         name: "Naam"

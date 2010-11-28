@@ -7,6 +7,6 @@
     <% else %>
       <li>
     <% end %>
-    <%= link_to menuitem.title, page_path(menuitem) %></li>
+    <%= link_to menuitem.get_content(I18n.locale).title, page_path(menuitem) %></li>
  <% end %>
 </ul>

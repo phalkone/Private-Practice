@@ -1,4 +1,5 @@
 $("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
+$("#new_locale").attr('disabled','disabled');
 $('#new_page .ui-icon-document').click(function() {
   $("#new_page :input:not(input[type=submit])").val("");
 });
@@ -7,8 +8,10 @@ $('#new_page .ui-icon-closethick').click(function() {
       link_to "", new_page_path, :remote => true, 
       :class => "ui-button ui-icon-document", 
       :title => t("pages.new")) %></p>");
+  $("#new_locale").removeAttr("disabled");
 });
 $("#new_page").slideDown();
+$("#page_content_locale").val($("#new_locale").val());
 textresizable(); 
 lightbox();
 insertImage();

@@ -1,10 +1,6 @@
 <div id="footer">
   <p class="right"><% available_locales.each do |locale| %>
-    <% if @page.nil? %>
-      <a href="<%= "http://" + locale +"."+domain+request.path %>"
-    <% else %>
-      <a href="<%= "http://" + locale +"."+domain %>"
-    <%end %>
+    <a href="<%= "http://" + locale +"."+ domain+request.path %>"
     <% if locale == I18n.locale.to_s %> class="red" <% else %> class="grey" <% end %>><%= locale %></a>
       <% if locale != available_locales[available_locales.length-1] %>
          · 

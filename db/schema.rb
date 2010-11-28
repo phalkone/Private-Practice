@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101126093704) do
+ActiveRecord::Schema.define(:version => 20101127044658) do
 
   create_table "doctors", :force => true do |t|
     t.string   "first_name"
@@ -30,16 +30,22 @@ ActiveRecord::Schema.define(:version => 20101126093704) do
 
   add_index "images", ["name"], :name => "index_images_on_name", :unique => true
 
-  create_table "pages", :force => true do |t|
+  create_table "page_contents", :force => true do |t|
     t.string   "title"
     t.text     "body"
-    t.string   "permalink"
     t.string   "locale"
+    t.boolean  "html"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pages", :force => true do |t|
+    t.string   "permalink"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "sequence"
     t.boolean  "nested"
-    t.boolean  "html"
   end
 
   create_table "patients", :force => true do |t|

@@ -1,5 +1,6 @@
 $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
 $("#flash_notice").show(300);
+<% flash[:notice] = nil %>
 $("#image_list").html("<%= escape_javascript( render(:partial => "list") ) %>");
 zebra();
 lightbox();

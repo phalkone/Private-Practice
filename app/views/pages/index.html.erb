@@ -12,7 +12,7 @@
   <div id="locale_picker"><p>
   <%= form_tag("pages/changelocale", :remote => true) do %>
     <%= Page.human_attribute_name("locale") %>: 
-    <%= select_tag("new_locale", options_for_select(available_locales, session[:locale])) %>
+    <%= select_tag("new_locale", options_for_select(available_locales, I18n.locale)) %>
     <%= submit_tag "", :class => "hidden" %>
   <% end %></p></div>
   <div id="new_page"><p><%= link_to "", new_page_path, :remote => true, 

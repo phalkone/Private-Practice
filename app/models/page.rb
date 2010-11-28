@@ -1,29 +1,17 @@
 class Page < ActiveRecord::Base
-  before_create :perm_seq
-  attr_accessible :title, :body, :nested, :sequence, :html
+  has_many :page_contents, :dependent => :destroy
+  attr_accessible :nested, :sequence, :permalink
 
-  validates_presence_of :title, :body
-  validates_length_of :title, :maximum=>30
-  validates_length_of :locale, :maximum=>2
-  validates_length_of :body, :maximum=>10000
-
-  def perm_seq
-    @attributes['permalink'] = 
-      title.downcase.gsub(/\s+/, '_').gsub(/[^a-zA-Z0-9_]+/, '')
-    if Page.where("locale = ?",locale).count > 0 
-      @last = Page.where("locale = ?",locale).order("sequence ASC").last
-      @attributes['sequence'] = @last.sequence + 10
+  def get_content(loc)
+    if self.page_contents.where("locale = ?", loc).first
+	self.page_contents.where("locale = ?", loc).first
     else
-      @attributes['sequence'] = 10
+        page_contents.new({ 
+         :title => self.page_contents.first.title + " (" + loc.to_s + " trans. missing)", 
+         :body => loc.to_s + " TRANSLATION MISSING <br/><br/>" + self.page_contents.first.body,
+         :html => self.page_contents.first.html,
+         :locale => loc})
     end
-  end
-
-  def all
-    return Page.where("locale = ?",session[:locale]).order("sequence ASC")
-  end
-
-  def to_param
-    "#{id}-#{permalink}"
   end
 
 end
