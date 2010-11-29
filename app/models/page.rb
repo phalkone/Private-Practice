@@ -2,6 +2,10 @@ class Page < ActiveRecord::Base
   has_many :page_contents, :dependent => :destroy
   attr_accessible :nested, :sequence, :permalink
 
+  def to_param
+    "#{id}-#{permalink}"
+  end
+
   def get_content(loc)
     if self.page_contents.where("locale = ?", loc).first
 	self.page_contents.where("locale = ?", loc).first

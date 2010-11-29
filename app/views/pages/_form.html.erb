@@ -1,10 +1,6 @@
 <p><a class="ui-button ui-icon-document" title="<%= t("pages.clear") %>"</a>
 <a class="ui-button ui-icon-closethick" title="<%= t("pages.close") %>"></a></p><br />
-<% if @page then %>
-  <% url = page_path(@page) %>
-<% else %>
-  <% url = pages_path %>
-<% end %>
+<% url = (@page) ? page_path(@page) : pages_path %>
 <%= form_for(@page_content,:url => url, :remote => true) do |f| %>
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Page.model_name.human.downcase %>
   <div class="field">
@@ -17,14 +13,16 @@
     <%= link_to "Markdown Syntax", "Markdown_syntax.html", :class => "lightbox frame small" %>)<br />
     <%= f.text_area :body, :class => "resizable", :cols => 80, :rows => 20 %>
   </div>
-  <div class="field">
-    <select name="images" id="image_select">
-      <% @images.each do |image| %>
-        <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
-        <option value='<%= image_link %>'><%= image.name %></option>
-      <% end %>
-    </select> <%= link_to t("pages.insert"), "", :id => "insert_image", :class => "small" %>
-  </div>
+  <% if !@images.nil? %>
+    <div class="field">
+      <select name="images" id="image_select">
+        <% @images.each do |image| %>
+          <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
+          <option value='<%= image_link %>'><%= image.name %></option>
+        <% end %>
+      </select> <%= link_to t("pages.insert"), "", :id => "insert_image", :class => "small" %>
+    </div>
+  <% end %>
   <div class="field">
     <%= f.label :html %><br />
     <%= f.check_box :html %>

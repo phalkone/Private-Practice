@@ -12,7 +12,7 @@ PrivatePractice::Application.routes.draw do
     end
 
     collection do
-      post :changelocale
+      put :changelocale
     end
   end
 

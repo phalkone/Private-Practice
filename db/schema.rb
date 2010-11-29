@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 20101127044658) do
     t.string   "title"
     t.text     "body"
     t.string   "locale"
-    t.boolean  "html"
+    t.boolean  "html",       :default => false
     t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(:version => 20101127044658) do
 
   create_table "pages", :force => true do |t|
     t.string   "permalink"
+    t.boolean  "nested",     :default => false
+    t.integer  "sequence"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "sequence"
-    t.boolean  "nested"
   end
 
   create_table "patients", :force => true do |t|
