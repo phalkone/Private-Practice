@@ -2,9 +2,14 @@
   flash_hide();
   $("#image_form").html("<%= escape_javascript(render(:partial => "edit_form")) %>");
 <% else -%>
-  $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
-  $("#flash_notice").show(300);
-  <% flash[:notice] = nil %>
+  <% flash.each do |key, value| %>
+    $('<div />')
+    .addClass("flash <%= escape_javascript(key.to_s)%>")
+    .html("<%= escape_javascript(value)%>")
+    .hide()
+    .appendTo('.flashes')
+    .show(300);
+  <% end %>
   $("#image_form").html("<%= escape_javascript(render(:partial => "form")) %>");
   setTimeout(flash_hide,3000);
   $("#image_list").html("<%= escape_javascript(render(:partial => "list")) %>");

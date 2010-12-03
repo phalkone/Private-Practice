@@ -1,7 +1,10 @@
-<% if flash[:notice] %>
-  $("#flash_notice").html("<%= escape_javascript(flash[:notice])%>");
-  $("#flash_notice").show(300);
-  <% flash[:notice] = nil %>
+<% flash.each do |key, value| %>
+  $('<div />')
+  .addClass("flash <%= escape_javascript(key.to_s)%>")
+  .html("<%= escape_javascript(value)%>")
+  .hide()
+  .appendTo('.flashes')
+  .show(300);
 <% end %>
 $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
 zebra();

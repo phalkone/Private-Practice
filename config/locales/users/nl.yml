@@ -1,0 +1,10 @@
+"nl":
+  users:
+    user: Gebruiker
+    menutitle: Gebruikers
+    newtitle: Registreer
+    created: Registratie succesvol.
+    passconfirmation: Paswoord bevestiging
+    submit:
+      new: Registreer
+      edit: Sla wijzigingen op

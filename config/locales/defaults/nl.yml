@@ -7,6 +7,7 @@
     login: Login
     remember: Onthoudt mij
     forgot: Paswoord?
+    invalid: Ongeldige email/paswoord combinatie.
   date:
     formats:
       default: "%Y-%m-%d"
@@ -102,12 +103,10 @@
         name: "Naam"
         description: "Omschrijving"
         picture: "Afbeelding"
-      doctor:
+      user:
         first_name: "Voornaam"
         last_name: "Achternaam"
-      patient:
-        first_name: "Voornaam"
-        last_name: "Achternaam"
+        email: "E-mail"
     errors:
       template:
         header:

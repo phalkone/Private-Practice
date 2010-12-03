@@ -30,7 +30,7 @@ $(document).ready(function() {
  setTimeout(flash_hide,3000);
 });
 function flash_hide(){
-  $("#flash_notice").hide(300);
+  $(".flash").hide(300);
 }
 function linkbox() {
   $(".link_box").each(function() {

@@ -1,0 +1,10 @@
+"en":
+  users:
+    user: User
+    menutitle: Users
+    newtitle: Sign-up
+    created: Registration successful.
+    passconfirmation: Password Confirmation
+    submit:
+      new: Sign-up
+      edit: Save changes

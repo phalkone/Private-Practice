@@ -14,7 +14,13 @@
 </head>
 <body>
 <div id="container">
-  <%= render :partial => "shared/loginform" %>
+  <% if signed_in? %>
+   <div id="logged_box">
+     <p>Logged in as <%= current_user.first_name + " " + current_user.last_name %> (<%= link_to "Sign out", signout_path, :method => :delete %>)</p>
+   </div>
+  <% else %>
+    <%= render :partial => "shared/loginform" %>
+  <% end %>
   <%= render :partial => "shared/header" %>
   <% if @menu %>
     <%= render :partial => "shared/menu" %>
@@ -23,10 +29,9 @@
   <% end %>
   <div class="x"></div>
   <div id="content">
-    <% if flash[:notice] %>
-      <div id="flash_notice"><%= flash[:notice] %></div>
-    <% else %>
-      <div id="flash_notice" style="display:none"></div>
+    <div class="flashes"></div>
+    <% flash.each do |key, value| %>
+      <div class="flash <%= key %>"><%= value %></div>
     <% end %>
     <%= yield %>
   </div>

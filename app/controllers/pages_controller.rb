@@ -9,7 +9,7 @@ class PagesController < ApplicationController
   def new
     @page_content = Page.new.page_contents.new
     @submit_text = t("pages.submit.new");
-    render :action => "open"
+    render "open"
   end
 
   def create
@@ -24,34 +24,34 @@ class PagesController < ApplicationController
     end
     @page_content = @page.page_contents.build(params[:page_content])
     if @page.save
-      flash[:notice] = t("pages.created")
+      flash.now[:notice] = t("pages.created")
       @pages = Page.order("sequence ASC").all
     else
       @page_content = @page.page_contents.first
       @images = Image.all
       @submit_text = t("pages.submit.new");
     end
-    render :action => "save"
+    render "save"
   end
 
   def edit
     @page = Page.find(params[:id].to_i)
     @page_content = @page.get_content(session[:locale])
     @submit_text = t("pages.submit.edit");
-    render :action => "open"
+    render "open"
   end
 
   def update
     @page = Page.find(params[:id].to_i)
     @page_content = @page.get_content(session[:locale])
     if @page_content.update_attributes(params[:page_content])
-      flash[:notice] = t("pages.updated")
+      flash.now[:notice] = t("pages.updated")
       first_not_nested
       @pages = Page.order("sequence ASC").all
     else
       @submit_text = t("pages.submit.edit");
     end
-    render :action => "save"
+    render "save"
   end
 
   def homepage
@@ -86,7 +86,7 @@ class PagesController < ApplicationController
   def destroy
     @page = Page.find(params[:id].to_i)
     @page.destroy
-    flash[:notice] = t("pages.destroyed")
+    flash.now[:alert] = t("pages.destroyed")
     first_not_nested unless Page.count == 0
     @pages = Page.order("sequence ASC").all
     render :action => "refresh"

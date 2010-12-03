@@ -38,14 +38,14 @@ class ImagesController < ApplicationController
   def destroy
     @image = Image.find_by_name(params[:id])
     @image.destroy
-    flash[:notice] = t("images.destroyed")
+    flash.now[:alert] = t("images.destroyed")
     @images = Image.all
   end
 
   def update
     @image = Image.find_by_name(params[:id])
     if @image.update_attributes(params[:image])
-      flash[:notice] = t("images.updated")
+      flash.now[:notice] = t("images.updated")
       @image = Image.new
       @images = Image.all
     end

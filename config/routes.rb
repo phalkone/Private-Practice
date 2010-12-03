@@ -1,6 +1,7 @@
 PrivatePractice::Application.routes.draw do
+  resources :users
   resources :images
-
+  resources :sessions, :only => [:create, :destroy]
   resources :pages do
     member do
       get :toggle
@@ -13,6 +14,10 @@ PrivatePractice::Application.routes.draw do
       put :changelocale
     end
   end
+  
+  match '/signup',  :to => 'users#new'
+  match '/signin',  :to => 'sessions#new'
+  match '/signout', :to => 'sessions#destroy'
 
   root :to => "pages#homepage"
 end
