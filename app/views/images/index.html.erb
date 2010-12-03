@@ -1,3 +1,17 @@
+<% content_for :scripts do %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#file_picture').change(function() {
+    var name = $("#file_picture").val().split(".");
+    var ext = name[name.length-1];
+    $("#image_filetype").val(ext);
+  });
+  lightbox();
+  linkbox();
+  zebra();
+});
+</script>
+<% end %> 
 <div id="subcontent">
   <h2><%= t("images.title") %></h2>
   <div id="image_form"><%= render :partial => "form" %></div>

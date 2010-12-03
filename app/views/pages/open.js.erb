@@ -11,7 +11,16 @@ $('#new_page .ui-icon-closethick').click(function() {
   $("#new_locale").removeAttr("disabled");
 });
 $("#new_page").slideDown();
-$("#page_content_locale").val($("#new_locale").val());
-textresizable(); 
+$("#page_content_locale").val($("#new_locale").val()); 
+$("a#insert_image").click(function(){
+  $('#page_content_body').insertAtCaret($("#image_select :selected").val());
+  return false;
+});
+$("textarea.resizable").resizable({
+  minWidth : 150,
+  maxWidth : 700,
+  minHeight : 30,
+  maxHeight : 1500,
+  containment: 'parent'
+});
 lightbox();
-insertImage();

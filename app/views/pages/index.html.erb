@@ -6,6 +6,18 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#new_locale").removeAttr("disabled");
+  $("#new_locale").val("<%= escape_javascript(I18n.locale.to_s) %>");
+  $("#locale_picker").change(function() {
+      $("#locale_picker form :submit").submit();
+  });
+  lightbox();
+  linkbox();
+  zebra();
+}); 
+</script>
 <% end %>
 <div id="subcontent">
   <h2><%= t("pages.title") %></h2>

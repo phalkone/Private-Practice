@@ -9,7 +9,6 @@ class PagesController < ApplicationController
   def new
     @page_content = Page.new.page_contents.new
     @submit_text = t("pages.submit.new");
-    @images = Image.all unless Image.count == 0
     render :action => "open"
   end
 
@@ -39,7 +38,6 @@ class PagesController < ApplicationController
     @page = Page.find(params[:id].to_i)
     @page_content = @page.get_content(session[:locale])
     @submit_text = t("pages.submit.edit");
-    @images = Image.all unless Image.count == 0
     render :action => "open"
   end
 

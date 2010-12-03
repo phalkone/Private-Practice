@@ -13,10 +13,10 @@
     <%= link_to "Markdown Syntax", "Markdown_syntax.html", :class => "lightbox frame small" %>)<br />
     <%= f.text_area :body, :class => "resizable", :cols => 80, :rows => 20 %>
   </div>
-  <% if !@images.nil? %>
+  <% if Image.count > 0 %>
     <div class="field">
       <select name="images" id="image_select">
-        <% @images.each do |image| %>
+        <% Image.all.each do |image| %>
           <% image_link = "![" + image.name + "]\(" + image_url(image) +  " \"" + image.description + "\"\)" %>
           <option value='<%= image_link %>'><%= image.name %></option>
         <% end %>
