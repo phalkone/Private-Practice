@@ -1,6 +1,4 @@
 PrivatePractice::Application.routes.draw do
-  resources :patients
-  resources :doctors
   resources :images
 
   resources :pages do
