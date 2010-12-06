@@ -8,6 +8,12 @@
     remember: Onthoudt mij
     forgot: Paswoord?
     invalid: Ongeldige email/paswoord combinatie.
+    deny: Log je in om toegang te verkrijgen tot deze pagina.
+    admin: Beheerder
+    doctor: Dokter
+    patient: Patiënt
+    edit: Bewerk
+    back: Terug
   date:
     formats:
       default: "%Y-%m-%d"

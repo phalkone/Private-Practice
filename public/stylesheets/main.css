@@ -10,6 +10,13 @@ h1 { font-size: 2em; font-weight: bold; padding: 0 0 10px;
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px;}
 h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
+table { border: 0; border-collapse:separate; border-spacing:0; 
+        vertical-align:middle; padding: 0; }
+
+table tr { text-indent:10px; }
+
+table th { text-align:left; }
+
 #container { width: 900px; margin: 0 auto; }
 
 #login_box { float: right; padding: 0px 4px 4px 4px; background-color: #999999;

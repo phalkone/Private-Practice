@@ -8,6 +8,12 @@
     remember: Remember me
     forgot: Forgot login?
     invalid: Invalid email/password combination.
+    deny: Please sign in to access this page.
+    admin: Administrator
+    doctor: Doctor
+    patient: Patient
+    edit: Edit
+    back: Back
   date:
     formats:
       default: "%Y-%m-%d"

@@ -5,9 +5,9 @@ class SessionsController < ApplicationController
 
     if user.nil?
       flash[:error] = t("txt.invalid")
-      #redirect_back_or_default
+      redirect_back_or_default
     else
-      (params[:session][:remember] == "1") ? sign_in_with_cookie(user) : sign_in(user)
+      sign_in(user,params[:session][:remember])
       redirect_to user
     end
   end

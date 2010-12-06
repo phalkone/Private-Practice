@@ -1,1 +1,28 @@
-<h1><%= @user.first_name + " " + @user.last_name %></h1>
+<p>
+  <b><%= User.human_attribute_name("first_name") %>:</b>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <b><%= User.human_attribute_name("last_name") %>:</b>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <b><%= User.human_attribute_name("email") %>:</b>
+  <%= @user.email %>
+</p>
+
+<p>
+  <b>Roles:</b>
+  <ul>
+  <% @user.roles.each() do |role| %>
+    <li><%= t("txt."+role.title) %></li>
+  <% end %>
+  </ul>
+</p>
+<br />
+
+
+<%= link_to t("txt.edit"), edit_user_path(@user) %> |
+<%= link_to t("txt.back"), users_path %>

@@ -2,9 +2,18 @@
   users:
     user: User
     menutitle: Users
-    newtitle: Sign-up
-    created: Registration successful.
+    newtitle: New User
+    edittitle: Edit User
+    created: New user successfully created.
+    edited: User was successfully updated.
+    destroyed: User was successfully deleted.
     passconfirmation: Password Confirmation
+    listing: Listing users
+    show: Show
+    edit: Edit
+    destroy: Delete
+    roles: Roles
+    confirmation: Are you sure?
     submit:
-      new: Sign-up
+      new: New user
       edit: Save changes
