@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
-  
+  before_filter :authenticate, :except => [:homepage, :show]
+
   def index
     session[:locale] = I18n.locale
     @title = t("pages.title")
@@ -55,11 +56,16 @@ class PagesController < ApplicationController
   end
 
   def homepage
-    redirect_to Page.order("sequence ASC").first unless Page.count == 0
+    if role?("admin") then
+      redirect_to users_path
+    elsif role?("doctor") then
+      redirect_to users_path
+    else
+      redirect_to Page.order("sequence ASC").first unless Page.count == 0
+    end
   end
 
   def show
-    @menu = Page.where("nested = ?",false).order("sequence ASC")
     @page = Page.find(params[:id].to_i)
     @title = @page.get_content(I18n.locale).title
     if @page.nested
@@ -146,6 +152,10 @@ class PagesController < ApplicationController
       first_not_nested
       @pages = Page.order("sequence ASC").all
       render :action => "refresh"
+    end
+
+    def authenticate
+      deny_access unless role?("admin")
     end
 
 end

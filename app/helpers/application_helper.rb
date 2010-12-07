@@ -1,5 +1,5 @@
 module ApplicationHelper
-  LOCALES_DIRECTORY = "#{RAILS_ROOT}/config/locales/defaults"
+  LOCALES_DIRECTORY = "#{::Rails.root.to_s}/config/locales/defaults"
 
   def available_locales
     Dir["#{LOCALES_DIRECTORY}/*.{rb,yml}"].collect do |locale_file|

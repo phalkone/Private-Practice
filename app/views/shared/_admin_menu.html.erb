@@ -1,7 +1,9 @@
 <ul id="menu">
+  <% if role?("admin") %>
   <li class="<%= "active" if (controller.controller_name == "users") -%>">
     <%= link_to t("users.menutitle"), users_path %></li>
   <li class="<%= "active" if (controller.controller_name == "pages") || 
                               (controller.controller_name == "images") -%>">
     <%= link_to t("pages.menutitle"), pages_path %></li>
+  <% end %>
 </ul>

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length       => { :within => 6..40 }
 
-  before_save :encrypt_password, :set_standard_role
+  before_save :encrypt_password
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
@@ -35,10 +35,6 @@ class User < ActiveRecord::Base
     def encrypt_password
       self.salt = make_salt if new_record?
       self.encrypted_password = encrypt(password)
-    end
-
-    def set_standard_role
-      self.roles << Role.find_by_title('patient')
     end
 
     def encrypt(string)

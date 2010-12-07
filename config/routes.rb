@@ -14,8 +14,7 @@ PrivatePractice::Application.routes.draw do
       put :changelocale
     end
   end
-  
-  match '/signin',  :to => 'sessions#new'
+
   match '/signout', :to => 'sessions#destroy'
 
   root :to => "pages#homepage"

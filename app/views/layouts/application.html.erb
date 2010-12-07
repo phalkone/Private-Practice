@@ -16,16 +16,16 @@
 <div id="container">
   <% if signed_in? %>
    <div id="logged_box">
-     <p>Logged in as <%= current_user.first_name + " " + current_user.last_name %> (<%= link_to "Sign out", signout_path, :method => :delete %>)</p>
+     <p><%= t("txt.logged") + " " + current_user.first_name + " " + current_user.last_name %> (<%= link_to "Sign out", signout_path, :method => :delete %>)</p>
    </div>
   <% else %>
     <%= render :partial => "shared/loginform" %>
   <% end %>
   <%= render :partial => "shared/header" %>
-  <% if @menu %>
-    <%= render :partial => "shared/menu" %>
-  <% else %>
+  <% if role?("admin") || role?("doctor") %>
     <%= render :partial => "shared/admin_menu" %>
+  <% else %>
+    <%= render :partial => "shared/menu" %>
   <% end %>
   <div class="x"></div>
   <div id="content">

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  
+  before_filter :authenticate
+    
   def index
     @users = User.all
     @title = t("users.menutitle")
@@ -65,5 +66,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @title = @user.first_name + " " + @user.last_name
   end
+
+  private
+    def authenticate
+      deny_access unless role?("admin")
+    end
 
 end

@@ -14,6 +14,7 @@
     patient: Patient
     edit: Edit
     back: Back
+    logged: Logged in as
   date:
     formats:
       default: "%Y-%m-%d"

@@ -14,6 +14,7 @@
     patient: Patiënt
     edit: Bewerk
     back: Terug
+    logged: Ingelogd als
   date:
     formats:
       default: "%Y-%m-%d"

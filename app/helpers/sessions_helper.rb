@@ -3,7 +3,8 @@ module SessionsHelper
   def sign_in(user, remember = "0")
     if remember == "1"
       cookies.signed[:remember_token] = { :value =>  [user.id, user.salt], 
-                                          :expires => 2.weeks.from_now }
+                                          :expires => 2.weeks.from_now,
+                                          :domain => request.domain }
     else
       session[:remember_token] = [user.id,user.salt]
     end
@@ -23,7 +24,8 @@ module SessionsHelper
   end
 
   def sign_out
-    cookies.delete(:remember_token) if cookies.signed[:remember_token]
+    cookies.delete(:remember_token, 
+                   :domain => request.domain) if cookies.signed[:remember_token]
     session[:remember_token] = nil 
     self.current_user = nil
   end
@@ -33,11 +35,30 @@ module SessionsHelper
   end
 
   def deny_access
-    redirect_to signin_path, :notice => t("txt.deny")
+    store_location
+    flash[:alert] = t("txt.deny")
+    if request.env['HTTP_REFERER']
+      redirect_to request.env['HTTP_REFERER']
+    else
+      redirect_to Page.order("sequence ASC").first unless Page.count == 0
+    end
   end
 
-  def role?(user,roletitle)
-    user.roles.exists?(:title => roletitle)
+  def store_location
+     session[:return_to] = request.fullpath
+  end
+
+  def return_to_or(default)
+    redirect_to(session[:return_to] || default)
+    clear_return_to
+  end
+
+  def clear_return_to
+    session[:return_to] = nil
+  end
+
+  def role?(roletitle)
+    current_user.roles.exists?(:title => roletitle) unless !signed_in?
   end
 
   private

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       redirect_back_or_default
     else
       sign_in(user,params[:session][:remember])
-      redirect_to user
+      return_to_or user
     end
   end
 

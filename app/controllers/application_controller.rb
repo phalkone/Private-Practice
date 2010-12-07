@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-    def redirect_back_or_default(default = {:controller => 'pages', :action => 'homepage'})
+    def redirect_back_or_default(default = root_path)
       unless request.env['HTTP_REFERER']
         redirect_to default
       else

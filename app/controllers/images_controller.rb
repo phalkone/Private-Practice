@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  before_filter :authenticate, :except => [:show]
   
   def show
     @image = Image.find_by_name(params[:id])
@@ -54,5 +55,10 @@ class ImagesController < ApplicationController
   def edit
     @image = Image.find_by_name(params[:id])
   end
+
+  private
+    def authenticate
+      deny_access unless role?("admin")
+    end
 
 end

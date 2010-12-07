@@ -1,5 +1,5 @@
 <ul id="menu">
-  <% for menuitem in @menu %>
+  <% for menuitem in Page.where("nested = ?",false).order("sequence ASC") %>
     <% if @page and @page == menuitem %>
       <li class="active">
     <% elsif @subpages and @subpages.first == menuitem %>
