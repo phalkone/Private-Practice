@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length       => { :within => 6..40 }
 
-  before_save :encrypt_password
+  before_save :encrypt_password, :default_role
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   def self.authenticate_with_salt(id, cookie_salt)
     user = find_by_id(id)
     (user && user.salt == cookie_salt) ? user : nil
+  end
+
+  def name
+    self.first_name + " " + self.last_name
   end
 
   private
@@ -47,6 +51,10 @@ class User < ActiveRecord::Base
 
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
+    end
+
+    def default_role
+      self.roles << Role.find_by_title('patient') if new_record?
     end
 
 end

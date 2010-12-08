@@ -15,6 +15,8 @@
     edit: Edit
     back: Back
     logged: Logged in as
+    signout: Sign out
+    profile: Profile
   date:
     formats:
       default: "%Y-%m-%d"

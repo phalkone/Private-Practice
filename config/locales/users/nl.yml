@@ -2,18 +2,20 @@
   users:
     user: Gebruiker
     menutitle: Gebruikers
-    newtitle: Nieuwe gebruiker
-    edittitle: Bewerk gebruiker
-    created: Nieuwe gebruiker succesvol aangemaakt.
+    newtitle: Registeer
+    edittitle: Bewerk profiel
+    created: Registratie succesvol.
     edited: Wijzigingen opgeslagen.
     destroyed: Gebruiker verwijderd.
     passconfirmation: Paswoord bevestiging
     listing: Lijst van gebruikers
+    new: Nieuwe gebruiker
     show: Toon
     edit: Bewerk
     destroy: Verwijder
     roles: Functie's
     confirmation: Ben je zeker?
     submit:
-      new: Nieuwe gebruiker
+      new: Registeer
       edit: Sla wijzigingen op
+      cancel: Annuleer

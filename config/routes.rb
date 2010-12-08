@@ -1,7 +1,20 @@
 PrivatePractice::Application.routes.draw do
-  resources :users
+  
   resources :images
+  
   resources :sessions, :only => [:create, :destroy]
+  
+  resources :users do
+    member do
+      get :roles
+      post :update_roles
+    end
+
+   collection do
+     get :search
+   end
+  end
+  
   resources :pages do
     member do
       get :toggle
@@ -15,6 +28,7 @@ PrivatePractice::Application.routes.draw do
     end
   end
 
+  match '/signup', :to => 'users#new'
   match '/signout', :to => 'sessions#destroy'
 
   root :to => "pages#homepage"

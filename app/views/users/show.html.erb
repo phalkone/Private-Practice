@@ -14,7 +14,7 @@
 </p>
 
 <p>
-  <b>Roles:</b>
+  <b><%= t("users.roles") %>:</b>
   <ul>
   <% @user.roles.each() do |role| %>
     <li><%= t("txt."+role.title) %></li>
@@ -24,5 +24,8 @@
 <br />
 
 
-<%= link_to t("txt.edit"), edit_user_path(@user) %> |
+<%= link_to t("txt.edit"), edit_user_path(@user) %>
+<% if role?("admin") %>
+| <%= link_to t("users.roles"), roles_user_path(@user) %> |
 <%= link_to t("txt.back"), users_path %>
+<% end %>

@@ -1,0 +1,22 @@
+<table class="list">
+  <thead>
+    <tr>
+      <th><%= User.human_attribute_name("first_name") %></th>
+      <th><%= User.human_attribute_name("last_name") %></th>
+      <th><%= User.human_attribute_name("email") %></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.first_name %></td>
+        <td><%= user.last_name %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to t("users.show"), user %></td>
+        <td><%= link_to t("users.destroy"), user, :confirm => t("users.confirmation"), :method => :delete %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

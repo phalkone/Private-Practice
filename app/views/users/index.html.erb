@@ -1,27 +1,6 @@
 <h1><%= t("users.listing") %></h1>
 
-<table class="list">
-  <tr>
-    <th><%= User.human_attribute_name("first_name") %></th>
-    <th><%= User.human_attribute_name("last_name") %></th>
-    <th><%= User.human_attribute_name("email") %></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<p><%= link_to t("users.new"), new_user_path %></p><br />
 
-<% @users.each do |user| %>
-  <tr>
-    <td><%= user.first_name %></td>
-    <td><%= user.last_name %></td>
-    <td><%= user.email %></td>
-    <td><%= link_to t("users.show"), user %></td>
-    <td><%= link_to t("users.edit"), edit_user_path(user) %></td>
-    <td><%= link_to t("users.destroy"), user, :confirm => t("users.confirmation"), :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<%= render "table" %>
 
-<br />
-
-<%= link_to t("users.newtitle"), new_user_path %>

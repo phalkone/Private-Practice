@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
-  before_filter :authenticate
+  before_filter :admin, :only => [:index,:destroy,:roles,:update_roles]
+  before_filter :logged_in, :only => [:edit,:update,:show]
+  before_filter :correct_user, :only => [:edit,:update]
+  before_filter :correct_user_except, :only => [:show]
     
   def index
     @users = User.all
@@ -14,13 +17,8 @@ class UsersController < ApplicationController
 
    def create
     @user = User.new(params[:user])
-    if params[:role]
-      params[:role].each do |role_id, on|
-        @user.roles << Role.find(role_id)
-      end
-    end
     if @user.save
-      sign_in @user
+      sign_in @user unless role?("admin") || role?("doctor")
       flash[:notice] = t("users.created")
       redirect_to @user
     else
@@ -38,14 +36,8 @@ class UsersController < ApplicationController
 
    def update
     @user = User.find(params[:id])
-    @user.roles.clear
-    if params[:role]
-      params[:role].each do |role_id, on|
-        @user.roles << Role.find(role_id)
-      end
-    end
     if @user.update_attributes(params[:user])
-      sign_in @user
+      sign_in @user unless role?("admin") || role?("doctor")
       flash[:notice] = t("users.edited")
       redirect_to @user
     else
@@ -64,12 +56,46 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @title = @user.first_name + " " + @user.last_name
+    @title = @user.name
+  end
+
+  def roles
+    @user = User.find(params[:id])
+    @title = @user.name
+  end
+
+  def update_roles
+    @user = User.find(params[:id])
+    if params[t("users.submit.cancel")]
+      redirect_to @user
+    else
+      @user.roles.clear
+      if params[:role]
+        params[:role].each do |role_id, on|
+          @user.roles << Role.find(role_id)
+        end
+      end
+      redirect_to @user
+    end
   end
 
   private
-    def authenticate
+    def admin
       deny_access unless role?("admin")
+    end
+
+    def logged_in
+      deny_access unless signed_in?
+    end
+
+    def correct_user
+     @user = User.find(params[:id])
+     redirect_to(root_path) unless current_user?(@user) || role?("admin")
+    end
+
+    def correct_user_except
+      @user = User.find(params[:id])
+      redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
     end
 
 end

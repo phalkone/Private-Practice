@@ -16,7 +16,9 @@
 <div id="container">
   <% if signed_in? %>
    <div id="logged_box">
-     <p><%= t("txt.logged") + " " + current_user.first_name + " " + current_user.last_name %> (<%= link_to "Sign out", signout_path, :method => :delete %>)</p>
+     <p><%= t("txt.logged") + " " %>
+        <%= link_to current_user.first_name + " " + current_user.last_name, current_user %> | 
+        <%= link_to t("txt.signout"), signout_path, :method => :delete %></p>
    </div>
   <% else %>
     <%= render :partial => "shared/loginform" %>
