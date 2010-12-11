@@ -17,7 +17,7 @@ class PagesController < ApplicationController
     if params[:id] 
       @page = Page.find(params[:id].to_i)
     else
-      sequence = (Page.count > 1) ? (Page.order("sequence ASC").last.sequence + 1) : 1
+      sequence = (Page.count > 0) ? (Page.order("sequence ASC").last.sequence + 1) : 1
       @page = Page.new({ :nested => false, 
                          :sequence => sequence,
                          :permalink => params[:page_content][:title]

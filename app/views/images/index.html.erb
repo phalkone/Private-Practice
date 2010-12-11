@@ -11,16 +11,15 @@ $(document).ready(function() {
   zebra();
 });
 </script>
-<% end %> 
-<div id="subcontent">
-  <h2><%= t("images.title") %></h2>
-  <div id="image_form"><%= render :partial => "form" %></div>
-  <div id="image_list" class="list"><%= render :partial => "list" %></div>
-</div>
+<% end %>
 <div id="submenu">
   <ul>
     <li><%= link_to t("pages.title"), pages_path %></li>
     <li class="bold"><%= link_to t("images.title"), images_path %></li>
   <ul>
 </div>
-
+<div id="subcontent">
+  <h2><%= t("images.title") %></h2>
+  <div id="image_form"><%= render :partial => "form" %></div>
+  <div id="image_list" class="list"><%= render :partial => "list" %></div>
+</div>

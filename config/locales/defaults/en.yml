@@ -17,6 +17,8 @@
     logged: Logged in as
     signout: Sign out
     profile: Profile
+    signin: Log in
+    or: or
   date:
     formats:
       default: "%Y-%m-%d"

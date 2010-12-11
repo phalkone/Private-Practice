@@ -17,6 +17,8 @@
     logged: Ingelogd als
     signout: Log uit
     profile: Profiel
+    signin: Log in
+    or: of
   date:
     formats:
       default: "%Y-%m-%d"

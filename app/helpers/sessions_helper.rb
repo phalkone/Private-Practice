@@ -36,12 +36,7 @@ module SessionsHelper
 
   def deny_access
     store_location
-    flash[:alert] = t("txt.deny")
-    if request.env['HTTP_REFERER']
-      redirect_to request.env['HTTP_REFERER']
-    else
-      redirect_to Page.order("sequence ASC").first unless Page.count == 0
-    end
+    redirect_to signin_path, :alert => t("txt.deny")
   end
 
   def store_location

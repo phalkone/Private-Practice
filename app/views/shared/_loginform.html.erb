@@ -1,11 +1,12 @@
-<div id="login_box">
-  <%= form_for(:session, :url => sessions_path) do |f| %>
+<div id="login_box" class="round">
+<p><%= link_to t("txt.signin"), signin_path, :class => "login" %> <%= t("txt.or") %> <%= link_to t("users.newtitle"), signup_path %></p>
+  <%= form_for(:session, :url => sessions_path, :html => { :class => "hidden" }) do |f| %>
     <div>
       <%= f.text_field :email, :value => t("txt.email"), :class => "clear", :size => "30" %>
     </div>
     <div>
       <%= text_field_tag "password", t("txt.password"), :id => "hide_pass", :size => "30" %>
-      <%= f.password_field "password", :id => "show_pass", :style => "display:none", :size => "30" %>
+      <%= f.password_field :password, :id => "show_pass", :style => "display:none", :size => "30" %>
     </div>
     <div>
       <%= f.submit t("txt.login") %>

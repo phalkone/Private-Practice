@@ -1,4 +1,11 @@
 $(document).ready(function() {
+ $('#login_box a.login').click(function() {
+   $('#login_box form').slideToggle();
+   return false;
+ });
+ $('#login_box').mouseleave(function() {
+   $('#login_box form').slideUp();
+ });
  $('input.clear').each(function() {
     $(this)
     .data('default', $(this).val())

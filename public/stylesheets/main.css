@@ -1,6 +1,6 @@
 html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote 
      { margin: 0; padding: 0; border: 0px; }
-body { font-family: georgia, "Times New Roman", sans-serif; color: #777;
+body { font: .8em Arial, "Trebuchet MS", Tahoma, sans-serif; color: #777;
        background-color: #fff; }
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
@@ -17,38 +17,38 @@ table tr { text-indent:10px; }
 
 table th { text-align:left; }
 
-#container { width: 900px; margin: 0 auto; }
+#container { margin: 0 20px 0 20px; }
 
-#login_box { float: right; padding: 0px 4px 4px 4px; background-color: #999999;
-             font-family: "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
-             width: 220px; margin-bottom:10px; }
+#login_box { position:absolute; top:0; right: 20px; padding: 5px 5px 5px 5px; background-color: #bfbfbf;
+             margin-bottom:10px; -moz-border-radius: 0 0 010px 10px; 
+             -webkit-border-radius: 0 0 10px 10px; border-radius: 0 0 10px 10px; }
   #login_box input { margin-top: 5px; }
+  #login_box p { margin: 0 3px 3px 3px; }
 
-#logged_box { float: right; padding: 10px 10px 10px 10px; background-color: #999999;
-              font-family: "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
-              color:#fff; margin-bottom:10px; font-size: 8pt;}
+#header { height: 70px; background: #fff url(../images/headerbg.gif) repeat-x bottom; } 
+#title{ padding: 15px 0 0 15px; float: left; line-height: 0.9; color: #777; margin: 0;
+        font: normal 40px "Trebuchet MS", Arial, Sans-Serif; }
 
-#header { padding: 50px 0px 10px 0px; border-bottom: 1px solid #ddd; } 
-
-#menu { float: right; margin: 10px 10px 10px 0; }
+#menu { padding: 25px 10px 0 0; float:right; margin: 0; font-size: 1.1em;}
   #menu li { display: inline; list-style: none; }
-  #menu li a { float: left; margin-left: 20px;  color: #888; }
+  #menu li a { margin-left: 20px;  color: #888; }
   #menu li a:hover { color: #555; border-bottom: 2px solid #ccc; }
   #menu .active a { border-bottom: 2px solid #d40000; color: #d40000; }
 
-#content { margin: 10px 0px 20px 10px;} 
+#content { margin: 5px 0 5px 0;} 
 
-#submenu { margin: 0; padding: 0 10px 0 10px;}
+#submenu { width: 200px; float: left; border: 1px solid #ddd; margin-bottom: 5px; 
+           padding: 10px 10px 10px 10px;}
   #submenu ul { margin: 0; padding: 0; border: 0px; } 
-  #submenu li {list-style: none; margin: 0 0 15px 0; }
+  #submenu li {list-style: none; margin-bottom: 7px; padding-bottom: 3px;
+               border-bottom: 1px solid #ddd;}
 
-#subcontent { float: right; width: 700px;  border-left: 1px solid #ddd;
-              padding-left: 20px; margin-bottom: 20px; } 
+#subcontent { border: 1px solid #ddd;
+              padding: 10px 10px 10px 10px; margin: 0 0 5px 230px; } 
 
-#pagecontent { margin-left: 15px; }
+#pagecontent { padding: 5px 5px 20px 10px; border: 1px solid #ddd;}
 
-#footer { padding: 15px 0px 15px 0px; font-size: 9pt;
-          border-top: 1px solid #ddd; }
+#footer { padding: 5px 10px 5px 10px; border: 1px solid #ddd; }
   #footer .right { float: right; }
   #footer .right a:hover { color: #555; }
 
@@ -72,15 +72,14 @@ table th { text-align:left; }
 
 .list { margin-left: 20px; }
   .list table { border: 0; border-collapse:separate; border-spacing:0;
-                     vertical-align:middle; width: 650px; padding: 0; }
-  .list table tr { height:30px; text-indent:10px; }
+                     vertical-align:middle; width: 100%; padding: 0; }
+  .list table tr { height:30px; text-indent:10px;}
 
-#locale_picker { margin-right:30px; float:right; }
+#locale_picker { float:right; }
 
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
 div.field, div.actions { margin: 0 0 10px 20px; }
-.title{ font-size: 54pt; font-weight: normal; line-height: 0.9; color: #777}
 .title:hover { color: #777 }
 .small{ font-size: 7pt; }
 .red{ color: #d40000; }
@@ -88,7 +87,9 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .x{ clear:both; }
 .icon { width:20px;}
 .nested { text-indent:3em; }
-.indent { text-indent:1em; }
+.indent { text-indent:1.2em; }
 .bold { font-weight:bold; }
 .hidden { display:none; }
 .markdown { font-size:10px; margin-top: 6px; }
+.round { -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+

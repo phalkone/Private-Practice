@@ -1,4 +1,5 @@
-<ul id="menu">
+<div id="menu">
+<ul>
   <% for menuitem in Page.where("nested = ?",false).order("sequence ASC") %>
     <% if @page and @page == menuitem %>
       <li class="active">
@@ -9,8 +10,5 @@
     <% end %>
     <%= link_to menuitem.get_content(I18n.locale).title, page_path(menuitem) %></li>
   <% end %>
-  <li class="<%= "active" if (controller.controller_name == "users") -%>">
-  <% unless signed_in? %>
-    <%= link_to t("users.newtitle"), signup_path %></li>
-  <% end %>
 </ul>
+</div>

@@ -1,0 +1,21 @@
+<div id="pagecontent">
+<h2><%= t("txt.signin") %></h2>
+<%= form_for(:session, :url => sessions_path) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :size => "30" %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field "password", :size => "30" %>
+  </div>
+  <div class="field">
+    <%= f.label :remember, t("txt.remember") %><br />
+    <%= f.check_box :remember %>
+  </div>
+  <div class="action">
+    <%= f.submit t("txt.login") %><br />
+  </div>
+<% end %><br />
+<a href="#" alt="Forgot login"><%= t("txt.forgot") %></a>
+</div>

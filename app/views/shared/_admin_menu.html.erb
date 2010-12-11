@@ -1,4 +1,5 @@
-<ul id="menu">
+<div id="menu">
+<ul>
   <% if role?("admin") %>
   <li class="<%= "active" if (controller.controller_name == "users") -%>">
     <%= link_to t("users.menutitle"), users_path %></li>
@@ -8,3 +9,4 @@
   <li class="<%= "active" if (controller.controller_name == "users") -%>">
   <% end %>
 </ul>
+</div>

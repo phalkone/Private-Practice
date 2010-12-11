@@ -1,4 +1,8 @@
 class SessionsController < ApplicationController
+  def new
+    @title = t("txt.signin")
+  end
+
   def create
     user = User.authenticate(params[:session][:email],
                              params[:session][:password])

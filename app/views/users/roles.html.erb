@@ -1,3 +1,4 @@
+<div id="pagecontent">
 <h2><%= t("users.roles") %>: <%= @user.name %></h2> 
 <%= form_tag update_roles_user_path(@user) do %>
   <ul>
@@ -13,3 +14,4 @@
     <%= submit_tag t("users.submit.cancel") %>
   </div>
 <% end %>
+</div>

@@ -15,7 +15,7 @@
 <body>
 <div id="container">
   <% if signed_in? %>
-   <div id="logged_box">
+   <div id="login_box">
      <p><%= t("txt.logged") + " " %>
         <%= link_to current_user.first_name + " " + current_user.last_name, current_user %> | 
         <%= link_to t("txt.signout"), signout_path, :method => :delete %></p>
@@ -24,11 +24,6 @@
     <%= render :partial => "shared/loginform" %>
   <% end %>
   <%= render :partial => "shared/header" %>
-  <% if role?("admin") || role?("doctor") %>
-    <%= render :partial => "shared/admin_menu" %>
-  <% else %>
-    <%= render :partial => "shared/menu" %>
-  <% end %>
   <div class="x"></div>
   <div id="content">
     <div class="flashes"></div>
