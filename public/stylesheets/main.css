@@ -37,14 +37,14 @@ table th { text-align:left; }
 
 #content { margin: 5px 0 5px 0;} 
 
-#submenu { width: 200px; float: left; border: 1px solid #ddd; margin-bottom: 5px; 
-           padding: 10px 10px 10px 10px;}
+#submenu { width: 200px; float: left; border-top: 1px solid #ddd; margin-bottom: 5px; 
+           padding: 0; border-left: 1px solid #ddd; border-right: 1px solid #ddd;}
   #submenu ul { margin: 0; padding: 0; border: 0px; } 
-  #submenu li {list-style: none; margin-bottom: 7px; padding-bottom: 3px;
+  #submenu li {list-style: none; padding: 5px 5px 5px 10px;
                border-bottom: 1px solid #ddd;}
 
 #subcontent { border: 1px solid #ddd;
-              padding: 10px 10px 10px 10px; margin: 0 0 5px 230px; } 
+              padding: 10px 10px 10px 10px; margin: 0 0 5px 207px; } 
 
 #pagecontent { padding: 5px 5px 20px 10px; border: 1px solid #ddd;}
 

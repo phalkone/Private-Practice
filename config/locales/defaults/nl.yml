@@ -118,6 +118,7 @@
         first_name: "Voornaam"
         last_name: "Achternaam"
         email: "E-mail"
+        password: "Paswoord"
     errors:
       template:
         header:
