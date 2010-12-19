@@ -1,0 +1,17 @@
+<table class="day">
+  <thead>
+    <tr>
+      <th colspan="2"><%= l(@date, :format => :long) %></th>
+    <tr>
+  </thead>
+  <tbody>
+    <% for i in @start..(@stop-1) %>
+    <tr>
+      <td rowspan="2" class="hour"><span class="big"><%= i %></span><span class="superscript">00</span></td><td></td>
+    </tr>
+    <tr>
+      <td></td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>

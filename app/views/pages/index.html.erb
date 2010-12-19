@@ -34,6 +34,6 @@ $(document).ready(function() {
     <%= submit_tag "", :class => "hidden" %>
   <% end %></p></div>
   <div id="new_page"><p><%= link_to "", new_page_path, :remote => true, 
-    :class => "ui-button ui-icon-document", :title => t("pages.new")  %></p></div><br />
+    :class => "button ui-icon-document", :title => t("pages.new")  %></p></div><br />
   <div id="page_list" class="list"><%= render :partial => "list" %></div>
 </div>

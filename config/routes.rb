@@ -2,8 +2,14 @@ PrivatePractice::Application.routes.draw do
   
   resources :images
   
-  resources :sessions, :only => [:new,:create, :destroy]
+  resources :sessions, :only => [:new,:create,:destroy]
   
+  resources :appointments do
+    collection do
+      put :refresh
+    end
+  end
+
   resources :users do
     member do
       get :roles

@@ -1,5 +1,5 @@
 html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote 
-     { margin: 0; padding: 0; border: 0px; }
+     { margin: 0; padding: 0; border: 0; }
 body { font: .8em Arial, "Trebuchet MS", Tahoma, sans-serif; color: #777;
        background-color: #fff; }
 a { color: #d40000; text-decoration: none; }
@@ -10,18 +10,12 @@ h1 { font-size: 2em; font-weight: bold; padding: 0 0 10px;
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px;}
 h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
-table { border: 0; border-collapse:separate; border-spacing:0; 
-        vertical-align:middle; padding: 0; }
-
-table tr { text-indent:10px; }
-
-table th { text-align:left; }
-
 #container { margin: 0 20px 0 20px; }
 
-#login_box { position:absolute; top:0; right: 20px; padding: 5px 5px 5px 5px; background-color: #bfbfbf;
+#login_box { position:absolute; top:0; right: 20px; padding: 5px 5px 5px 5px; 
+             background-color: #bfbfbf; border-radius: 0 0 10px 10px; 
              margin-bottom:10px; -moz-border-radius: 0 0 010px 10px; 
-             -webkit-border-radius: 0 0 10px 10px; border-radius: 0 0 10px 10px; }
+             -webkit-border-radius: 0 0 10px 10px; }
   #login_box input { margin-top: 5px; }
   #login_box p { margin: 0 3px 3px 3px; }
 
@@ -46,11 +40,15 @@ table th { text-align:left; }
 #subcontent { border: 1px solid #ddd;
               padding: 10px 10px 10px 10px; margin: 0 0 5px 207px; } 
 
-#pagecontent { padding: 5px 5px 20px 10px; border: 1px solid #ddd;}
-
 #footer { padding: 5px 10px 5px 10px; border: 1px solid #ddd; }
   #footer .right { float: right; }
   #footer .right a:hover { color: #555; }
+
+#datepicker {font-size: 0.95em;}
+  #datepicker table {font-size: 0.75em;}
+
+#toolbar { padding: 4px 4px; font-size: 0.8em;}
+  #weekendcheck{ float:right;}
 
 #overlay { position:absolute; top:0; left:0; height:100%; width:100%; 
            background:black; }
@@ -59,29 +57,48 @@ table th { text-align:left; }
 #error_explanation { width: 450px; border: 2px solid #d40000; padding: 7px;
                      padding-bottom: 0; margin: 0 0 20px 20px;
                      background-color: #f0f0f0; }
+  #error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
+                          padding: 5px 5px 5px 15px; margin-bottom: 0px; 
+                          background-color: #d40000; color: #fff; }
+  #error_explanation ul li { list-style: square; }
 
-#error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
-                        padding: 5px 5px 5px 15px; margin-bottom: 0px; 
-                        background-color: #d40000; color: #fff; }
+#locale_picker { float:right; }
 
-#error_explanation ul li { list-style: square; }
+table.day { width: 100%; border-collapse: collapse; border: 1px solid #ddd; margin-top:7px;}
+  .day th { text-align: center; font-size: 1.5em; padding: 0.2em; height: auto;}
+  .day tbody tr { height: 30px; }
+  .day td { border: 1px solid #ddd; padding: 0.2em; }
+  .day td.hour { width: 60px; vertical-align: top; text-align: center; }
 
-.flash { padding: 5px 8px; margin: 10px 0;}
-.notice { background-color: #CFC; border: solid 1px #6C6; }
-.error, .alert { background-color: #FCC; border: solid 1px #C66; }
+.button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
+          display: inline-block; position: relative; padding: 0; margin-right: .1em;
+          text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1;
+          overflow: visible; }
+  .button-blank { width: 16px; height: 16px; display: inline-block; position: relative;
+                  padding: 0; margin-right: .1em; text-decoration: none; 
+                  text-align: center; zoom: 1; overflow: visible; }
+  .icon-blank { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
+                display: inline-block; position: relative; padding: 0; margin-right: .1em;
+                text-decoration: none !important; text-align: center; zoom: 1; 
+                overflow: visible; }
 
 .list { margin-left: 20px; }
   .list table { border: 0; border-collapse:separate; border-spacing:0;
                      vertical-align:middle; width: 100%; padding: 0; }
   .list table tr { height:30px; text-indent:10px;}
+  .list table th { text-align:left; }
 
-#locale_picker { float:right; }
-
+.pagecontent { padding: 5px 5px 5px 5px; border: 1px solid #ddd;}
+.flash { padding: 5px 8px; margin: 10px 0;}
+.notice { background-color: #CFC; border: solid 1px #6C6; }
+.error, .alert { background-color: #FCC; border: solid 1px #C66; }
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
 div.field, div.actions { margin: 0 0 10px 20px; }
 .title:hover { color: #777 }
 .small{ font-size: 7pt; }
+.superscript{ font-size: 7pt; vertical-align: top;}
+.big{ font-size: 14pt; }
 .red{ color: #d40000; }
 .grey { color: #888; }
 .x{ clear:both; }

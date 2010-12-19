@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  doctor_id: 1
+  patient_id: 1
+  begin: 2010-12-16 08:07:08
+  end: 2010-12-16 08:07:08
+  comment: MyString
+  recurrence: 1
+  completed: false
+
+two:
+  doctor_id: 1
+  patient_id: 1
+  begin: 2010-12-16 08:07:08
+  end: 2010-12-16 08:07:08
+  comment: MyString
+  recurrence: 1
+  completed: false

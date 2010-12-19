@@ -23,8 +23,9 @@
     formats:
       default: "%Y-%m-%d"
       short: "%e %b"
-      long: "%B %e, %Y"
+      med: "%B %e, %Y"
       only_day: "%e"
+      long: "%A %e %B, %Y"
 
     day_names: [Zondag, Maandag, Dinsdag, Woensdag, Donderdag, Vrijdag, Zaterdag]
     abbr_day_names: [Zo, Ma, Di, Wo, Do, Vr, Za,]

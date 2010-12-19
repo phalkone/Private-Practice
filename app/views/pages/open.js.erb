@@ -6,7 +6,7 @@ $('#new_page .ui-icon-document').click(function() {
 $('#new_page .ui-icon-closethick').click(function() {
   $("#new_page").html("<p><%= escape_javascript(
       link_to "", new_page_path, :remote => true, 
-      :class => "ui-button ui-icon-document", 
+      :class => "button ui-icon-document", 
       :title => t("pages.new")) %></p>");
   $("#new_locale").removeAttr("disabled");
 });

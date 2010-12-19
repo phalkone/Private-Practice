@@ -4,6 +4,12 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :roles
 
+  has_many :appointments, :foreign_key => "doctor_id", :dependent => :destroy
+  has_many :bookings, :class_name => "Appointment", :foreign_key => "patient_id"
+
+  has_many :patients, :through => :appointments, :source => :patient, :uniq => :true
+  has_many :doctors, :through => :bookings, :source => :doctor, :uniq => :true
+
   validates_presence_of :first_name, :last_name, :email
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30

@@ -10,7 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101203052819) do
+ActiveRecord::Schema.define(:version => 20101216080708) do
+
+  create_table "appointments", :force => true do |t|
+    t.integer  "doctor_id"
+    t.integer  "patient_id"
+    t.datetime "begin"
+    t.datetime "end"
+    t.string   "comment"
+    t.integer  "recurrence"
+    t.boolean  "completed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "appointments", ["doctor_id"], :name => "index_appointments_on_doctor_id"
+  add_index "appointments", ["patient_id"], :name => "index_appointments_on_patient_id"
 
   create_table "images", :force => true do |t|
     t.binary   "picture"

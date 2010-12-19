@@ -1,0 +1,11 @@
+"en":
+  appointments:
+    appointment: Appointment
+    menutitle: Calendar
+    newapp: New appointment
+    newslot: New time slot(s)
+    day: Day
+    week: Week
+    weekend: Weekend
+    next: Next
+    previous: Previous

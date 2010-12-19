@@ -1,0 +1,80 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-nl.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-en.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.slider.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
+  $("#datepicker").datepicker( "option", "altField", "#view_date" );
+  $("#datepicker").datepicker( "option", "altFormat", "yy mm dd" ).change(function() {
+      $("#viewoption form").submit();
+  });
+  $("#slider-range").slider({
+      range: true, min: 0, max: 24, values: [9, 17],
+      slide: function(event, ui) {
+        $("#hourrange").html("<p>" + ui.values[0] + 'h - ' + ui.values[1] + 'h</p>');
+        $("#view_start").val(ui.values[0]);
+        $("#view_stop").val(ui.values[1]);
+        $("#viewoption form").submit();
+     }
+  });
+  $("#hourrange").html("<p>" + $("#slider-range").slider("values", 0) + 'h - ' + $("#slider-range").slider("values", 1) + 'h</p>');
+  $("#view_start").val($("#slider-range").slider("values", 0));
+  $("#view_stop").val($("#slider-range").slider("values", 1));
+  $("#dayweek").buttonset().css("float","right");
+  $("#view_weekend").button();
+  $("#viewoption input").change(function() {
+      $("#viewoption form").submit();
+  });
+  $("#newapp").button();
+  $("#newslot").button();
+  $("#previous").button({
+    icons: {
+      primary: "ui-icon-circle-triangle-w"
+    },
+    text: false
+  });
+  $("#next").button({
+    icons: {
+      primary: "ui-icon-circle-triangle-e"
+    },
+    text: false
+  }).css("float","right");
+}); 
+</script>
+<% end %>
+<div id="viewoption" class="pagecontent">
+<%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
+  <div id="datepicker"></div><br />
+  <%= hidden_field 'view','date' %>
+  <div id="hourrange"></div>
+  <%= hidden_field 'view','start' %>
+  <%= hidden_field 'view','stop' %>
+  <div id="slider-range"></div><br />
+
+  <div id="toolbar" class="ui-widget-header ui-corner-all">
+    <button id="next"><%= t("appointments.next") %></button>
+    <span id="weekendcheck"><%= check_box_tag 'view[weekend]' %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
+    <span id="dayweek">
+      <%= radio_button "view", "dayweek", "day" , :checked => true %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
+      <%= radio_button("view", "dayweek", "week") %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
+    </span>
+    <button id="previous"><%= t("appointments.previous") %></button>
+    <button id="newapp"><%= t("appointments.newapp") %></button>
+    <button id="newslot"><%= t("appointments.newslot") %></button>
+  </div>
+
+<% end %>
+</div>
+<div id="calendar">
+<%= render "day" %>
+</div>
+

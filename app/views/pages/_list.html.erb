@@ -1,26 +1,26 @@
 <table>
   <% @pages.each do |page| %>
     <tr>
-      <% icon_class = (page.nested) ? "ui-button ui-icon-arrowthick-1-w" : "ui-button ui-icon-arrowthick-1-e" %>
+      <% icon_class = (page.nested) ? "button ui-icon-arrowthick-1-w" : "button ui-icon-arrowthick-1-e" %>
       <td <%= raw "class=\"nested\"" unless !page.nested %>>
         <% if page == @pages.first %>
-          <span class="ui-icon-blank ui-icon-home"></span>
-        <% else %><span class="ui-button-blank"></span>
+          <span class="icon-blank ui-icon-home"></span>
+        <% else %><span class="button-blank"></span>
         <% end %><%= link_to page.get_content(session[:locale]).title, "http://" + session[:locale].to_s + "." + domain + "/pages/" + page.to_param , :class => "lightbox frame" %><td>
       <td class="icon"><% if page != @pages.first %>
         <%= link_to "", toggle_page_path(page), :remote => true, :class => icon_class, :title => t("pages.toggle") %> 
         <% end %></td>
       <td class="icon"><% if page != @pages.first %>
-        <%= link_to "", up_page_path(page), :remote => true, :class => "ui-button ui-icon-arrowthick-1-n", :title => t("pages.up") %> 
+        <%= link_to "", up_page_path(page), :remote => true, :class => "button ui-icon-arrowthick-1-n", :title => t("pages.up") %> 
         <% end %></td>
       <td class="icon"><% if page != @pages.last %>
-        <%= link_to "", down_page_path(page), :remote => true, :class => "ui-button ui-icon-arrowthick-1-s", :title => t("pages.down") %> 
+        <%= link_to "", down_page_path(page), :remote => true, :class => "button ui-icon-arrowthick-1-s", :title => t("pages.down") %> 
         <% end %></td>
       <td class="icon"><%= link_to "", edit_page_path(page), :remote => true, 
-        :class => "ui-button ui-icon-wrench", :title => t("pages.edit") %></td>
+        :class => "button ui-icon-wrench", :title => t("pages.edit") %></td>
       <td class="icon"><%= link_to "", page, :remote => true, 
         :confirm => t("pages.confirmation"), :method => :delete, 
-        :class => "ui-button ui-icon-trash", :title => t("pages.delete") %></td>
+        :class => "button ui-icon-trash", :title => t("pages.delete") %></td>
     </tr>
   <% end %>
 </table>
