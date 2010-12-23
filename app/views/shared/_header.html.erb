@@ -1,8 +1,6 @@
 <div id="header">
-<% if role?("admin") || role?("doctor") %>
-  <%= render :partial => "shared/admin_menu" %>
-<% else %>
-  <%= render :partial => "shared/menu" %>
-<% end %>
+<div id="menu">
+<%= render :partial => "shared/menu" %>
+</div>
 <p><a id="title" href="http://<%= I18n.locale.to_s + '.' + domain  %>"><span class="red"><%= t("txt.private") %></span><%= t("txt.practice") %></a></p>
 </div>

@@ -1,7 +1,6 @@
-<div id="menu">
 <ul>
   <% for menuitem in Page.where("nested = ?",false).order("sequence ASC") %>
-    <% if @page and @page == menuitem %>
+    <% if @showpage and @showpage == menuitem %>
       <li class="active">
     <% elsif @subpages and @subpages.first == menuitem %>
       <li class="active">
@@ -10,5 +9,16 @@
     <% end %>
     <%= link_to menuitem.get_content(I18n.locale).title, page_path(menuitem) %></li>
   <% end %>
+  <% if role?("doctor") %>
+    <li class="<%= "active" if (controller.controller_name == "appointments") -%>">
+      <%= link_to t("appointments.menutitle"), appointments_path %></li>
+  <% end %>
+  <% if role?("admin") %>
+    <li class="<%= "active" if (controller.controller_name == "users") -%>">
+      <%= link_to t("users.menutitle"), users_path %></li>
+    <li class="<%= "active" if ((controller.controller_name == "pages") || 
+                               (controller.controller_name == "images")) &&
+                               (@showpage.nil?) -%>">
+    <%= link_to t("pages.menutitle"), pages_path %></li>
+  <% end %>
 </ul>
-</div>

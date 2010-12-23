@@ -66,14 +66,14 @@ class PagesController < ApplicationController
   end
 
   def show
-    @page = Page.find(params[:id].to_i)
-    @title = @page.get_content(I18n.locale).title
-    if @page.nested
+    @showpage = Page.find(params[:id].to_i)
+    @title = @showpage.get_content(I18n.locale).title
+    if @showpage.nested
       @main_page = Page.where("nested = ?", false)
-        .where("sequence < ?",@page.sequence)
+        .where("sequence < ?",@showpage.sequence)
         .order("sequence DESC").first
     else
-      @main_page = @page
+      @main_page = @showpage
     end
     next_page = Page.where("sequence > ?",@main_page.sequence)
       .where("nested = ?", false).order("sequence ASC").first

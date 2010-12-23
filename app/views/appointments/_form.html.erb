@@ -1,0 +1,18 @@
+<%= form_for(@appointment, :remote => true) do |f| %>
+  <div class="field">
+    <%= f.label :patient_id %><br />
+    <%= f.select :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users , "id", "name") %>
+  </div>
+  <div class="field">
+    <%= f.label :begin %><br />
+    <%= f.datetime_select :begin %>
+  </div>
+  <div class="field">
+    <%= f.label :end %><br />
+    <%= f.datetime_select :end %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br />
+    <%= f.text_area :comment, :cols => 30, :rows => 5 %>
+  </div>
+<% end %>

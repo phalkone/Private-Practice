@@ -1,0 +1,15 @@
+$("<div id='dialog'></div>").css("font-size","0.8em").appendTo('body');
+$("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
+$("#dialog").dialog({
+    modal: true,
+    title: "<%= escape_javascript(t('appointments.newapp')) %>",
+    buttons: {
+       Ok: function() {
+        $("#dialog form").submit();
+        $( this ).dialog( "close" );
+      },
+       Cancel: function() {
+        $( this ).dialog( "close" );
+      }
+    }
+});

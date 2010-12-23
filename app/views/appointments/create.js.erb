@@ -1,0 +1,10 @@
+<% flash.each do |key, value| %>
+    $('<div />')
+    .addClass("flash <%= escape_javascript(key.to_s)%>")
+    .html("<%= escape_javascript(value)%>")
+    .hide()
+    .appendTo('.flashes')
+    .show(300);
+  <% end %>
+setTimeout(flash_hide,3000);
+$("#viewoption form").submit();

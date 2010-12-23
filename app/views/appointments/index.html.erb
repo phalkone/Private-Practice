@@ -10,15 +10,22 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.slider.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.bgiframe-2.1.1.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.draggable.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
   $("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
   $("#datepicker").datepicker( "option", "altField", "#view_date" );
+  $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
+  $("#datepicker").datepicker( "setDate" , "<%= l(@date, :format => :datepicker) %>");
   $("#datepicker").datepicker( "option", "altFormat", "yy mm dd" ).change(function() {
       $("#viewoption form").submit();
   });
   $("#slider-range").slider({
-      range: true, min: 0, max: 24, values: [9, 17],
+      range: true, min: 0, max: 24, values: [<%= @start %>, <%= @stop %>],
       slide: function(event, ui) {
         $("#hourrange").html("<p>" + ui.values[0] + 'h - ' + ui.values[1] + 'h</p>');
         $("#view_start").val(ui.values[0]);
@@ -34,7 +41,7 @@ $(document).ready(function() {
   $("#viewoption input").change(function() {
       $("#viewoption form").submit();
   });
-  $("#newapp").button();
+  $("#toolbar a.newapp").button();
   $("#newslot").button();
   $("#previous").button({
     icons: {
@@ -68,12 +75,14 @@ $(document).ready(function() {
       <%= radio_button("view", "dayweek", "week") %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
     </span>
     <button id="previous"><%= t("appointments.previous") %></button>
-    <button id="newapp"><%= t("appointments.newapp") %></button>
+    <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 
+        :class => "newapp", :title => t("appointments.newapp")%>
     <button id="newslot"><%= t("appointments.newslot") %></button>
   </div>
 
 <% end %>
 </div>
+
 <div id="calendar">
 <%= render "day" %>
 </div>

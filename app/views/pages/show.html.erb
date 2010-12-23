@@ -2,11 +2,11 @@
   <div id="submenu">
     <ul>
       <% for subpage in @subpages %>
-        <% if subpage.nested and subpage == @page %>
+        <% if subpage.nested and subpage == @showpage %>
           <li class="indent bold">
-        <% elsif subpage.nested and subpage != @page %>
+        <% elsif subpage.nested and subpage != @showpage %>
           <li class="indent">
-        <% elsif subpage == @page %>
+        <% elsif subpage == @showpage %>
           <li class="bold">
         <% else %>
           <li>
@@ -21,10 +21,10 @@
 <% else %>
   <div id="pagecontent">
 <% end %>
-    <% if @page.get_content(I18n.locale).html %>
-      <%= raw @page.get_content(I18n.locale).body %>
+    <% if @showpage.get_content(I18n.locale).html %>
+      <%= raw @showpage.get_content(I18n.locale).body %>
     <% else %>
-      <%= raw BlueCloth.new(@page.get_content(I18n.locale).body).to_html %>
+      <%= raw BlueCloth.new(@showpage.get_content(I18n.locale).body).to_html %>
     <% end %>
   </div>
 

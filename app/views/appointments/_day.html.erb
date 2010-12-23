@@ -1,16 +1,125 @@
+<ul>
+  <% @appointments.each() do |app| %>
+      <li><%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> <%= app.patient.name %> (<%= app.begincell(@start) %> <%= app.endcell(@start) %>)</li>
+  <% end %>
+</ul>
+
+<% maxcols = 1 %>
+    
+    <% for i in 0..(((@stop-@start)*4)-1) %>
+      <% if ((i % 4) == 0) %>
+        <% hour = i/4 + @start %>
+      <% end %>
+      <% min = (i % 4)*15 %>
+      <% start = Time.new(@date.year,@date.month,@date.day,hour,min,0, Time.now.utc_offset) %>
+      <% if ((i % 4) == 3) %>
+        <% stop = Time.new(@date.year,@date.month,@date.day,hour,59,0, Time.now.utc_offset) %>
+      <% else %>
+        <% stop = Time.new(@date.year,@date.month,@date.day,hour,min+14,0, Time.now.utc_offset) %>
+      <% end %>
+      <% apps = @appointments.where("begin >= ? AND begin <= ?", start , stop).order("begin ASC") %>
+      <% nextval = 0 %>
+
+      <% apps.each() do |app| %>
+        <% if app.rowspan > 1 %>
+          <% j = i + app.rowspan - 1 %>
+          <% if ((j % 4) == 0) %>
+            <% hour = j/4 + @start %>
+          <% end %>
+          <% min = (j % 4)*15 %>
+          <% start = Time.new(@date.year,@date.month,@date.day,hour,min,0, Time.now.utc_offset) %>
+          <% if ((i % 4) == 3) %>
+            <% stop = Time.new(@date.year,@date.month,@date.day,hour,59,0, Time.now.utc_offset) %>
+          <% else %>
+            <% stop = Time.new(@date.year,@date.month,@date.day,hour,min+14,0, Time.now.utc_offset) %>
+          <% end %>
+          <% apps2 = @appointments.where("begin >= ? AND begin <= ?", start , stop).order("begin ASC") %>
+          <% apps2.each() do |app2| %>
+            <% if app2.rowspan > 1 %>
+              <% nextval = 1 %>
+            <% else %>
+              <% nextval = 0 %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% cols = apps.count  %>
+      <% if cols > maxcols %>
+        <% maxcols = cols %>
+      <% end %>
+      
+    <% end %>
+
 <table class="day">
   <thead>
     <tr>
-      <th colspan="2"><%= l(@date, :format => :long) %></th>
+      <th colspan="<%= maxcols + 1 %>"><%= l(@date, :format => :long) %></th>
     <tr>
   </thead>
   <tbody>
-    <% for i in @start..(@stop-1) %>
+    <% skip = 0 %>
+
+    <% for i in 0..(((@stop-@start)*4)-1) %>
     <tr>
-      <td rowspan="2" class="hour"><span class="big"><%= i %></span><span class="superscript">00</span></td><td></td>
-    </tr>
-    <tr>
-      <td></td>
+      <% if ((i % 4) == 0) %>
+        <% hour = i/4 + @start %>
+        <td rowspan="4" class="hour"><span class="big"><%= hour %></span><span class="superscript">00</span></td>
+      <% end %>
+      <% min = (i % 4)*15 %>
+      
+      <% if skip <= 1 %>
+      <% start = Time.new(@date.year,@date.month,@date.day,hour,min,0, Time.now.utc_offset) %>
+      <% if ((i % 4) == 3) %>
+        <% stop = Time.new(@date.year,@date.month,@date.day,hour,59,0, Time.now.utc_offset) %>
+      <% else %>
+        <% stop = Time.new(@date.year,@date.month,@date.day,hour,min+14,0, Time.now.utc_offset) %>
+      <% end %>
+      <% apps = @appointments.where("begin >= ? AND begin <= ?", start , stop).order("begin ASC") %>
+      <% nextval = 0 %>
+
+      <% apps.each() do |app| %>
+        <% if app.rowspan > 1 %>
+          <% j = i + app.rowspan - 1 %>
+          <% if ((j % 4) == 0) %>
+            <% hour = j/4 + @start %>
+          <% end %>
+          <% min = (j % 4)*15 %>
+          <% start = Time.new(@date.year,@date.month,@date.day,hour,min,0, Time.now.utc_offset) %>
+          <% if ((i % 4) == 3) %>
+            <% stop = Time.new(@date.year,@date.month,@date.day,hour,59,0, Time.now.utc_offset) %>
+          <% else %>
+            <% stop = Time.new(@date.year,@date.month,@date.day,hour,min+14,0, Time.now.utc_offset) %>
+          <% end %>
+          <% apps2 = @appointments.where("begin >= ? AND begin <= ?", start , stop).order("begin ASC") %>
+          <% apps2.each() do |app2| %>
+            <% if app2.rowspan > 1 %>
+              <% nextval = 1 %>
+            <% else %>
+              <% nextval = 0 %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+
+      <% if (apps.count == 0) && (skip != 1) %>
+        <td colspan="<%= maxcols %>"></td>
+      <% elsif skip == 1 %>      
+        <% colspan = maxcols/(apps.count + 1 + nextval) %>
+      <% else %>
+        <% colspan = maxcols/(apps.count + nextval) %>
+      <% end %>
+      <% apps.each() do |app| %>
+        <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>"><%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> <%= app.patient.name %></td>
+        <% if app.rowspan > 1 %>
+          <% skip = app.rowspan %>
+        <% end %>
+      <% end %>
+      <% end %>
+      
+      <% skip -= 1 %>
+
     </tr>
   <%end%>
   </tbody>

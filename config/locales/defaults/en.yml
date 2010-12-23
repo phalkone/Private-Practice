@@ -22,6 +22,7 @@
   date:
     formats:
       default: "%Y-%m-%d"
+      datepicker: "%d/%m/%Y"
       short: "%e %b"
       med: "%B %e, %Y"
       only_day: "%e"
