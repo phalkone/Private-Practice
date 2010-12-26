@@ -19,7 +19,7 @@
 <% if @subpages %> 
   <div id="subcontent">
 <% else %>
-  <div id="pagecontent">
+  <div class="pagecontent">
 <% end %>
     <% if @showpage.get_content(I18n.locale).html %>
       <%= raw @showpage.get_content(I18n.locale).body %>

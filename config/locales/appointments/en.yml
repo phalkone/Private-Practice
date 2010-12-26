@@ -10,3 +10,6 @@
     next: Next
     previous: Previous
     created: Appointment was successfully created.
+    invalid: is invalid.
+    destroyed: Appointment was successfully deleted.
+    confirmation: Are you sure?

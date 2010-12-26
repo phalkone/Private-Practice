@@ -41,7 +41,8 @@
       short: "%d %b %H:%M"
       long: "%B %d, %Y %H:%M"
       only_second: "%S"
-      
+      datepicker: "%d/%m/%Y"
+
       datetime:
         formats:
           default: "%Y-%m-%dT%H:%M:%S%Z"
@@ -102,6 +103,7 @@
       image: "Afbeelding"
       doctor: "Dokter"
       patient: "Patiënt"
+      appointment: "Afspraak"
     attributes:
       page:
         permalink: "Permalink"
@@ -121,6 +123,13 @@
         last_name: "Achternaam"
         email: "E-mail"
         password: "Paswoord"
+      appointment:
+        date: Datum
+        begin_time: Begin
+        end_time: Einde
+        comment: Opmerkingen
+        begin: Begin datum/tijd
+        end: Eind datum/tijd
     errors:
       template:
         header:

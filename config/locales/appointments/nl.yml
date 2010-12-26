@@ -10,3 +10,6 @@
     next: Volgende
     previous: Vorige
     created: Afspraak succesvol aangemaakt.
+    invalid: is ongeldig.
+    destroyed: Afspraak succesvol verwijderd.
+    confirmation: Bent u zeker?

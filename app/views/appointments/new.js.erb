@@ -1,15 +1,38 @@
 $("<div id='dialog'></div>").css("font-size","0.8em").appendTo('body');
 $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
+$("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
+$("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
+$("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
+
+var values = $( "#slider-range" ).slider( "option", "values" );
+$("#hour-slider").slider({
+      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [(values[0]*60), (values[1]*60)],
+      slide: function(event, ui) {
+        var beginmin = ui.values[0] % 60;
+        var beginhour = (ui.values[0] - (beginmin))/60;
+        var endmin = ui.values[1] % 60;
+        var endhour = (ui.values[1] - (endmin))/60;
+        $("#appointment_begin_time").val(zero(beginhour) + ":" + zero(beginmin));
+        $("#appointment_end_time").val(zero(endhour) + ":" + zero(endmin));
+   }
+});
 $("#dialog").dialog({
-    modal: true,
+    modal: true, height: 400, width: 300, position: [($(window).width()-300)/2,20],
     title: "<%= escape_javascript(t('appointments.newapp')) %>",
     buttons: {
        Ok: function() {
         $("#dialog form").submit();
-        $( this ).dialog( "close" );
       },
        Cancel: function() {
-        $( this ).dialog( "close" );
+        $( this ).dialog( "destroy" );
       }
     }
 });
+function zero(n){
+  if (n < 10 ) {
+    var ret = "0" + n;
+  } else {
+    var ret = n;
+  }
+  return ret;
+}

@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   include SessionsHelper
+  include AppointmentsHelper
 
   def set_locale 
     I18n.locale = extract_locale_from_subdomain

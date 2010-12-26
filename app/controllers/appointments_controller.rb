@@ -9,6 +9,8 @@ class AppointmentsController < ApplicationController
     @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
     @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
     @appointments = current_user.appointments.where("begin >= ? AND end <= ?", @begin , @end).order("begin ASC")
+    @dayarray = dayarray(@start, @stop, @appointments)
+    @maxcols = @dayarray.last[0];
   end
 
   def new
@@ -30,6 +32,14 @@ class AppointmentsController < ApplicationController
     @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
     @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
     @appointments = current_user.appointments.where("begin >= ? AND end <= ?", @begin , @end).order("begin ASC")
+    @dayarray = dayarray(@start, @stop, @appointments)
+    @maxcols = @dayarray.last[0];
+  end
+
+  def destroy
+    @appointment = Appointment.find(params[:id])
+    @appointment.destroy
+    flash.now[:alert] = t("appointments.destroyed")
   end
 
   private

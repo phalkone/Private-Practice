@@ -54,7 +54,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
            background:black; }
 #lightbox { position:absolute; z-index: 1002; }
 
-#error_explanation { width: 450px; border: 2px solid #d40000; padding: 7px;
+#error_explanation { border: 2px solid #d40000; padding: 7px;
                      padding-bottom: 0; margin: 0 0 20px 20px;
                      background-color: #f0f0f0; }
   #error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
@@ -64,11 +64,11 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #locale_picker { float:right; }
 
-table.day { width: 100%; border-collapse: collapse; border: 1px solid #ddd; margin-top:7px;}
-  .day th { text-align: center; font-size: 1.5em; padding: 0.2em; height: auto; border: 1px solid #ddd;}
-  .day tbody tr { height: 25px;}
-  .day td { border: 1px solid #ddd; padding: 0.2em; }
-  .day td.hour { width: 60px; vertical-align: top; text-align: center; }
+table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd; border-spacing: 2px;}
+  .day th { text-align: center; font-size: 1.5em;}
+  .day tbody tr { height: 30px;}
+  .day tbody td { border: 1px solid #ddd;}
+  .day td.hour { width: 60px; vertical-align: top; text-align: center;}
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;
@@ -109,4 +109,5 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .hidden { display:none; }
 .markdown { font-size:10px; margin-top: 6px; }
 .round { -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
-
+.bar { display: inline-block; width: 10px; height:inherit;}
+.bar2 { display: inline-block; background-color: #d40000; width: 10px; height:inherit;}

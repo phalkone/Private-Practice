@@ -1,18 +1,25 @@
 <%= form_for(@appointment, :remote => true) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object, :modelname =>  Appointment.model_name.human.downcase %>
   <div class="field">
     <%= f.label :patient_id %><br />
     <%= f.select :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users , "id", "name") %>
   </div>
   <div class="field">
-    <%= f.label :begin %><br />
-    <%= f.datetime_select :begin %>
+    <%= f.label :date %><br />
+    <%= f.text_field :date %>
+  </div>
+  <div class="field" style="float:left">
+    <%= f.label :begin_time %> <%= f.text_field :begin_time, :size => 10 %> &nbsp;
+  </div>
+  <div class="field">  
+    <%= f.label :end_time %> <%= f.text_field :end_time, :size => 10 %>
   </div>
   <div class="field">
-    <%= f.label :end %><br />
-    <%= f.datetime_select :end %>
+    <div id="hour-slider"></div>
   </div>
   <div class="field">
     <%= f.label :comment %><br />
     <%= f.text_area :comment, :cols => 30, :rows => 5 %>
   </div>
 <% end %>
+
