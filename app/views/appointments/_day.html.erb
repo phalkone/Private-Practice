@@ -1,10 +1,3 @@
-<ul>
-  <% @appointments.each() do |app| %>
-      <li><%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> <%= app.patient.name %> (<%= app.id %>) <%= link_to "Delete", app, :remote => true, 
-        :confirm => t("appointments.confirmation"), :method => :delete %></li>
-  <% end %>
-</ul>
-
 <table class="day">
   <thead>
     <tr>
@@ -25,7 +18,7 @@
         <% colspan = (@maxcols/@dayarray[i][0]) %>
         <% for j in 1..(@dayarray[i].length - 1) %>
           <% app = @appointments.find_by_id(@dayarray[i][j]) %>
-          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>"><span class="bar" style="padding-bottom:<%= app.bottom*2 %>px; padding-top:<%= ((app.top*2)-((@dayarray[i][0])*2))+1 %>px;"><span class="bar2"></span></span><%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> <%= app.patient.name %></td>
+          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>"><div class="bar" style="top:<%= app.top %>px;height:<%= app.dur %>px;"></div><%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> <%= app.patient.name %></td>
         <% end %>
       <% end %>
     </tr>

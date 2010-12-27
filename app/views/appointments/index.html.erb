@@ -48,6 +48,10 @@ $(document).ready(function() {
       primary: "ui-icon-circle-triangle-w"
     },
     text: false
+  }).click(function() {
+    var minDate = new Date($("#datepicker").datepicker("getDate")) -1;
+    $("#datepicker").datepicker( "setDate" , -2);
+    $("#viewoption form").submit();
   });
   $("#next").button({
     icons: {
@@ -55,7 +59,25 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right");
-}); 
+  positionbars();
+});
+function positionbars(){
+  $("div.bar").css('top',function(){
+    var top = $(this).css('top').substring(0,$(this).css('top').length-2);
+    var height = $(this).parent().height();
+    var total = $(this).parent().attr("rowspan")*15; 
+    return $(this).parent().offset().top + Math.round((top/total)*height) + 2 + "px";
+  });
+
+  $("div.bar").css('left',$(this).parent().left);
+  
+  $("div.bar").css('height',function(){
+    var dur = $(this).css('height').substring(0,$(this).css('height').length-2);
+    var height = $(this).parent().height();
+    var total = $(this).parent().attr("rowspan")*15;
+    return Math.round((dur/total)*height) + "px";
+  });
+}
 </script>
 <% end %>
 <div id="viewoption" class="pagecontent">

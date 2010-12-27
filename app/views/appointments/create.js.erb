@@ -1,8 +1,8 @@
 <% if @appointment.errors.any? -%>
   flash_hide();
   $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
-  $("#dialog").dialog( "option", "height", 550 )
-  $("#dialog").dialog( "option", "width", 350 )
+  $("#dialog").dialog( "option", "height", 550 );
+  $("#dialog").dialog( "option", "width", 320 );
 
   $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
   $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
