@@ -42,6 +42,8 @@
       long: "%d %b %Y, %H:%M"
       only_second: "%S"
       datepicker: "%d/%m/%Y"
+      only_day_name: "%A"
+      short_date: "%e %b"
 
       datetime:
         formats:

@@ -9,6 +9,7 @@
     <tr>
       <% if ((i % 4) == 0) %>
         <% hour = i/4 + @start %>
+        <% hour = (hour.to_s.length < 2) ? "0" + hour.to_s : hour %> 
         <td rowspan="4" class="hour"><span class="big"><%= hour %></span><span class="superscript">00</span></td>
       <% end %>
 

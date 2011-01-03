@@ -52,6 +52,11 @@ $(document).ready(function() {
     var currDate = $("#view_date").val().split(" ");
     var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
     var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
+    if($("#view_dayweek_week").attr("checked")){
+      var prevDate = presDate.getTime() - (60 * 60 * 24 * 7 * 1000);
+    } else {
+      var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
+    }
     $("#datepicker").datepicker( "setDate" , new Date(prevDate));
     $("#viewoption form").submit();
   });
@@ -63,8 +68,12 @@ $(document).ready(function() {
   }).css("float","right").click(function() {
     var currDate = $("#view_date").val().split(" ");
     var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
-    var prevDate = presDate.getTime() + (60 * 60 * 24 * 1000);
-    $("#datepicker").datepicker( "setDate" , new Date(prevDate));
+    if($("#view_dayweek_week").attr("checked")){
+      var nextDate = presDate.getTime() + (60 * 60 * 24 * 7 * 1000);
+    } else {
+      var nextDate = presDate.getTime() + (60 * 60 * 24 * 1000);
+    }
+    $("#datepicker").datepicker( "setDate" , new Date(nextDate));
     $("#viewoption form").submit();
   });
   positionbars();
@@ -95,8 +104,12 @@ function positionbars(){
 <div id='dialog'></div>
 <div id="viewoption" class="pagecontent">
 <%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
-  <div id="datepicker"></div><br />
+
+  <div id="datepicker"></div>
   <%= hidden_field 'view','date' %>
+  <div id="doctor_info"><p><h2><%= current_user.name %></h2></p></div>
+
+  <div class="x"></div>
   <div id="hourrange"></div>
   <%= hidden_field 'view','start' %>
   <%= hidden_field 'view','stop' %>
@@ -104,10 +117,10 @@ function positionbars(){
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
-    <span id="weekendcheck"><%= check_box_tag 'view[weekend]' %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
+    <span id="weekendcheck"><%= check_box_tag 'view[weekend]', "1", (true if (@weekend == "1")) %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
     <span id="dayweek">
-      <%= radio_button "view", "dayweek", "day" , :checked => true %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
-      <%= radio_button("view", "dayweek", "week") %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
+      <%= radio_button "view", "dayweek", "day" , :checked => (true if (@dayweek == "day")) %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
+      <%= radio_button "view", "dayweek", "week" , :checked => (true if (@dayweek == "week")) %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
     </span>
     <button id="previous"><%= t("appointments.previous") %></button>
     <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 

@@ -1,0 +1,36 @@
+<table class="week">
+  <thead>
+    <tr>
+      <th></th>
+      <% @next = @begin %>
+      <% y = (@weekend == "1")? 6 : 4 %>
+      <% for i in 0..y %>
+        <th><%= l(@next, :format => :only_day_name) %><br />
+             <%= l(@next, :format => :short_date) %></th>
+        <% @next = @next.tomorrow %>
+      <% end %>
+    <tr>
+  </thead>
+  <tbody>
+    <% for i in 0..((@stop-@start)-1) %>
+    <tr>
+      <% hour = i + @start %>
+      <td class="hour"><span class="big"><%= (hour.to_s.length < 2) ? "0" + hour.to_s : hour %></span><span class="superscript">00</span></td>
+      <% @next = @begin %>
+      <% for i in 0..y %>
+        <% @begin_time = Time.new(@next.year,@next.month,@next.day,hour,0,0, Time.now.utc_offset) %>
+        <% @end_time = Time.new(@next.year,@next.month,@next.day,hour,59,59, Time.now.utc_offset) %>     
+        <% @apps = @appointments.where("begin >= ? AND begin <= ?", @begin_time , @end_time).order("begin ASC") %>
+        <% if @apps.count > 0 %>
+          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"><% @apps.each() do |app| %>
+            <%= l(app.begin, :format => :time) %> <%= link_to app.patient.name, appointment_path(app), :title => app.patient.name, :remote => true %><br />
+          <% end %></td>
+        <% else %>
+          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"></td>
+        <% end %>
+        <% @next = @next.tomorrow %>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

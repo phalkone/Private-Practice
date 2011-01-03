@@ -58,28 +58,35 @@ class AppointmentsController < ApplicationController
       deny_access unless role?("doctor")
     end
 
-   def setValues
-     if params["view"] 
-       datesplit = params["view"]["date"].split(" ")
-       @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
-       @start = params["view"]["start"].to_i
-       @stop = params["view"]["stop"].to_i
-       @dayweek = params["view"]["dayweek"]
-     else
-       @date = Date.new(2010, 12, 20)
-       @start = 6
-       @stop = 18
-       @dayweek = "day"
-     end
-     @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
-     @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
-     @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
-     if (@appointments.count != 0) && (@appointments.last.end > @end)
-       @stop = @appointments.last.end.hour + 1
-     end
-     if @dayweek == "day"
-       @dayarray = dayarray(@start, @stop, @appointments)
-       @maxcols = @dayarray.last[0];
+    def setValues
+      if params["view"] 
+        datesplit = params["view"]["date"].split(" ")
+        @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
+        @start = params["view"]["start"].to_i
+        @stop = params["view"]["stop"].to_i
+        @dayweek = params["view"]["dayweek"]
+        @weekend = params["view"]["weekend"].to_s
+      else
+        @date = Date.new(2010, 12, 20)
+        @start = 6
+        @stop = 18
+        @dayweek = "week"
+        @weekend = "1"
+      end
+      if @dayweek == "day"
+        @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
+        @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
+        @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
+        if (@appointments.count != 0) && (@appointments.last.end > @end)
+          @stop = @appointments.last.end.hour + 1
+        end
+        @dayarray = dayarray(@start, @stop, @appointments)
+        @maxcols = @dayarray.last[0];
+      else
+        @date = @date.to_time
+        @begin = @date.at_beginning_of_week
+        @end = (@weekend == "1") ? @date.at_end_of_week : @date.at_end_of_week.yesterday.yesterday
+        @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
+      end
     end
-  end
 end
