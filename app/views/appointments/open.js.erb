@@ -1,12 +1,19 @@
-$("<div id='dialog'></div>").css("font-size","0.8em").appendTo('body');
 $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
 $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
-$("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
-$("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
-
+$("#appointment_date").datepicker( "option", "dateFormat", 'dd/mm/yy' );
 var values = $( "#slider-range" ).slider( "option", "values" );
+<% if @appointment.begin.nil? %>
+$("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
+var begin_slider = values[0]*60;
+var end_slider = values[1]*60;
+<% else %>
+var begin_slider = <%= escape_javascript(@begin_slider.to_s) %>;
+var end_slider = <%= escape_javascript(@end_slider.to_s) %>;
+<% end %>
+
 $("#hour-slider").slider({
-      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [(values[0]*60), (values[1]*60)],
+      range: true, step: 5, min: values[0]*60, max: values[1]*60, 
+      values: [begin_slider, end_slider],
       slide: function(event, ui) {
         var beginmin = ui.values[0] % 60;
         var beginhour = (ui.values[0] - (beginmin))/60;
@@ -18,7 +25,7 @@ $("#hour-slider").slider({
 });
 $("#dialog").dialog({
     modal: true, height: 400, width: 300, position: [($(window).width()-300)/2,20],
-    title: "<%= escape_javascript(t('appointments.newapp')) %>",
+    title: "<%= escape_javascript(@title) %>",
     buttons: {
        Ok: function() {
         $("#dialog form").submit();

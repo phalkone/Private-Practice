@@ -64,11 +64,13 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #locale_picker { float:right; }
 
+#dialog { font-size:0.8em; display:none;}
+
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
-            border-spacing: 2px; margin-top: 15px; }
-  .day th { text-align: center; font-size: 1.5em;}
-  .day tbody tr { height: 32px;}
-  .day tbody td { border: 1px solid #ddd; text-indent:15px;}
+            border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
+  .day th { text-align: center; font-size: 1.5em; margin: 0; padding: 0; border: 0;}
+  .day tbody tr { height: 32px; margin: 0; padding: 0; border: 0;}
+  .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
   .day td.hour { width: 60px; vertical-align: top; text-align: center;}
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
@@ -110,4 +112,5 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .hidden { display:none; }
 .markdown { font-size:10px; margin-top: 6px; }
 .round { -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
-.bar { position:absolute; background-color: #d40000; width:10px; margin: 0; padding: 0; border: 0;}
+.bar { float: left; width:10px; margin: 0; padding: 0; border: 0;}
+.bar2 { background-color: #d40000;  width:10px;}

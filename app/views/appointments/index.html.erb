@@ -49,8 +49,10 @@ $(document).ready(function() {
     },
     text: false
   }).click(function() {
-    var minDate = new Date($("#datepicker").datepicker("getDate")) -1;
-    $("#datepicker").datepicker( "setDate" , -2);
+    var currDate = $("#view_date").val().split(" ");
+    var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
+    var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
+    $("#datepicker").datepicker( "setDate" , new Date(prevDate));
     $("#viewoption form").submit();
   });
   $("#next").button({
@@ -58,28 +60,39 @@ $(document).ready(function() {
       primary: "ui-icon-circle-triangle-e"
     },
     text: false
-  }).css("float","right");
+  }).css("float","right").click(function() {
+    var currDate = $("#view_date").val().split(" ");
+    var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
+    var prevDate = presDate.getTime() + (60 * 60 * 24 * 1000);
+    $("#datepicker").datepicker( "setDate" , new Date(prevDate));
+    $("#viewoption form").submit();
+  });
   positionbars();
 });
 function positionbars(){
-  $("div.bar").css('top',function(){
-    var top = $(this).css('top').substring(0,$(this).css('top').length-2);
+  $("div.bar").css('height',function(){
     var height = $(this).parent().height();
-    var total = $(this).parent().attr("rowspan")*15; 
-    return $(this).parent().offset().top + Math.round((top/total)*height) + 2 + "px";
+    return height + "px";
   });
 
-  $("div.bar").css('left',$(this).parent().left);
+  $("div.bar2").css('margin-top',function(){
+    var top = $(this).css('margin-top').substring(0,$(this).css('margin-top').length-2);
+    var height = $(this).parent().height();
+    var total = $(this).parent().parent().attr("rowspan")*15; 
+    return Math.round((top/total)*height) + "px";
+  });
   
-  $("div.bar").css('height',function(){
+  $("div.bar2").css('height',function(){
     var dur = $(this).css('height').substring(0,$(this).css('height').length-2);
     var height = $(this).parent().height();
-    var total = $(this).parent().attr("rowspan")*15;
+    var total = $(this).parent().parent().attr("rowspan")*15;
     return Math.round((dur/total)*height) + "px";
   });
+
 }
 </script>
 <% end %>
+<div id='dialog'></div>
 <div id="viewoption" class="pagecontent">
 <%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
   <div id="datepicker"></div><br />
@@ -106,6 +119,10 @@ function positionbars(){
 </div>
 
 <div id="calendar">
-<%= render "day" %>
+<% if @dayweek == "day" %>
+  <%= render "day" %>
+<% else %>
+  <%= render "week" %>
+<% end %>
 </div>
 

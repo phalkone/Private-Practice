@@ -1,0 +1,20 @@
+$("#dialog").html("<%= escape_javascript(render(:partial => "show")) %>");
+$("#dialog").dialog({
+    modal: true, height: 400, width: 300, position: [($(window).width()-300)/2,20],
+    title: "<%= escape_javascript(@appointment.patient.name) %>",
+    buttons: {
+       "<%= escape_javascript(t("appointments.edit_short")) %>": function() {
+        $( this ).dialog( "destroy" );
+        $("#dialog a:first").click();
+      },
+       "<%= escape_javascript(t("appointments.delete_short")) %>": function() {
+        if (confirm("<%= escape_javascript(t('appointments.confirmation')) %>")){
+          $( this ).dialog( "destroy" );
+          $("#dialog a:last").click();
+        }
+      },
+       "<%= escape_javascript(t("appointments.close")) %>": function() {
+        $( this ).dialog( "destroy" );
+      }
+    }
+});

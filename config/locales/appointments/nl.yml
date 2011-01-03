@@ -6,10 +6,16 @@
     newslot: Nieuw tijdslot
     day: Dag
     week: Week
+    delete: Verwijder afspraak
+    edit: Bewerk afspraak
+    edit_short: Bewerk
+    delete_short: Verwijder
     weekend: Weekend
     next: Volgende
+    close: Sluit
     previous: Vorige
     created: Afspraak succesvol aangemaakt.
+    updated: Afspraak succesvol bewerkt.
     invalid: is ongeldig.
     destroyed: Afspraak succesvol verwijderd.
     confirmation: Bent u zeker?

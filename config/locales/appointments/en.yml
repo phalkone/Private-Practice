@@ -6,10 +6,16 @@
     newslot: New time slot(s)
     day: Day
     week: Week
+    delete: Delete appointment
+    edit: Edit appointment
+    edit_short: Edit
+    delete_short: Delete
     weekend: Weekend
     next: Next
+    close: Close
     previous: Previous
     created: Appointment was successfully created.
+    updated: Appointment was successfully updated.
     invalid: is invalid.
     destroyed: Appointment was successfully deleted.
     confirmation: Are you sure?

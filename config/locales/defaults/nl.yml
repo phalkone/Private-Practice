@@ -39,7 +39,7 @@
       default: "%a %b %d %H:%M:%S %Z %Y"
       time: "%H:%M"
       short: "%d %b %H:%M"
-      long: "%B %d, %Y %H:%M"
+      long: "%d %b %Y, %H:%M"
       only_second: "%S"
       datepicker: "%d/%m/%Y"
 
@@ -124,6 +124,8 @@
         email: "E-mail"
         password: "Paswoord"
       appointment:
+        patient_id: Patiënt
+        doctor_id: Dokter
         date: Datum
         begin_time: Begin
         end_time: Einde

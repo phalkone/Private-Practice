@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Appointment.model_name.human.downcase %>
   <div class="field">
     <%= f.label :patient_id %><br />
-    <%= f.select :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users , "id", "name") %>
+    <%= f.select :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users , "id", "name", @appointment.patient_id) %>
   </div>
   <div class="field">
     <%= f.label :date %><br />
