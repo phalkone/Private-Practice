@@ -106,8 +106,11 @@ function positionbars(){
 <%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
 
   <div id="datepicker"></div>
+  
   <%= hidden_field 'view','date' %>
-  <div id="doctor_info"><p><h2><%= current_user.name %></h2></p></div>
+  <div id="doctor_info">
+    <%= render "doctor_info" %>
+  </div>
 
   <div class="x"></div>
   <div id="hourrange"></div>

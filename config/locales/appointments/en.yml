@@ -2,10 +2,13 @@
   appointments:
     appointment: Appointment
     menutitle: Calendar
+    cal_for: Calendar for
     newapp: New appointment
     newslot: New time slot(s)
     day: Day
     week: Week
+    booked_apps: booked appointment(s)
+    booked_apps: booked appointment
     delete: Delete appointment
     edit: Edit appointment
     edit_short: Edit

@@ -1,0 +1,2 @@
+<h2><%= t("appointments.cal_for") + " " + current_user.name %></h2>
+</p><span class="booked-icon"></span> <%= @appointments.count.to_s + " " + t((@appointments.count == 1) ? "appointments.booked_app" : "appointments.booked_apps")%></p>

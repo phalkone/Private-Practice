@@ -87,6 +87,7 @@ class AppointmentsController < ApplicationController
         @begin = @date.at_beginning_of_week
         @end = (@weekend == "1") ? @date.at_end_of_week : @date.at_end_of_week.yesterday.yesterday
         @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
+        @weekarray = weekarray(@start, @stop, @appointments, @weekend)
       end
     end
 end

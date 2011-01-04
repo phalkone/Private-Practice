@@ -52,4 +52,20 @@ module AppointmentsHelper
     return darray
   end
 
+  def weekarray(start, stop, apps, weekend)
+    warray = Array.new(stop-start){Array.new((@weekend == "1")? 7 : 5)}
+
+    apps.each() do |app|
+      row = app.begin.hour - start
+      column = app.begin.to_date.cwday - 1
+      if warray[row][column].nil? 
+        warray[row][column] = app.id.to_s
+      else
+        warray[row][column].insert(-1, ';' + app.id.to_s)
+      end
+    end
+
+    return warray
+  end
+
 end

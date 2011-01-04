@@ -17,13 +17,12 @@
       <% hour = i + @start %>
       <td class="hour"><span class="big"><%= (hour.to_s.length < 2) ? "0" + hour.to_s : hour %></span><span class="superscript">00</span></td>
       <% @next = @begin %>
-      <% for i in 0..y %>
-        <% @begin_time = Time.new(@next.year,@next.month,@next.day,hour,0,0, Time.now.utc_offset) %>
-        <% @end_time = Time.new(@next.year,@next.month,@next.day,hour,59,59, Time.now.utc_offset) %>     
-        <% @apps = @appointments.where("begin >= ? AND begin <= ?", @begin_time , @end_time).order("begin ASC") %>
-        <% if @apps.count > 0 %>
-          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"><% @apps.each() do |app| %>
-            <%= l(app.begin, :format => :time) %> <%= link_to app.patient.name, appointment_path(app), :title => app.patient.name, :remote => true %><br />
+      <% for i2 in 0..y %>
+        <% if !@weekarray[i][i2].nil? %>
+          <% @apps = @weekarray[i][i2].split(";") %>
+          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"><% @apps.each() do |a| %>
+            <% app = @appointments.find_by_id(a.to_i) %>
+            <div class="app"><%= l(app.begin, :format => :time) %> <%= link_to app.patient.name, appointment_path(app), :title => app.patient.name, :remote => true %></div>
           <% end %></td>
         <% else %>
           <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"></td>

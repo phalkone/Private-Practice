@@ -67,7 +67,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #dialog { font-size:0.8em; display:none;}
 
 #datepicker {float: left; margin-bottom: 7px;}
-#doctor_info {margin-left: 240px; height: 165px; border: 1px solid #ddd; padding: 5px;}
+#doctor_info {margin-left: 240px; height: 100%; border: 1px solid #ddd; padding: 5px;}
 
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
             border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
@@ -75,14 +75,17 @@ table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
   .day tbody tr { height: 32px; margin: 0; padding: 0; border: 0;}
   .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
   .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center;}
+  .day td.app { background-color: #FCC; border: solid 1px #C66;}
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
   .week th { text-align: center; font-size: 1.1em; border: 1px solid #ddd; 
              margin: 0; padding: 0;}
   .week tbody tr { margin: 0; padding: 0; border: 0;}
-  .week tbody td { border: 1px solid #ddd; margin: 0; padding-left: 5px;}
+  .week tbody td { border: 1px solid #ddd; margin: 0;}
   .week td.hour { vertical-align: top; text-align: center; padding: 0 5px 0 5px;}
+  .week td div.app { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
+                     padding-left: 3px; }
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;
@@ -95,6 +98,11 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
                 display: inline-block; position: relative; padding: 0; margin-right: .1em;
                 text-decoration: none !important; text-align: center; zoom: 1; 
                 overflow: visible; }
+
+.booked-icon { width: 11px; height: 11px; background-color: #FCC; border: solid 1px #C66;
+               display: inline-block; padding: 0; margin:0;
+               text-decoration: none !important; text-align: center; zoom: 1; 
+               overflow: visible; }
 
 .list { margin-left: 20px; }
   .list table { border: 0; border-collapse:separate; border-spacing:0;

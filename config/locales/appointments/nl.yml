@@ -2,10 +2,13 @@
   appointments:
     appointment: Afspraak
     menutitle: Agenda
+    cal_for: Agenda voor
     newapp: Nieuwe afspraak
     newslot: Nieuw tijdslot
     day: Dag
     week: Week
+    booked_apps: geboekte afspraken
+    booked_app: geboekte afspraak
     delete: Verwijder afspraak
     edit: Bewerk afspraak
     edit_short: Bewerk

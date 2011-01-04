@@ -15,9 +15,10 @@ class User < ActiveRecord::Base
   validates_length_of :last_name, :maximum => 30
   validates :email, :format     => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
                     :uniqueness => { :case_sensitive => false }
-  validates :password, :presence     => true,
-                       :confirmation => true,
-                       :length       => { :within => 6..40 }
+  validates_presence_of :password, :if => :new_record?
+  validates_confirmation_of :password
+  validates_length_of :password, :within => 6..40, :allow_blank => true
+
 
   before_save :encrypt_password, :default_role
 
@@ -43,6 +44,7 @@ class User < ActiveRecord::Base
   private
 
     def encrypt_password
+      return if password.blank?
       self.salt = make_salt if new_record?
       self.encrypted_password = encrypt(password)
     end

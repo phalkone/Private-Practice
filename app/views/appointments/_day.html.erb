@@ -19,7 +19,7 @@
         <% colspan = (@maxcols/@dayarray[i][0]) %>
         <% for j in 1..(@dayarray[i].length - 1) %>
           <% app = @appointments.find_by_id(@dayarray[i][j]) %>
-          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>">
+          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>" class="app">
             <div class="bar">
               <div class="bar2" style="margin-top:<%= app.top %>px;height:<%= app.dur %>px;">
               </div>
