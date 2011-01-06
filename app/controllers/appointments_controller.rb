@@ -12,15 +12,29 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = Appointment.new
+    @patient = User.new
     @title = t("appointments.newapp")
     render "open"
   end
 
   def create
     @appointment = current_user.appointments.build(params[:appointment])
-    if @appointment.save
+    if(params[:user])
+      params[:user][:super_reg] = "1"
+      @patient = User.new(params[:user])
+      @appointment.patient = @patient
+      if @patient.save && @appointment.save
+        flash.now[:notice] = t("appointments.created")
+      elsif @appointment.save
+        @appointment.destroy
+      end
+    elsif @appointment.save
       flash.now[:notice] = t("appointments.created")
+      @patient = User.new
+    else
+      @patient = User.new
     end
+    
     render "save"
   end
 
@@ -31,14 +45,27 @@ class AppointmentsController < ApplicationController
     @appointment.end_time = l(@appointment.end.to_time, :format => :time)
     @begin_slider = (@appointment.begin.hour * 60) + @appointment.begin.min
     @end_slider = (@appointment.end.hour * 60) + @appointment.end.min
+    @patient = User.new
     @title = t("appointments.edit")
     render "open"
   end
 
   def update
     @appointment = Appointment.find(params[:id])
-    if @appointment.update_attributes(params[:appointment])
+    if(params[:user])
+      params[:user][:super_reg] = "1"
+      @patient = User.new(params[:user])
+      @appointment.patient = @patient
+      if @patient.save && @appointment.update_attributes(params[:appointment])
+        flash.now[:notice] = t("appointments.updated")
+      else
+        @appointment.update_attributes(params[:appointment])
+      end
+    elsif @appointment.update_attributes(params[:appointment])
       flash.now[:notice] = t("appointments.updated")
+      @patient = User.new
+    else
+      @patient = User.new
     end
     render "save"
   end

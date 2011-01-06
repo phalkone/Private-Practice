@@ -1,8 +1,30 @@
 <%= form_for(@appointment, :remote => true) do |f| %>
-  <%= render 'shared/error_messages', :object => f.object, :modelname =>  Appointment.model_name.human.downcase %>
-  <div class="field">
-    <%= f.label :patient_id %><br />
-    <%= f.select :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users , "id", "name", @appointment.patient_id) %>
+  <% if @appointment.errors.any? || @patient.errors.any? %>
+  <div id="error_explanation">
+    <h3><%= t("activerecord.errors.template.header", 
+              :model => Appointment.model_name.human.downcase,
+              :count => @appointment.errors.count + @patient.errors.count) %></h3>
+    <p><%= t("activerecord.errors.template.body") %></p>
+    <ul>
+      <% @patient.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      <% @appointment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+  <div id="registered">
+    <%= radio_button "view", "registered", "reg" , :checked => (true if !@patient.errors.any?) %><%= label_tag 'view_registered_reg', t("appointments.registered") %>
+    <%= radio_button "view", "registered", "unreg", :checked => (true if @patient.errors.any?) %><%= label_tag 'view_registered_unreg', t("appointments.unregistered") %>
+  </div>
+  <div id="patient">
+  <% if @patient.errors.any? %>
+    <%= render "user_form" %>
+  <% else %>
+    <%= render "users_list" %>
+  <% end %>
   </div>
   <div class="field">
     <%= f.label :date %><br />

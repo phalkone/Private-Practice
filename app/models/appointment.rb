@@ -64,4 +64,8 @@ class Appointment < ActiveRecord::Base
     end
     return duration
   end
+
+  def unbooked?
+    return true if self.patient.nil?
+  end
 end

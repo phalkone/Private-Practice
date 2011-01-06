@@ -22,7 +22,8 @@
           <% @apps = @weekarray[i][i2].split(";") %>
           <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"><% @apps.each() do |a| %>
             <% app = @appointments.find_by_id(a.to_i) %>
-            <div class="app"><%= l(app.begin, :format => :time) %> <%= link_to app.patient.name, appointment_path(app), :title => app.patient.name, :remote => true %></div>
+            <% div_class = (app.unbooked?) ? "unbooked" : "booked" %>
+            <div class="<%= div_class %>"><%= l(app.begin, :format => :time) %> <%= link_to ((app.unbooked?) ? t("appointments.unbooked").upcase : app.patient.name), appointment_path(app), :title => ((app.unbooked?) ? t("appointments.unbooked") : app.patient.name), :remote => true %></div>
           <% end %></td>
         <% else %>
           <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"></td>

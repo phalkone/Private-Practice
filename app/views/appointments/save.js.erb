@@ -1,8 +1,16 @@
-<% if @appointment.errors.any? -%>
+<% if @appointment.errors.any? || @patient.errors.any? -%>
   flash_hide();
   $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
   $("#dialog").dialog( "option", "height", 550 );
-  $("#dialog").dialog( "option", "width", 320 );
+  $("#dialog").dialog( "option", "width", 350 );
+
+  $("#registered").buttonset().change(function() {
+    if($("#view_registered_reg").attr("checked")){
+      $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
+    } else {
+      $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
+    }
+  });
 
   $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
   $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );

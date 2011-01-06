@@ -17,6 +17,7 @@ class UsersController < ApplicationController
 
    def create
     @user = User.new(params[:user])
+    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
     if @user.save
       sign_in @user unless role?("admin") || role?("doctor")
       flash[:notice] = t("users.created")
@@ -36,6 +37,7 @@ class UsersController < ApplicationController
 
    def update
     @user = User.find(params[:id])
+    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
     if @user.update_attributes(params[:user])
       sign_in @user unless role?("admin") || role?("doctor")
       flash[:notice] = t("users.edited")

@@ -22,3 +22,7 @@
     invalid: is invalid.
     destroyed: Appointment was successfully deleted.
     confirmation: Are you sure?
+    registered: Registered
+    unregistered: Unregistered
+    booked: Booked
+    unbooked: Unbooked

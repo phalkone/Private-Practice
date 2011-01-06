@@ -22,3 +22,7 @@
     invalid: is ongeldig.
     destroyed: Afspraak succesvol verwijderd.
     confirmation: Bent u zeker?
+    registered: Geregistereerd
+    unregistered: Ongeregistreerd
+    booked: Geboekt
+    unbooked: Niet geboekt

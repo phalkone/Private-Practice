@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  attr_accessor :password
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
+  attr_accessor :password, :super_reg
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :super_reg
 
   has_and_belongs_to_many :roles
 
@@ -10,17 +10,26 @@ class User < ActiveRecord::Base
   has_many :patients, :through => :appointments, :source => :patient, :uniq => :true
   has_many :doctors, :through => :bookings, :source => :doctor, :uniq => :true
 
-  validates_presence_of :first_name, :last_name, :email
+  validates_presence_of :first_name, :last_name
+  validates_presence_of :email, :if => :required?
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30
   validates :email, :format     => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
-                    :uniqueness => { :case_sensitive => false }
-  validates_presence_of :password, :if => :new_record?
+                    :uniqueness => { :case_sensitive => false },
+                    :allow_blank => true
+  validates_presence_of :password, :if => (:new_record? && :required?)
   validates_confirmation_of :password
   validates_length_of :password, :within => 6..40, :allow_blank => true
 
+  before_save :encrypt_password, :default_role, :blank_email
 
-  before_save :encrypt_password, :default_role
+  def required?
+    (self.super_reg) ? false : true
+  end
+
+  def blank_email
+    self.email = (self.email.blank?) ? nil : self.email
+  end
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)

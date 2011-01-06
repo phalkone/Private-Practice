@@ -1,0 +1,4 @@
+  <div class="field">
+    <%= label :appointment, :patient_id %><br />
+    <%= select :appointment, :patient_id, options_from_collection_for_select( Role.where("title = ?","patient").first.users.order("last_name ASC") , "id", "name", @appointment.patient_id || @patient.id) %>
+  </div>

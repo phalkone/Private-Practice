@@ -46,6 +46,8 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
 #datepicker {font-size: 0.95em;}
   #datepicker table {font-size: 0.75em;}
+#appointment_date {font-size: 0.95em;}
+  #appointment_date table {font-size: 0.75em;}
 
 #toolbar { padding: 4px 4px; font-size: 0.8em;}
   #weekendcheck{ float:right;}
@@ -69,13 +71,16 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #datepicker {float: left; margin-bottom: 7px;}
 #doctor_info {margin-left: 240px; height: 100%; border: 1px solid #ddd; padding: 5px;}
 
+#registered {margin: 0 0 10px 20px;}
+
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
             border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
   .day th { text-align: center; font-size: 1.5em; margin: 0; padding: 0; border: 0;}
   .day tbody tr { height: 32px; margin: 0; padding: 0; border: 0;}
   .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
   .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center;}
-  .day td.app { background-color: #FCC; border: solid 1px #C66;}
+  .day td.booked { background-color: #FCC; border: solid 1px #C66;}
+  .day td.unbooked { background-color: #CFC; border: solid 1px #6C6;}
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
@@ -84,7 +89,9 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .week tbody tr { margin: 0; padding: 0; border: 0;}
   .week tbody td { border: 1px solid #ddd; margin: 0;}
   .week td.hour { vertical-align: top; text-align: center; padding: 0 5px 0 5px;}
-  .week td div.app { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
+  .week td div.booked { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
+                     padding-left: 3px; }
+  .week td div.unbooked { background-color: #CFC; border: solid 1px #6C6; margin-bottom: 2px;
                      padding-left: 3px; }
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
