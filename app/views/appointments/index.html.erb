@@ -42,7 +42,6 @@ $(document).ready(function() {
       $("#viewoption form").submit();
   });
   $("#toolbar a.newapp").button();
-  $("#newslot").button();
   $("#previous").button({
     icons: {
       primary: "ui-icon-circle-triangle-w"
@@ -128,7 +127,6 @@ function positionbars(){
     <button id="previous"><%= t("appointments.previous") %></button>
     <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 
         :class => "newapp", :title => t("appointments.newapp")%>
-    <button id="newslot"><%= t("appointments.newslot") %></button>
   </div>
 
 <% end %>

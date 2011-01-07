@@ -26,7 +26,7 @@
               </div>
             </div>
             <%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> 
-            <%= l(app.begin, :format => :time) %> <%= link_to ((app.unbooked?) ? t("appointments.unbooked").upcase : app.patient.name), appointment_path(app), :title => ((app.unbooked?) ? t("appointments.unbooked") : app.patient.name), :remote => true %> 
+             <%= link_to ((app.unbooked?) ? t("appointments.unbooked").upcase : app.patient.name), appointment_path(app), :title => ((app.unbooked?) ? t("appointments.unbooked") : app.patient.name), :remote => true %> 
             <%= link_to "", edit_appointment_path(app), :remote => true, 
         :class => "button ui-icon-wrench", :title => t("appointments.edit") %><%= link_to "", 
         app, :remote => true, :confirm => t("appointments.confirmation"), :method => :delete, 

@@ -1,13 +1,20 @@
 $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
-$("#registered").buttonset().change(function() {
-  if($("#view_registered_reg").attr("checked")){
+
+$("#mode").buttonset().change(function() {
+  if($("#view_mode_registered").attr("checked")){
     $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
-  } else {
+  } else if ($("#view_mode_unregistered").attr("checked"))  {
     $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
+  } else {
+    $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
   }
 });
+
 $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
 $("#appointment_date").datepicker( "option", "dateFormat", 'dd/mm/yy' );
+$("#appointment_date").css("font-size","0.95em");
+$("#appointment_date table").css("font-size","0.75em");
+
 var values = $( "#slider-range" ).slider( "option", "values" );
 <% if @appointment.begin.nil? %>
 $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
@@ -31,7 +38,7 @@ $("#hour-slider").slider({
    }
 });
 $("#dialog").dialog({
-    modal: true, height: 520, width: 350, position: [($(window).width()-300)/2,20],
+    modal: true, height: 520, width: 400, position: [($(window).width()-300)/2,20],
     title: "<%= escape_javascript(@title) %>",
     buttons: {
        Ok: function() {

@@ -1,2 +1,3 @@
 <h2><%= t("appointments.cal_for") + " " + current_user.name %></h2>
-</p><span class="booked-icon"></span> <%= @appointments.count(:conditions => "patient_id != 'NIL'").to_s + " " + t((@appointments.count == 1) ? "appointments.booked_app" : "appointments.booked_apps")%></p>
+</p><span class="booked-icon"></span> <%= @bookedcount[0].to_s + " " + t((@bookedcount[0] == 1) ? "appointments.booked_app" : "appointments.booked_apps")%><br />
+<span class="unbooked-icon"></span> <%= @bookedcount[1].to_s + " " + t((@bookedcount[1] == 1) ? "appointments.unbooked_app" : "appointments.unbooked_apps")%></p>

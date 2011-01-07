@@ -44,10 +44,8 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
   #footer .right { float: right; }
   #footer .right a:hover { color: #555; }
 
-#datepicker {font-size: 0.95em;}
+#datepicker { float: left; margin-bottom: 7px; font-size: 0.95em;}
   #datepicker table {font-size: 0.75em;}
-#appointment_date {font-size: 0.95em;}
-  #appointment_date table {font-size: 0.75em;}
 
 #toolbar { padding: 4px 4px; font-size: 0.8em;}
   #weekendcheck{ float:right;}
@@ -67,11 +65,11 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #locale_picker { float:right; }
 
 #dialog { font-size:0.8em; display:none;}
+#hour-slider-field{ margin: 0 10px 10px 20px; }
 
-#datepicker {float: left; margin-bottom: 7px;}
-#doctor_info {margin-left: 240px; height: 100%; border: 1px solid #ddd; padding: 5px;}
+#doctor_info {margin-left: 240px; height: 100%; border: 1px solid #ddd; padding: 5px; line-height: 1.5;}
 
-#registered {margin: 0 0 10px 20px;}
+#mode {margin: 0 0 10px 20px;}
 
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
             border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
@@ -107,6 +105,10 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
                 overflow: visible; }
 
 .booked-icon { width: 11px; height: 11px; background-color: #FCC; border: solid 1px #C66;
+               display: inline-block; padding: 0; margin:0;
+               text-decoration: none !important; text-align: center; zoom: 1; 
+               overflow: visible; }
+.unbooked-icon { width: 11px; height: 11px; background-color: #CFC; border: solid 1px #6C6;
                display: inline-block; padding: 0; margin:0;
                text-decoration: none !important; text-align: center; zoom: 1; 
                overflow: visible; }

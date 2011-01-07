@@ -4,11 +4,12 @@
     menutitle: Agenda
     cal_for: Agenda voor
     newapp: Nieuwe afspraak
-    newslot: Nieuw tijdslot
     day: Dag
     week: Week
     booked_apps: geboekte afspraken
     booked_app: geboekte afspraak
+    unbooked_apps: niet geboekte afspraken
+    unbooked_app: niet geboekte afspraak
     delete: Verwijder afspraak
     edit: Bewerk afspraak
     edit_short: Bewerk

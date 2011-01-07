@@ -2,13 +2,15 @@
   flash_hide();
   $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
   $("#dialog").dialog( "option", "height", 550 );
-  $("#dialog").dialog( "option", "width", 350 );
+  $("#dialog").dialog( "option", "width", 400 );
 
-  $("#registered").buttonset().change(function() {
-    if($("#view_registered_reg").attr("checked")){
+  $("#mode").buttonset().change(function() {
+    if($("#view_mode_registered").attr("checked")){
       $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
-    } else {
+    } else if ($("#view_mode_unregistered").attr("checked"))  {
       $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
+    } else {
+      $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
     }
   });
 

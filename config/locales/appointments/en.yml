@@ -4,11 +4,12 @@
     menutitle: Calendar
     cal_for: Calendar for
     newapp: New appointment
-    newslot: New time slot(s)
     day: Day
     week: Week
-    booked_apps: booked appointment(s)
-    booked_apps: booked appointment
+    booked_apps: booked appointments
+    booked_app: booked appointment
+    unbooked_apps: unbooked appointments
+    unbooked_app: unbooked appointment
     delete: Delete appointment
     edit: Edit appointment
     edit_short: Edit

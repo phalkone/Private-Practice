@@ -1,4 +1,11 @@
 module AppointmentsHelper
+  def barray(apps)
+    barray = Array.new(2, 0)
+    apps.each() do |app|
+      (app.unbooked?) ? barray[1] += 1 : barray[0] += 1
+    end
+    return barray
+  end
 
   def dayarray(start, stop, apps)
     rows = ((stop-start)*4)
