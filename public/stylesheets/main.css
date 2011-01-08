@@ -5,8 +5,8 @@ body { font: .8em Arial, "Trebuchet MS", Tahoma, sans-serif; color: #777;
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 
-h1 { font-size: 2em; font-weight: bold; padding: 0 0 10px; 
-     margin: 0 0 10px; }
+h1 { font-size: 2em; font-weight: bold; padding: 0 0 5px; 
+     margin: 0 0 5px; }
 h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px;}
 h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 
@@ -72,7 +72,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #mode {margin: 0 0 10px 20px;}
 
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
-            border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
+            border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
   .day th { text-align: center; font-size: 1.5em; margin: 0; padding: 0; border: 0;}
   .day tbody tr { height: 32px; margin: 0; padding: 0; border: 0;}
   .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
@@ -81,7 +81,7 @@ table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
   .day td.unbooked { background-color: #CFC; border: solid 1px #6C6;}
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
-            border-spacing: 2px; margin: 15px 0 0 0; padding: 0;}
+            border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
   .week th { text-align: center; font-size: 1.1em; border: 1px solid #ddd; 
              margin: 0; padding: 0;}
   .week tbody tr { margin: 0; padding: 0; border: 0;}
@@ -91,6 +91,15 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
                      padding-left: 3px; }
   .week td div.unbooked { background-color: #CFC; border: solid 1px #6C6; margin-bottom: 2px;
                      padding-left: 3px; }
+
+table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
+            border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
+  .users th { text-align: left; font-size: 1em; margin-bottom: 2px; padding: 5px;}
+  .users tr { height: 25px;}
+  .users td { padding-left: 5px; }
+  .users td.clickable { cursor: pointer; }
+  tr.zebraHover { background-color: #FCC; border: solid 1px #C66;}
+  .zebra { background-color: #dddddd; }
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;
@@ -144,3 +153,4 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .bar2 { background-color: #d40000;  width:10px;}
 .weekend { width: 14%; }
 .no_weekend { width: 20%; }
+

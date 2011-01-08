@@ -132,8 +132,9 @@
         begin_time: Begin
         end_time: Einde
         comment: Opmerkingen
-        begin: Begin datum/tijd
-        end: Eind datum/tijd
+        begin: Begin
+        end: Einde
+        duration: Tijdsduur
     errors:
       template:
         header:

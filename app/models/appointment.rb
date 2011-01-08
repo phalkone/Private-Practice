@@ -4,6 +4,7 @@ class Appointment < ActiveRecord::Base
   belongs_to :doctor, :class_name => "User",  :foreign_key => "doctor_id" 
   belongs_to :patient, :class_name => "User",  :foreign_key => "patient_id"
 
+  validate :overlap
   validates_presence_of :doctor_id
   validates_format_of :begin_time, :end_time, :with => /\A([0-2]*[0-9]):([0-5][0-9])\z/
   validates_format_of :date, :with => /\A([0-3]*[0-9])\/([0-2][0-9])\/(20)([0-9][0-9])\z/
@@ -11,6 +12,23 @@ class Appointment < ActiveRecord::Base
   validates_length_of :comment, :maximum => 1000
   
   before_validation :convert_begin_time, :convert_end_time
+
+  def overlap
+    if self.begin and self.end
+      appointment_id = self.id || 0
+
+      if app = Appointment.where("begin <= ? AND ? < end AND id <> ? AND doctor_id = ?", self.begin, self.begin, appointment_id, self.doctor_id).first
+        errors.add :begin_time, I18n.t("appointments.begin_invalid")
+
+      elsif Appointment.where("begin < ? AND ? <= end AND id <> ? AND doctor_id = ?", self.end, self.end, appointment_id, self.doctor_id).first
+        errors.add :end_time, I18n.t("appointments.end_invalid")
+      
+      elsif Appointment.where("begin > ? AND ? > end AND id <> ? AND doctor_id = ?", self.begin, self.end, appointment_id, self.doctor_id).first
+        errors.add :duration, I18n.t("appointments.duration_invalid")
+        
+      end
+    end
+  end
 
   def convert_begin_time
     app_date = self.date.split('/')
@@ -35,7 +53,7 @@ class Appointment < ActiveRecord::Base
     return (begincell(start) + self.rowspan - 1)
   end
 
-  def dur
+  def duration
     return ((self.end - self.begin)/60).to_i
   end
 
@@ -43,26 +61,18 @@ class Appointment < ActiveRecord::Base
     (self.begin.min % 15)
   end
 
-  def bottom
-    if (self.end.min % 15) == 0
-      return 0
-    else
-      return 15 - (self.end.min % 15)
-    end
-  end
-
   def rowspan
-    a = 15 - (self.begin.min % 15)
+    a = 15 - top
     
-    duration = ((self.end - self.begin - (a*60))/900).to_i
+    dur = ((self.end - self.begin - (a*60))/900).to_i
     if (self.end - self.begin - (a*60)) <= 0
-      duration = 1
+      dur = 1
     elsif ((self.end - self.begin - (a*60)) % 900) != 0
-      duration += 2
+      dur += 2
     else
-      duration += 1
+      dur += 1
     end
-    return duration
+    return dur
   end
 
   def unbooked?

@@ -1,8 +1,43 @@
-<div class="pagecontent">
-<h1><%= t("users.listing") %></h1>
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#toolbar a").button();
+  $("tbody tr td.clickable").click(function() {
+    location.href = $(this).parent().children("td:first").children("a").attr("href");
+  });
+  $('.list tbody tr').hover(function() {
+    $(this).addClass('zebraHover');
+  }, function() {
+    $(this).removeClass('zebraHover');
+  });
+  $(".list tbody tr:even").addClass('zebra');
+});
+</script>
+<% end %>
+<table class="users list">
+  <thead>
+    <tr>
+      <th colspan="5"><h1><%= t("users.listing") %></h1>
+<div id="toolbar" class="ui-widget-header ui-corner-all">
+   <%= link_to t("users.new"), new_user_path %>
+</div></th>
+    </tr>
+    <tr>
+      <th><%= User.human_attribute_name("first_name") %></th>
+      <th><%= User.human_attribute_name("last_name") %></th>
+      <th><%= User.human_attribute_name("email") %></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+    <%= render "table" %>
+</table>
 
-<p><%= link_to t("users.new"), new_user_path %></p><br />
 
-<%= render "table" %>
-</div>
 

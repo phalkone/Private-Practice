@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_filter :admin, :only => [:index,:destroy,:roles,:update_roles]
+  before_filter :admin, :only => [:roles,:update_roles]
+  before_filter :admin_doctor, :only => [:index,:destroy]
   before_filter :logged_in, :only => [:edit,:update,:show]
-  before_filter :correct_user, :only => [:edit,:update]
-  before_filter :correct_user_except, :only => [:show]
+  before_filter :correct_user, :only => [:edit,:update,:show]
     
   def index
     @users = User.all
@@ -17,15 +17,23 @@ class UsersController < ApplicationController
 
    def create
     @user = User.new(params[:user])
-    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
-    if @user.save
-      sign_in @user unless role?("admin") || role?("doctor")
-      flash[:notice] = t("users.created")
-      redirect_to @user
+    if params[:commit][t("users.submit.cancel")]
+      if (role?("admin") || role?("doctor"))
+        redirect_to users_path
+      else
+        redirect_to root_path
+      end
     else
-      @title = t("users.newtitle")
-      @submit_text = t("users.submit.new");
-      render 'new'
+      params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
+      if @user.save
+        sign_in @user unless role?("admin") || role?("doctor")
+        flash[:notice] = t("users.created")
+        redirect_to @user
+      else
+        @title = t("users.newtitle")
+        @submit_text = t("users.submit.new");
+        render 'new'
+      end
     end
   end
 
@@ -37,15 +45,19 @@ class UsersController < ApplicationController
 
    def update
     @user = User.find(params[:id])
-    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
-    if @user.update_attributes(params[:user])
-      sign_in @user unless role?("admin") || role?("doctor")
-      flash[:notice] = t("users.edited")
+    if params[:commit][t("users.submit.cancel")]
       redirect_to @user
     else
-      @title = t("users.edittitle")
-      @submit_text = t("users.submit.edit");
-      render 'edit'
+      params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
+      if @user.update_attributes(params[:user])
+        sign_in @user unless role?("admin") || role?("doctor")
+        flash[:notice] = t("users.edited")
+        redirect_to @user
+      else
+        @title = t("users.edittitle")
+        @submit_text = t("users.submit.edit");
+        render 'edit'
+      end
     end
   end
 
@@ -68,7 +80,7 @@ class UsersController < ApplicationController
 
   def update_roles
     @user = User.find(params[:id])
-    if params[t("users.submit.cancel")]
+    if params[:commit][t("users.submit.cancel")]
       redirect_to @user
     else
       @user.roles.clear
@@ -86,18 +98,17 @@ class UsersController < ApplicationController
       deny_access unless role?("admin")
     end
 
+    def admin_doctor
+      deny_access unless role?("admin") || role?("doctor")
+    end
+
     def logged_in
       deny_access unless signed_in?
     end
 
     def correct_user
      @user = User.find(params[:id])
-     redirect_to(root_path) unless current_user?(@user) || role?("admin")
-    end
-
-    def correct_user_except
-      @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
+     redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
     end
 
 end
