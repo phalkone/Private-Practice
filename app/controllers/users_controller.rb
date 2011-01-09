@@ -15,7 +15,15 @@ class UsersController < ApplicationController
     @submit_text = t("users.submit.new");
   end
 
-   def create
+  def delete_selected
+    User.destroy(params[:delete].split(";"))
+    flash[:alert] = t("users.sel_destroyed")
+    @users = User.all
+    render "refresh"
+  end
+
+  def create
+    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
     @user = User.new(params[:user])
     if params[:commit][t("users.submit.cancel")]
       if (role?("admin") || role?("doctor"))
@@ -24,7 +32,6 @@ class UsersController < ApplicationController
         redirect_to root_path
       end
     else
-      params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
       if @user.save
         sign_in @user unless role?("admin") || role?("doctor")
         flash[:notice] = t("users.created")
@@ -63,8 +70,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-    flash[:alert] = t("users.destroyed")
+    if @user.destroy
+      flash[:alert] = t("users.destroyed")
+      if apps = Appointment.where("patient_id = ?",params[:id].to_i)
+        apps.each() do |app|
+          app.unbook
+        end
+      end
+    end
     redirect_to users_url
   end
 

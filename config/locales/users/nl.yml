@@ -5,8 +5,9 @@
     newtitle: Registeer
     edittitle: Bewerk profiel
     created: Registratie succesvol.
-    edited: Wijzigingen opgeslagen.
-    destroyed: Gebruiker verwijderd.
+    edited: Wijzigingen succesvol opgeslagen.
+    destroyed: Gebruiker succesvol verwijderd.
+    sel_destroyed: Geselecteerde gebruikers succesvol verwijderd.
     passconfirmation: Paswoord bevestiging
     listing: Lijst van gebruikers
     new: Nieuwe gebruiker
@@ -15,6 +16,7 @@
     destroy: Verwijder
     roles: Functie's
     confirmation: Ben je zeker?
+    sel_confirmation: Ben je zeker dat je de geslecteerde gebruikers wenst te verwijderen?
     submit:
       new: Registeer
       edit: Sla wijzigingen op

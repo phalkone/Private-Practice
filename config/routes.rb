@@ -18,6 +18,7 @@ PrivatePractice::Application.routes.draw do
 
    collection do
      get :search
+     post :delete_selected
    end
   end
   

@@ -30,3 +30,4 @@
     begin_invalid: is invalid. Another appointment is already running at this start time.
     end_invalid: is invalid. Another appointment starts before this session ends.
     duration_invalid: is invalid. A appointment already exists during this time.
+    rev_invalid: is invalid. An appointment cannot end before it begins.

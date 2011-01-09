@@ -8,6 +8,27 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $("#toolbar a").button();
+  $("#toolbar button").button().click(function() {
+    if (($("tbody input:checked").length > 0) && (confirm("<%= escape_javascript(t('users.sel_confirmation')) %>"))){    
+      var test = "";
+      $("tbody input:checked").each(function() {
+        test += $(this).val() + ";"; 
+      });
+      $.post("/users/delete_selected", {delete: test});
+    }
+  });
+
+  $("#delete_all").change(function() {
+     if($("#delete_all").attr("checked")){
+       $("input").attr("checked","checked");
+     } else {
+       $("input").removeAttr("checked");
+     }
+  });
+
+  initialize();
+});
+function initialize(){
   $("tbody tr td.clickable").click(function() {
     location.href = $(this).parent().children("td:first").children("a").attr("href");
   });
@@ -17,27 +38,14 @@ $(document).ready(function() {
     $(this).removeClass('zebraHover');
   });
   $(".list tbody tr:even").addClass('zebra');
-});
+}
 </script>
 <% end %>
-<table class="users list">
-  <thead>
-    <tr>
-      <th colspan="5"><h1><%= t("users.listing") %></h1>
 <div id="toolbar" class="ui-widget-header ui-corner-all">
    <%= link_to t("users.new"), new_user_path %>
-</div></th>
-    </tr>
-    <tr>
-      <th><%= User.human_attribute_name("first_name") %></th>
-      <th><%= User.human_attribute_name("last_name") %></th>
-      <th><%= User.human_attribute_name("email") %></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-    <%= render "table" %>
-</table>
-
-
+   <button><%= t("users.destroy") %></button>
+</div>
+<div id="users_table">
+  <%= render "table" %>
+</div>
 

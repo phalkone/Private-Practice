@@ -30,3 +30,4 @@
     begin_invalid: is ongeldig. Een andere afspraak loopt tijdens deze begin tijd.
     end_invalid: is ongeldig. Een andere afspraak begint voor deze afspraak eindigd.
     duration_invalid: is ongeldig. Een andere afspraak loopt tijdens deze periode.
+    rev_invalid: is ongeldig. Een afspraak kan niet eindigen voor ze begint.

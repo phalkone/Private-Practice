@@ -1,9 +1,8 @@
 module AppointmentsHelper
   def barray(apps)
     barray = Array.new(2, 0)
-    apps.each() do |app|
-      (app.unbooked?) ? barray[1] += 1 : barray[0] += 1
-    end
+    barray[1] = apps.where("patient_id IS NULL").count
+    barray[0] = (apps.count - barray[1]).abs
     return barray
   end
 

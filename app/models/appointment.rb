@@ -17,16 +17,19 @@ class Appointment < ActiveRecord::Base
     if self.begin and self.end
       appointment_id = self.id || 0
 
-      if app = Appointment.where("begin <= ? AND ? < end AND id <> ? AND doctor_id = ?", self.begin, self.begin, appointment_id, self.doctor_id).first
+      if app = Appointment.where("begin <= ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NOT NULL", self.begin, self.begin, appointment_id, self.doctor_id).first
         errors.add :begin_time, I18n.t("appointments.begin_invalid")
-
-      elsif Appointment.where("begin < ? AND ? <= end AND id <> ? AND doctor_id = ?", self.end, self.end, appointment_id, self.doctor_id).first
+      elsif Appointment.where("begin < ? AND ? <= end AND id <> ? AND doctor_id = ? AND patient_id IS NOT NULL", self.end, self.end, appointment_id, self.doctor_id).first
         errors.add :end_time, I18n.t("appointments.end_invalid")
-      
-      elsif Appointment.where("begin > ? AND ? > end AND id <> ? AND doctor_id = ?", self.begin, self.end, appointment_id, self.doctor_id).first
+      elsif Appointment.where("begin > ? AND ? > end AND id <> ? AND doctor_id = ? AND patient_id IS NOT NULL", self.begin, self.end, appointment_id, self.doctor_id).first
         errors.add :duration, I18n.t("appointments.duration_invalid")
-        
+      else
+        Appointment.destroy_all("begin <= '#{self.begin}' AND '#{self.begin}' < end AND id <> #{appointment_id} AND doctor_id = #{self.doctor_id} AND patient_id IS NULL")
+        Appointment.destroy_all("begin < '#{self.end}' AND '#{self.end}' <= end AND id <> #{appointment_id} AND doctor_id = #{self.doctor_id} AND patient_id IS NULL")
+        Appointment.destroy_all("begin > '#{self.begin}' AND '#{self.end}' > end AND id <> #{appointment_id} AND doctor_id = #{self.doctor_id} AND patient_id IS NULL")
       end
+
+      errors.add :end_time, I18n.t("appointments.rev_invalid") if self.end < self.begin
     end
   end
 
@@ -77,5 +80,9 @@ class Appointment < ActiveRecord::Base
 
   def unbooked?
     return true if self.patient.nil?
+  end
+
+  def unbook
+    self.update_attribute("patient_id", nil) 
   end
 end

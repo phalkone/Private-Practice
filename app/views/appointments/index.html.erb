@@ -41,7 +41,7 @@ $(document).ready(function() {
   $("#viewoption input").change(function() {
       $("#viewoption form").submit();
   });
-  $("#toolbar a.newapp").button();
+  $("a.newapp").button();
   $("#previous").button({
     icons: {
       primary: "ui-icon-circle-triangle-w"
@@ -101,21 +101,22 @@ function positionbars(){
 </script>
 <% end %>
 <div id='dialog'></div>
-<div id="viewoption" class="pagecontent">
+<div id="viewoption">
 <%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
-
-  <div id="datepicker"></div>
+  <div class="pagecontent">
+    <div id="datepicker"></div>
   
-  <%= hidden_field 'view','date' %>
-  <div id="doctor_info">
-    <%= render "doctor_info" %>
-  </div>
+    <%= hidden_field 'view','date' %>
+    <div id="doctor_info">
+      <%= render "doctor_info" %>
+    </div>
 
-  <div class="x"></div>
-  <div id="hourrange"></div>
-  <%= hidden_field 'view','start' %>
-  <%= hidden_field 'view','stop' %>
-  <div id="slider-range"></div><br />
+    <div class="x"></div>
+    <div id="hourrange"></div>
+    <%= hidden_field 'view','start' %>
+    <%= hidden_field 'view','stop' %>
+    <div id="slider-range"></div><br />
+  </div>
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
@@ -128,10 +129,8 @@ function positionbars(){
     <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 
         :class => "newapp", :title => t("appointments.newapp")%>
   </div>
-
 <% end %>
 </div>
-
 <div id="calendar">
 <% if @dayweek == "day" %>
   <%= render "day" %>

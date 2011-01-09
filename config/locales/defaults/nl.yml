@@ -106,6 +106,7 @@
       doctor: "Dokter"
       patient: "Patiënt"
       appointment: "Afspraak"
+      user: "Gebruiker"
     attributes:
       page:
         permalink: "Permalink"
