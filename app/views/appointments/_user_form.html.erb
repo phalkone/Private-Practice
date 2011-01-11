@@ -1,12 +1,12 @@
   <div class="field">
     <%= label :user, :first_name, User.human_attribute_name("first_name") %><br />
-    <%= text_field :user, :first_name, :value => (@patient.first_name.blank?) ? "" : @patient.first_name , :size => 34 %>
+    <%= text_field :user, :first_name, :value => (@patient.first_name.blank?) ? "" : @patient.first_name , :size => 34, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= label :user, :last_name, User.human_attribute_name("last_name") %><br />
-    <%= text_field :user, :last_name, :value => (@patient.last_name.blank?) ? "" : @patient.last_name, :size => 34  %>
+    <%= text_field :user, :last_name, :value => (@patient.last_name.blank?) ? "" : @patient.last_name, :size => 34 , :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= label :user, :email, User.human_attribute_name("email") %><br />
-    <%= text_field :user, :email, :value => (@patient.email.blank?) ? "" : @patient.email, :size => 34  %>
+    <%= text_field :user, :email, :value => (@patient.email.blank?) ? "" : @patient.email, :size => 34, :class => "ui-widget-content ui-corner-all"  %>
   </div>

@@ -17,6 +17,10 @@
     roles: Functie's
     confirmation: Ben je zeker?
     sel_confirmation: Ben je zeker dat je de geslecteerde gebruikers wenst te verwijderen?
+    search: Zoek...
+    show_all: Wis zoekopdracht
+    previous: << Volgende
+    next: Vorige >>
     submit:
       new: Registeer
       edit: Sla wijzigingen op

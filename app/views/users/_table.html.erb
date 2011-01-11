@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th class="check"><%= check_box_tag 'delete_all' %></th>
-      <th><%= User.human_attribute_name("first_name") %></th>
       <th><%= User.human_attribute_name("last_name") %></th>
+      <th><%= User.human_attribute_name("first_name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th></th>
       <th></th>
@@ -13,15 +13,16 @@
     <% @users.each do |user| %>
       <tr>
         <td class="check"><%= link_to "", user, :class => "hidden" %><%= check_box_tag 'user_delete_' + user.id.to_s, user.id %></td>
-        <td class="clickable"><%= user.first_name %></td>
         <td class="clickable"><%= user.last_name %></td>
+        <td class="clickable"><%= user.first_name %></td>
         <td class="clickable"><%= user.email %></td>
         <td class="icon"><%= link_to "", edit_user_path(user), 
         :class => "button ui-icon-wrench", :title => t("users.edit") %></td>
       <td class="icon"><%= link_to "", user, 
-        :confirm => t("users.confirmation"), :method => :delete, 
+        :confirm => t("users.confirmation"), :method => :delete, :remote => true,
         :class => "button ui-icon-trash", :title => t("users.destroy") %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<%= will_paginate @users, :previous_label => t("users.previous"), :next_label => t("users.next"), :params => {:controller => "users", :action => "refresh"} %>

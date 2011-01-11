@@ -1,5 +1,5 @@
 <% if object.errors.any? %>
-  <div id="error_explanation">
+  <div id="error_explanation" class="fixed_width_errors">
     <h3><%= t("activerecord.errors.template.header", 
               :model => modelname,
               :count => object.errors.count) %></h3>

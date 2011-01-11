@@ -1,3 +1,6 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
 <div class="pagecontent">
 <h1><%= t("users.newtitle") %></h1>
 <%= render "form" %>

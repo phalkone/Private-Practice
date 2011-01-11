@@ -5,16 +5,18 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.autocomplete.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
   $("#toolbar a").button();
   $("#toolbar button").button().click(function() {
     if (($("tbody input:checked").length > 0) && (confirm("<%= escape_javascript(t('users.sel_confirmation')) %>"))){    
-      var test = "";
+      var term = "";
       $("tbody input:checked").each(function() {
-        test += $(this).val() + ";"; 
+        term += $(this).val() + ";"; 
       });
-      $.post("/users/delete_selected", {delete: test});
+      $.post("/users/delete_selected", {delete: term});
     }
   });
 
@@ -24,6 +26,27 @@ $(document).ready(function() {
      } else {
        $("input").removeAttr("checked");
      }
+  });
+
+  $( "#search_users" ).autocomplete({
+    source: "/users/autocomplete",
+    minLength: 2
+   }).keydown(function(event) {
+     if (event.keyCode == '13') {
+       $.post("/users/search", {term: $(this).val()});
+       $(this).blur();
+       
+     }
+   });
+
+  $( "#show_all" ).button({
+    icons: {
+      primary: "ui-icon-close"
+    },
+    text: false
+  }).click(function() {
+    $.get("/users/refresh");
+    $("#search_users").val("<%= t('users.search') %>");
   });
 
   initialize();
@@ -38,12 +61,19 @@ function initialize(){
     $(this).removeClass('zebraHover');
   });
   $(".list tbody tr:even").addClass('zebra');
+
+  $(".pagination a").click(function() {
+     $.get($(this).attr("href") + "&term=" + $("#search_users").val());
+     return false;
+  });
 }
 </script>
 <% end %>
 <div id="toolbar" class="ui-widget-header ui-corner-all">
    <%= link_to t("users.new"), new_user_path %>
    <button><%= t("users.destroy") %></button>
+   <button id="show_all"><%= t("users.show_all") %></button>
+   <%= text_field_tag "search_users", t("users.search"), :class => "clear ui-widget-content ui-corner-all" %>
 </div>
 <div id="users_table">
   <%= render "table" %>

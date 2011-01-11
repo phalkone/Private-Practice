@@ -27,7 +27,7 @@ $(document).ready(function() {
 </div>
 <div id="subcontent">
   <h2><%= t("pages.title") %></h2>
-  <div id="locale_picker"><p>
+  <div id="locale_picker" class="right"><p>
   <%= form_tag(changelocale_pages_path, :method => :put, :remote => true) do %>
     <%= PageContent.human_attribute_name("locale") %>: 
     <%= select_tag("new_locale", options_for_select(available_locales, I18n.locale)) %>

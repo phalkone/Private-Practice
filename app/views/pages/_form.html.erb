@@ -5,13 +5,13 @@
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Page.model_name.human.downcase %>
   <div class="field">
     <%= f.label :title %><br />
-    <%= f.text_field :title %>
+    <%= f.text_field :title, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :body %> <br />
     (<%= link_to "Markdown Basics", "Markdown_basics.html", :class => "lightbox frame small" %> ·  
     <%= link_to "Markdown Syntax", "Markdown_syntax.html", :class => "lightbox frame small" %>)<br />
-    <%= f.text_area :body, :class => "resizable", :cols => 80, :rows => 20 %>
+    <%= f.text_area :body, :class => "resizable ui-widget-content ui-corner-all", :cols => 80, :rows => 20 %>
   </div>
   <% if Image.count > 0 %>
     <div class="field">
@@ -25,10 +25,10 @@
   <% end %>
   <div class="field">
     <%= f.label :html %><br />
-    <%= f.check_box :html %>
+    <%= f.check_box :html, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <%= f.hidden_field :locale %>
   <div class="actions">
-    <%= f.submit @submit_text %>
+    <%= f.submit @submit_text, :class => "ui-widget-content ui-corner-all" %>
   </div>
 <% end %>

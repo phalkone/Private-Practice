@@ -1,11 +1,14 @@
 <div id="footer">
   <p class="right"><% available_locales.each do |locale| %>
-    <a href="<%= "http://" + locale +"."+ domain+request.path %>"
-    <% if locale == I18n.locale.to_s %> class="red" <% else %> class="grey" <% end %>><%= locale %></a>
+    <% if locale == I18n.locale.to_s %>
+      <span class="red"><%= locale %></span>
+    <% else %>
+      <a href="<%= 'http://' + locale +'.'+ domain+request.path %>" class="grey"><%= locale %></a>
+    <% end %>
       <% if locale != available_locales[available_locales.length-1] %>
          · 
       <% end %>
-    <% end %></p>
+   <% end %></p>
   <p>Copyright &copy; 2010 <a href="mailto:webmaster@app.local">Tim Pintens</a></p>
 </div>
 

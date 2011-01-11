@@ -4,8 +4,8 @@
       <% icon_class = (page.nested) ? "button ui-icon-arrowthick-1-w" : "button ui-icon-arrowthick-1-e" %>
       <td <%= raw "class=\"nested\"" unless !page.nested %>>
         <% if page == @pages.first %>
-          <span class="icon-blank ui-icon-home"></span>
-        <% else %><span class="button-blank"></span>
+          <span class="button icon-blank ui-icon-home"></span>
+        <% else %><span class="button button-blank"></span>
         <% end %><%= link_to page.get_content(session[:locale]).title, "http://" + session[:locale].to_s + "." + domain + "/pages/" + page.to_param , :class => "lightbox frame" %><td>
       <td class="icon"><% if page != @pages.first %>
         <%= link_to "", toggle_page_path(page), :remote => true, :class => icon_class, :title => t("pages.toggle") %> 

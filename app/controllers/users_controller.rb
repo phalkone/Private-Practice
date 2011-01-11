@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :correct_user, :only => [:edit,:update,:show]
     
   def index
-    @users = User.all
+    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     @title = t("users.menutitle")
   end
 
@@ -15,10 +15,40 @@ class UsersController < ApplicationController
     @submit_text = t("users.submit.new");
   end
 
+  def refresh
+    if params[:term] != t('users.search')
+      @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    else
+      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    end
+  end
+
+  def search
+    @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    render "refresh"
+  end
+
+  def autocomplete
+    @results = User.where(search_term(params[:term])).all
+    result = Array.new
+    @results.each() do |user|
+      result.insert(-1,user.name)
+    end
+    render :json => result.to_json
+  end
+
   def delete_selected
-    User.destroy(params[:delete].split(";"))
-    flash[:alert] = t("users.sel_destroyed")
-    @users = User.all
+    if params[:delete] && User.destroy(params[:delete].split(";"))
+      flash[:alert] = t("users.sel_destroyed")
+      params[:delete].split(";").each do |id|
+        if apps = Appointment.where("patient_id = ?",id)
+          apps.each() do |app|
+            app.unbook
+          end
+        end
+      end
+    end
+    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     render "refresh"
   end
 
@@ -78,7 +108,8 @@ class UsersController < ApplicationController
         end
       end
     end
-    redirect_to users_url
+    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    render "refresh"
   end
 
   def show
@@ -107,6 +138,16 @@ class UsersController < ApplicationController
   end
 
   private
+    def search_term(params_term)
+      search_split = params_term.split(" ")
+      search_t = ""
+      search_split.each() do |term|
+        search_t += "(first_name LIKE '"+term+"%' OR last_name LIKE '"+term+"%')"
+        search_t+= " AND " unless (term == search_split.last) 
+      end
+      return search_t
+    end
+
     def admin
       deny_access unless role?("admin")
     end

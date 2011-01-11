@@ -2,18 +2,18 @@
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  Image.model_name.human.downcase %>
   <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :description %><br />
-    <%= f.text_field :description %>
+    <%= f.text_field :description, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :picture %><br />
-    <%= file_field :file, :picture %>
+    <%= file_field :file, :picture, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <%= f.hidden_field :filetype %>
   <div class="actions">
-    <%= f.submit t("images.submit.new") %>
+    <%= f.submit t("images.submit.new"), :class => "ui-widget-content ui-corner-all" %>
   </div>
 <% end %>

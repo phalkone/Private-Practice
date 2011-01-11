@@ -17,6 +17,10 @@
     roles: Roles
     confirmation: Are you sure?
     sel_confirmation: Are you sure you want to delete the selected users?
+    search: Search...
+    show_all: Delete search
+    previous: << Previous
+    next: Next >>
     submit:
       new: Registreer
       edit: Save changes

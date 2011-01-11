@@ -1,17 +1,20 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
 <div class="pagecontent">
 <h2><%= t("users.roles") %>: <%= @user.name %></h2> 
 <%= form_tag update_roles_user_path(@user) do %>
   <ul>
     <% Role.find(:all).each do |role| -%>
       <li>
-        <input name="role[<%= role.id %>]" type="checkbox" id="user_role_<%= role.id %>" <%= "checked=\"checked\"" if @user.roles.include? role %>"/>
+        <input name="role[<%= role.id %>]" type="checkbox" id="user_role_<%= role.id %>" <%= "checked=\"checked\"" if @user.roles.include? role %>" class="ui-widget-content ui-corner-all" />
         <label for="user_role_<%= role.id %>" ><%= t("txt." + role.title) %></label>
        </li>
      <% end -%>
   </ul>
   <div class="actions">
-    <%= submit_tag t("users.submit.edit") %>
-    <%= submit_tag t("users.submit.cancel") %>
+    <%= submit_tag t("users.submit.edit"), :class => "ui-widget-content ui-corner-all" %>
+    <%= submit_tag t("users.submit.cancel"), :class => "ui-widget-content ui-corner-all" %>
   </div>
 <% end %>
 </div>

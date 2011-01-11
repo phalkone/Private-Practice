@@ -17,7 +17,9 @@ PrivatePractice::Application.routes.draw do
     end
 
    collection do
-     get :search
+     get :autocomplete
+     get :refresh
+     post :search
      post :delete_selected
    end
   end

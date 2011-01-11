@@ -1,2 +1,12 @@
+<% flash.each do |key, value| %>
+  $('<div />')
+  .addClass("flash <%= escape_javascript(key.to_s)%>")
+  .html("<%= escape_javascript(value)%>")
+  .hide()
+  .appendTo('.flashes')
+  .show(300);
+<% end %>
+
 $("#users_table").html("<%= escape_javascript(render(:partial => "table")) %>");
 initialize();
+setTimeout(flash_hide,3000);

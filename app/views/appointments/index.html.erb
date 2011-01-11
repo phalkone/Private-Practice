@@ -120,7 +120,7 @@ function positionbars(){
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
-    <span id="weekendcheck"><%= check_box_tag 'view[weekend]', "1", (true if (@weekend == "1")) %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
+    <span id="weekendcheck" class="right"><%= check_box_tag 'view[weekend]', "1", (true if (@weekend == "1")) %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
     <span id="dayweek">
       <%= radio_button "view", "dayweek", "day" , :checked => (true if (@dayweek == "day")) %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
       <%= radio_button "view", "dayweek", "week" , :checked => (true if (@dayweek == "week")) %><%= label_tag 'view_dayweek_week', t("appointments.week") %>

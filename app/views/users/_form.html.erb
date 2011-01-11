@@ -2,26 +2,26 @@
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  User.model_name.human.downcase %>
   <div class="field">
     <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
+    <%= f.text_field :first_name, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
+    <%= f.text_field :last_name, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.text_field :email %>
+    <%= f.text_field :email, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.password_field :password %>
+    <%= f.password_field :password, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="field">
     <%= f.label :password_confirmation, t("users.passconfirmation") %><br />
-    <%= f.password_field :password_confirmation %>
+    <%= f.password_field :password_confirmation, :class => "ui-widget-content ui-corner-all" %>
   </div>
   <div class="actions">
-    <%= f.submit @submit_text %>
-    <%= submit_tag t("users.submit.cancel") %>
+    <%= f.submit @submit_text, :class => "ui-widget-content ui-corner-all" %>
+    <%= submit_tag t("users.submit.cancel"), :class => "ui-widget-content ui-corner-all" %>
   </div>
 <% end %>
