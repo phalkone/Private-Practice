@@ -1,8 +1,11 @@
 module AppointmentsHelper
   def barray(apps)
     barray = Array.new(2, 0)
-    barray[1] = apps.where("patient_id IS NULL").count
-    barray[0] = (apps.count - barray[1]).abs
+    apps.each() do |app|
+      app.sub_appointments.each() do |subapp|
+      (subapp.unbooked?) ? barray[1] += 1 : barray[0] += 1
+      end
+    end
     return barray
   end
 
@@ -13,15 +16,19 @@ module AppointmentsHelper
     maxlength = 0
 
     apps.each() do |app|
-      darray[app.begincell(start)].insert(-1, app.id)
-      if (app.rowspan > 1) && (darray[app.begincell(start)][0] != -1)
-        for i in 1..(app.rowspan - 1)
-          darray[app.begincell(start)+i][0] = darray[app.begincell(start)][0]
+      i = 0
+      app.sub_appointments.each() do |subapp|
+      darray[subapp.begincell(start)].insert(-1, app.id.to_s+"/"+i.to_s)
+      if (subapp.rowspan > 1) && (darray[subapp.begincell(start)][0] != -1)
+        for i in 1..(subapp.rowspan - 1)
+          darray[subapp.begincell(start)+i][0] = darray[subapp.begincell(start)][0]
         end
-      elsif app.rowspan > 1
-        for i in 0..(app.rowspan - 1)
-          darray[app.begincell(start)+i][0] = app.begincell(start)
+      elsif subapp.rowspan > 1
+        for i in 0..(subapp.rowspan - 1)
+          darray[subapp.begincell(start)+i][0] = subapp.begincell(start)
         end
+      end
+      i += 1
       end
     end
 
@@ -62,12 +69,16 @@ module AppointmentsHelper
     warray = Array.new(stop-start){Array.new((@weekend == "1")? 7 : 5)}
 
     apps.each() do |app|
-      row = app.begin.hour - start
-      column = app.begin.to_date.cwday - 1
+      i = 0
+      app.sub_appointments.each() do |subapp|
+      row = subapp.begin.hour - start
+      column = subapp.begin.to_date.cwday - 1
       if warray[row][column].nil? 
-        warray[row][column] = app.id.to_s
+        warray[row][column] = app.id.to_s + "/" + i.to_s
       else
-        warray[row][column].insert(-1, ';' + app.id.to_s)
+        warray[row][column].insert(-1, ';' + app.id.to_s + "/" + i.to_s)
+      end
+      i += 1
       end
     end
 

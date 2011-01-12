@@ -27,6 +27,8 @@
     unregistered: Ongeregistreerd
     booked: Geboekt
     unbooked: Niet geboekt
+    unsplit: Periode niet gesplitst
+    split: Gesplitst in periodes van 
     begin_invalid: is ongeldig. Een andere afspraak loopt tijdens deze begin tijd.
     end_invalid: is ongeldig. Een andere afspraak begint voor deze afspraak eindigd.
     duration_invalid: is ongeldig. Een andere afspraak loopt tijdens deze periode.

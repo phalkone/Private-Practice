@@ -75,9 +75,16 @@ $(document).ready(function() {
     $("#datepicker").datepicker( "setDate" , new Date(nextDate));
     $("#viewoption form").submit();
   });
-  positionbars();
+  initialize();
 });
-function positionbars(){
+function initialize(){
+  $(".unbooked, .booked").click(function(e) {
+    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+      $.get($(this).children("a:first").attr("href"));
+      return false;
+    }
+  });
+
   $("div.bar").css('height',function(){
     var height = $(this).parent().height();
     return height + "px";

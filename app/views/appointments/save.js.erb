@@ -17,6 +17,21 @@
   $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
   $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
 
+  if($("#appointment_split").val() > 0) {
+    $("#splitlabel").html("<p><%= t('appointments.split') %> "+ $("#appointment_split").val() +" min.</p>");
+  }
+  $("#split-slider").slider({
+    range: false, min: 0, max: 120, value: $("#appointment_split").val(),
+    slide: function(event, ui) {
+      $("#appointment_split").val(ui.value);
+      if(ui.value == 0){
+        $("#splitlabel").html("<p><%= t('appointments.unsplit') %></p>");
+      } else {
+        $("#splitlabel").html("<p><%= t('appointments.split') %> "+ ui.value +" min.</p>");
+      }
+    }
+  });
+
   var values = $("#slider-range").slider( "option", "values" );
   $("#hour-slider").slider({
       range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [(values[0]*60), (values[1]*60)],

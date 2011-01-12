@@ -60,7 +60,6 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
   #error_explanation ul li { list-style: square; }
 
 #dialog { font-size:0.8em; display:none;}
-#hour-slider-field{ margin: 0 10px 10px 20px; }
 #doctor_info {margin-left: 240px; height: 100%; padding: 5px; line-height: 1.5;}
 #mode {margin: 0 0 10px 20px;}
 
@@ -145,4 +144,5 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .weekend { width: 14%; }
 .no_weekend { width: 20%; }
 .pagination {float:right; margin: 4px 0 10px 0;}
+.slider-field{ margin: 0 10px 10px 20px; }
 

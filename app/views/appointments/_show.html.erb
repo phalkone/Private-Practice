@@ -18,6 +18,11 @@
   <%= l(@appointment.end, :format => :long) %>
 </p>
 
+<% if !@appointment.split.nil? && (@appointment.split != 0) %>
+<p>
+  <b><%= t('appointments.split') + " " + @appointment.split.to_s %>  min.</b>
+</p>
+<% end %>
 <p>
   <b><%= Appointment.human_attribute_name("comment") %>:</b><br />
   <%= @appointment.comment %>

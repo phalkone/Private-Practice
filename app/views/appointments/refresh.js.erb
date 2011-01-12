@@ -4,4 +4,4 @@ $("#doctor_info").html("<%= escape_javascript(render(:partial => "doctor_info"))
 <% else %>
   $("#calendar").html("<%= escape_javascript(render(:partial => "week")) %>");
 <% end %>
-positionbars();
+initialize();

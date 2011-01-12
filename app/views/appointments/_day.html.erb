@@ -18,18 +18,19 @@
       <% elsif @dayarray[i][0] != -2 %>
         <% colspan = (@maxcols/@dayarray[i][0]) %>
         <% for j in 1..(@dayarray[i].length - 1) %>
-          <% app = @appointments.find_by_id(@dayarray[i][j]) %>
-          <% td_class = (app.unbooked?) ? "unbooked" : "booked" %>
-          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>" class="<%= td_class %>">
+          <% id = @dayarray[i][j].split("/")[0].to_i %>
+          <% subid = @dayarray[i][j].split("/")[1].to_i %>
+          <% app = @appointments.find_by_id(id).sub_appointments[subid] %>
+          <td rowspan="<%= app.rowspan %>" colspan="<%= colspan %>" class="<%= (app.unbooked?) ? 'unbooked' : 'booked' %>">
             <div class="bar">
               <div class="bar2" style="margin-top:<%= app.top %>px;height:<%= app.duration %>px;">
               </div>
             </div>
-            <%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> 
-             <%= link_to ((app.unbooked?) ? t("appointments.unbooked").upcase : app.patient.name), appointment_path(app), :title => ((app.unbooked?) ? t("appointments.unbooked") : app.patient.name), :remote => true %> 
-            <%= link_to "", edit_appointment_path(app), :remote => true, 
+              <%= l(app.begin, :format => :time) %>-<%= l(app.end, :format => :time) %> 
+             <%= link_to ((app.unbooked?) ? t("appointments.unbooked").upcase : app.patient.name), appointment_path(@appointments.find_by_id(id)), :title => ((app.unbooked?) ? t("appointments.unbooked") : app.patient.name), :remote => true %> 
+            <%= link_to "", edit_appointment_path(@appointments.find_by_id(id)), :remote => true, 
         :class => "button ui-icon-wrench", :title => t("appointments.edit") %><%= link_to "", 
-        app, :remote => true, :confirm => t("appointments.confirmation"), :method => :delete, 
+        @appointments.find_by_id(id), :remote => true, :confirm => t("appointments.confirmation"), :method => :delete, 
         :class => "button ui-icon-trash", :title => t("appointments.delete") %></td>
         <% end %>
       <% end %>

@@ -7,6 +7,7 @@ $("#mode").buttonset().change(function() {
     $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
   } else {
     $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
+    split()
   }
 });
 
@@ -16,13 +17,19 @@ $("#appointment_date").css("font-size","0.95em");
 $("#appointment_date table").css("font-size","0.75em");
 
 var values = $( "#slider-range" ).slider( "option", "values" );
-<% if @appointment.begin.nil? %>
+<% if @appointment.date.nil? %>
 $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
+<% end %>
+<% if @begin_slider.nil? %>
 var begin_slider = values[0]*60;
 var end_slider = values[1]*60;
 <% else %>
 var begin_slider = <%= escape_javascript(@begin_slider.to_s) %>;
 var end_slider = <%= escape_javascript(@end_slider.to_s) %>;
+<% end %>
+
+<% if @mode == "unbooked" %>
+split();
 <% end %>
 
 $("#hour-slider").slider({
@@ -56,4 +63,20 @@ function zero(n){
     var ret = n;
   }
   return ret;
+}
+function split(){
+    if($("#appointment_split").val() > 0) {
+      $("#splitlabel").html("<p><%= t('appointments.split') %> "+ $("#appointment_split").val() +" min.</p>");
+    }
+    $("#split-slider").slider({
+      range: false, min: 0, max: 120, value: $("#appointment_split").val(),
+      slide: function(event, ui) {
+        $("#appointment_split").val(ui.value);
+        if(ui.value == 0){
+          $("#splitlabel").html("<p><%= t('appointments.unsplit') %></p>");
+        } else {
+          $("#splitlabel").html("<p><%= t('appointments.split') %> "+ ui.value +" min.</p>");
+        }
+     }
+  });
 }
