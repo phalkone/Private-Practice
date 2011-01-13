@@ -11,7 +11,9 @@ class AppointmentsController < ApplicationController
   end
 
   def new
-    @appointment = Appointment.new
+    @appointment = (params[:appointment]) ? Appointment.new(params[:appointment]) : Appointment.new
+    @appointment.convert_begin_time if params[:appointment]
+    @appointment.convert_end_time if params[:appointment]
     @patient = User.new
     @title = t("appointments.newapp")
     @mode = "registered"
@@ -51,8 +53,6 @@ class AppointmentsController < ApplicationController
     @appointment.date = l(@appointment.begin, :format => :datepicker)
     @appointment.begin_time = l(@appointment.begin.to_time, :format => :time)
     @appointment.end_time = l(@appointment.end.to_time, :format => :time)
-    @begin_slider = (@appointment.begin.hour * 60) + @appointment.begin.min
-    @end_slider = (@appointment.end.hour * 60) + @appointment.end.min
     @patient = User.new
     @title = t("appointments.edit")
     @mode = (@appointment.unbooked?) ? "unbooked" : "registered" 
@@ -135,9 +135,12 @@ class AppointmentsController < ApplicationController
       if @dayweek == "day"
         @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
         @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
-        @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
+        @appointments = current_user.appointments.where("(begin >= ? AND begin <= ?) OR (end >= ? AND end <= ?)", @begin , @end, @begin , @end).order("begin ASC")
         if (@appointments.count != 0) && (@appointments.last.end > @end)
           @stop = @appointments.last.end.hour + 1
+        end
+        if (@appointments.count != 0) && (@appointments.first.begin < @begin)
+          @start = @appointments.first.begin.hour
         end
         @dayarray = dayarray(@start, @stop, @appointments)
         @maxcols = @dayarray.last[0];

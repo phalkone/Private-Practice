@@ -27,6 +27,7 @@
     unregistered: Ongeregistreerd
     booked: Geboekt
     unbooked: Niet geboekt
+    book_now: Boek nu
     unsplit: Periode niet gesplitst
     split: Gesplitst in periodes van 
     begin_invalid: is ongeldig. Een andere afspraak loopt tijdens deze begin tijd.

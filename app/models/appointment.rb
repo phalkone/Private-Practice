@@ -100,12 +100,7 @@ class Appointment < ActiveRecord::Base
   def sub_appointments
     subapps = Array.new
     if(self.split.nil? || self.split == 0 || (self.begin.advance(:minutes => self.split) > self.end))
-      subapp = Appointment.new(:doctor_id => self.doctor_id,
-                               :begin => self.begin,
-                               :end => self.end,
-                               :comment => self.comment,
-                               :patient_id => self.patient_id )
-      subapps.insert(-1,subapp)
+      subapps.insert(-1,self)
     else
       new_begin = self.begin
       new_end = self.begin.advance(:minutes => self.split)

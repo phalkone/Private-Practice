@@ -33,8 +33,20 @@
   });
 
   var values = $("#slider-range").slider( "option", "values" );
+  <% if !@appointment.begin.nil? %>
+    var begin_slider = <%= escape_javascript((@appointment.begin.hour*60 + @appointment.begin.min).to_s) %>;
+  <% else %>
+    var begin_slider = (values[0]*60);
+  <% end %>
+  <% if !@appointment.end.nil? %>
+    var end_slider = <%= escape_javascript((@appointment.end.hour*60 + @appointment.end.min).to_s) %>;
+  <% else %>
+    var end_slider = (values[1]*60);
+  <% end %>
+
+
   $("#hour-slider").slider({
-      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [(values[0]*60), (values[1]*60)],
+      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [begin_slider, end_slider],
       slide: function(event, ui) {
         var beginmin = ui.values[0] % 60;
         var beginhour = (ui.values[0] - (beginmin))/60;

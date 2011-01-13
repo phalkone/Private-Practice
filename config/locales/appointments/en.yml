@@ -27,6 +27,7 @@
     unregistered: Unregistered
     booked: Booked
     unbooked: Unbooked
+    book_now: Book now
     unsplit: Period unsplit
     split: Split into periods of  
     begin_invalid: is invalid. Another appointment is already running at this start time.

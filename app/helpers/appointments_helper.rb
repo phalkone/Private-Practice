@@ -2,9 +2,7 @@ module AppointmentsHelper
   def barray(apps)
     barray = Array.new(2, 0)
     apps.each() do |app|
-      app.sub_appointments.each() do |subapp|
-      (subapp.unbooked?) ? barray[1] += 1 : barray[0] += 1
-      end
+      (app.unbooked?) ? barray[1] += app.sub_appointments.length : barray[0] += 1
     end
     return barray
   end

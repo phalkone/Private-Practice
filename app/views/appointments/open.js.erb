@@ -20,12 +20,15 @@ var values = $( "#slider-range" ).slider( "option", "values" );
 <% if @appointment.date.nil? %>
 $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
 <% end %>
-<% if @begin_slider.nil? %>
-var begin_slider = values[0]*60;
-var end_slider = values[1]*60;
+<% if !@appointment.begin.nil? %>
+  var begin_slider = <%= escape_javascript((@appointment.begin.hour*60 + @appointment.begin.min).to_s) %>;
 <% else %>
-var begin_slider = <%= escape_javascript(@begin_slider.to_s) %>;
-var end_slider = <%= escape_javascript(@end_slider.to_s) %>;
+  var begin_slider = (values[0]*60);
+<% end %>
+<% if !@appointment.end.nil? %>
+  var end_slider = <%= escape_javascript((@appointment.end.hour*60 + @appointment.end.min).to_s) %>;
+<% else %>
+  var end_slider = (values[1]*60);
 <% end %>
 
 <% if @mode == "unbooked" %>
