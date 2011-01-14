@@ -38,9 +38,9 @@ class UsersController < ApplicationController
   end
 
   def delete_selected
-    if params[:delete] && User.destroy(params[:delete].split(";"))
+    if params[:selected] && User.destroy(params[:delete].split(";"))
       flash[:alert] = t("users.sel_destroyed")
-      params[:delete].split(";").each do |id|
+      params[:selected].split(";").each do |id|
         if apps = Appointment.where("patient_id = ?",id)
           apps.each() do |app|
             app.unbook

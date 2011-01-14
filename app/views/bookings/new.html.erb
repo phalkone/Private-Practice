@@ -1,0 +1,11 @@
+<div class="pagecontent">
+<h1><%= t("bookings.title") %></h1>
+<p>Please confirm that you want to book the following appointment.</p><br />
+
+<%= @appointment.begin %><br /><br />
+<%= form_tag(bookings_path, :method => :post) do %>
+  <%= hidden_field_tag 'main_id', @main_id %>
+  <%= hidden_field_tag 'sub_id', @sub_id %>
+  <%= submit_tag "Confirm" %>
+<% end %>
+</div>

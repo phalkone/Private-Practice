@@ -1,0 +1,11 @@
+"en":
+  bookings:
+    booking: Booking
+    menutitle: Booking
+    title: Book appointment
+    doctor: Doctor
+    available_apps: Available appointments
+    between: between
+    not_available: No Available appointments
+    and: and
+    show: Show

@@ -29,13 +29,13 @@ class Appointment < ActiveRecord::Base
         if app = Appointment.where("begin <= ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.begin, self.begin, appointment_id, self.doctor_id).first
           if (app.end > self.end)
             original_end = app.end
-            app.update_attribute("end", self.begin)
             app.copy(self.end,original_end)
+            (app.begin == self.begin) ? app.destroy : app.update_attribute("end", self.begin)
           else
             app.update_attribute("end", self.begin)
           end
         end
-        if app = Appointment.where("begin < ? AND ? <= end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.end, self.end, appointment_id, self.doctor_id).first
+        if app = Appointment.where("begin < ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.end, self.end, appointment_id, self.doctor_id).first
           app.update_attribute("begin", self.end) 
         end
       end
@@ -95,6 +95,18 @@ class Appointment < ActiveRecord::Base
 
   def unbook
     self.update_attribute("patient_id", nil) 
+  end
+
+  def book(patient_id,sub_id)
+    subapp = self.sub_appointments[sub_id]
+    subapp.patient_id = patient_id if subapp.patient_id.nil?
+    if subapp.save
+      return true
+    else
+      return false
+    end
+    rescue
+      return false
   end
 
   def sub_appointments

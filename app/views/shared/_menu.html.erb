@@ -21,4 +21,8 @@
                                (@showpage.nil?) -%>">
     <%= link_to t("pages.menutitle"), pages_path %></li>
   <% end %>
+  <% if role?("patient") %>
+    <li class="<%= "active" if (controller.controller_name == "bookings") -%>">
+      <%= link_to t("bookings.menutitle"), bookings_path %></li>
+  <% end %>
 </ul>

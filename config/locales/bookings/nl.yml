@@ -1,0 +1,11 @@
+"nl":
+  bookings:
+    booking: Afspraak
+    menutitle: Afspraak
+    title: Maak een afspraak
+    doctor: Dokter
+    available_apps: Beschikbare afspraken
+    between: tussen
+    not_available: Geen beschikbare afspraken
+    and: en
+    show: Toon

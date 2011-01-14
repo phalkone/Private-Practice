@@ -1,8 +1,13 @@
 PrivatePractice::Application.routes.draw do
-  
   resources :images
   
   resources :sessions, :only => [:new,:create,:destroy]
+
+  resources :bookings do
+    collection do
+      put :index
+    end
+  end
   
   resources :appointments do
     collection do

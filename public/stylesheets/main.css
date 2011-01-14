@@ -62,6 +62,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #dialog { font-size:0.8em; display:none;}
 #doctor_info {margin-left: 240px; height: 100%; padding: 5px; line-height: 1.5;}
 #mode {margin: 0 0 10px 20px;}
+#booking_results { margin-top:5px;}
 
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
@@ -87,7 +88,7 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
 table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
   .users th { text-align: left; font-size: 1em; margin-bottom: 2px; padding: 5px;}
-  .users tr { height: 25px; }
+  .users tr { height: 25px; border: solid 1px #dddddd;}
   .users td { padding-left: 5px; }
   .users td.clickable { cursor: pointer; }
   tr.zebraHover { background-color: #FCC; border: solid 1px #C66;}
@@ -130,6 +131,7 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .red{ color: #d40000; }
 .grey { color: #888; }
 .x{ clear:both; }
+.normal_font {font-size:0.8em;}
 .icon { width:20px;}
 .nested { text-indent:3em; }
 .indent { text-indent:1.2em; }

@@ -69,13 +69,15 @@ module AppointmentsHelper
     apps.each() do |app|
       i = 0
       app.sub_appointments.each() do |subapp|
-      row = subapp.begin.hour - start
-      column = subapp.begin.to_date.cwday - 1
-      if warray[row][column].nil? 
-        warray[row][column] = app.id.to_s + "/" + i.to_s
-      else
-        warray[row][column].insert(-1, ';' + app.id.to_s + "/" + i.to_s)
-      end
+        row = subapp.begin.hour - start
+        column = subapp.begin.to_date.cwday - 1
+        if (row >= 0) && (row < (stop-start)) 
+          if warray[row][column] == nil 
+            warray[row][column] = app.id.to_s + "/" + i.to_s
+          else
+            warray[row][column].insert(-1, ';' + app.id.to_s + "/" + i.to_s)
+          end
+        end
       i += 1
       end
     end
