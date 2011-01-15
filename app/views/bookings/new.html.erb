@@ -1,11 +1,20 @@
 <div class="pagecontent">
 <h1><%= t("bookings.title") %></h1>
-<p>Please confirm that you want to book the following appointment.</p><br />
+<p><%= t("bookings.confirm_app") %></p><br />
 
-<%= @appointment.begin %><br /><br />
+<div class="field">
+  <p><%= t("bookings.with_doctor") %> <b><%= @appointment.doctor.name %></b>
+ <%= t("bookings.on_date") %> <b><%= l(@appointment.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(@appointment.begin, :format => :time) %></b></p>
+</div>
 <%= form_tag(bookings_path, :method => :post) do %>
+  <div class="field">
+    <%= label_tag "comment", Appointment.human_attribute_name("comment") + " (" + t("bookings.max_comment") + "):" %><br />
+    <%= text_area_tag "comment", @appointment.comment, :cols => 45, :rows => 5 %>
+  </div>
   <%= hidden_field_tag 'main_id', @main_id %>
   <%= hidden_field_tag 'sub_id', @sub_id %>
-  <%= submit_tag "Confirm" %>
+  <div class="actions">
+    <%= submit_tag t("bookings.confirm") %>
+  </div>
 <% end %>
 </div>

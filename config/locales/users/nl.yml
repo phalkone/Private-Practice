@@ -3,6 +3,7 @@
     user: Gebruiker
     menutitle: Gebruikers
     newtitle: Registeer
+    menutitle_doc: Patiënten
     edittitle: Bewerk profiel
     created: Registratie succesvol.
     edited: Wijzigingen succesvol opgeslagen.
@@ -12,7 +13,7 @@
     listing: Lijst van gebruikers
     new: Nieuwe gebruiker
     show: Toon
-    edit: Bewerk
+    edit: Bewerk profiel
     destroy: Verwijder
     roles: Functie's
     confirmation: Ben je zeker?
@@ -21,6 +22,11 @@
     show_all: Wis zoekopdracht
     previous: << Volgende
     next: Vorige >>
+    profile_of: Profiel van
+    fut_apps: Toekomstige afspraken
+    prev_apps: Vroegere afspraken
+    gen_info: Algemene informatie
+    apps_info: Afspraken
     submit:
       new: Registeer
       edit: Sla wijzigingen op

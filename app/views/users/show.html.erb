@@ -1,4 +1,6 @@
 <div class="pagecontent">
+<h1><%= t("users.profile_of") + " " + @user.name %></h1>
+<h2><%= t("users.gen_info") %></h2>
 <p>
   <b><%= User.human_attribute_name("first_name") %>:</b>
   <%= @user.first_name %>
@@ -12,8 +14,33 @@
 <p>
   <b><%= User.human_attribute_name("email") %>:</b>
   <%= @user.email %>
+</p><br />
+
+<% if @user.roles.exists?(:title => "patient") %>
+<h2><%= t("users.apps_info") %></h2>
+<p>
+  <b><%= t("users.fut_apps") %>:</b>
+  <ul>
+  <% @user.bookings.where("begin > ?",Time.now).order("begin ASC").each() do |app| %>
+    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
+ <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b> <%= link_to t("bookings.unbook"), booking_path(app), 
+    :confirm => t("users.confirmation"), :method => :delete %></li>
+  <% end %>
+  </ul>
 </p>
 
+<p>
+  <b><%= t("users.prev_apps") %>:</b>
+  <ul>
+  <% @user.bookings.where("begin < ?",Time.now).order("begin ASC").each() do |app| %>
+    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
+ <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b></li>
+  <% end %>
+  </ul>
+</p>
+<% end %>
+
+<% if role?("doctor") || role?("admin") %>
 <p>
   <b><%= t("users.roles") %>:</b>
   <ul>
@@ -22,12 +49,13 @@
   <% end %>
   </ul>
 </p>
-<br />
+<% end %>
 
-
-<%= link_to t("txt.edit"), edit_user_path(@user) %>
+<%= link_to t("users.edit"), edit_user_path(@user) %>
 <% if role?("admin") %>
-| <%= link_to t("users.roles"), roles_user_path(@user) %> |
-<%= link_to t("txt.back"), users_path %>
+| <%= link_to t("users.roles"), roles_user_path(@user) %>
+<% end %>
+<% if role?("doctor") || role?("admin") %>
+ | <%= link_to t("txt.back"), users_path %>
 <% end %>
 </div>

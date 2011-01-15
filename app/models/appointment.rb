@@ -26,11 +26,11 @@ class Appointment < ActiveRecord::Base
         errors.add :duration, I18n.t("appointments.duration_invalid")
       else
         Appointment.destroy_all("begin >= '#{self.begin}' AND '#{self.end}' >= end AND id <> #{appointment_id} AND doctor_id = #{self.doctor_id} AND patient_id IS NULL")
-        if app = Appointment.where("begin <= ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.begin, self.begin, appointment_id, self.doctor_id).first
+        if app = Appointment.where("begin < ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.begin, self.begin, appointment_id, self.doctor_id).first
           if (app.end > self.end)
             original_end = app.end
             app.copy(self.end,original_end)
-            (app.begin == self.begin) ? app.destroy : app.update_attribute("end", self.begin)
+            app.update_attribute("end", self.begin)
           else
             app.update_attribute("end", self.begin)
           end
@@ -40,7 +40,7 @@ class Appointment < ActiveRecord::Base
         end
       end
 
-      errors.add :end_time, I18n.t("appointments.rev_invalid") if self.end < self.begin
+      errors.add :end_time, I18n.t("appointments.rev_invalid") if self.end <= self.begin
     end
   end
 
@@ -76,8 +76,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def rowspan
-    a = 15 - top
-    
+    a = 15 - top  
     dur = ((self.end - self.begin - (a*60))/900).to_i
     if (self.end - self.begin - (a*60)) <= 0
       dur = 1
@@ -94,12 +93,26 @@ class Appointment < ActiveRecord::Base
   end
 
   def unbook
-    self.update_attribute("patient_id", nil) 
+    self.update_attribute("patient_id", nil)
+    if ((app = Appointment.where("end = ? AND patient_id IS NULL",self.begin).first) && (app.split == self.duration))
+      app.update_attribute("end", self.end)
+      self.destroy
+      if ((app2 = Appointment.where("begin = ? AND patient_id IS NULL",app.end).first) && (app2.split == app.split))
+        app.update_attribute("end", app2.end)
+        app2.destroy
+      end
+    elsif ((app = Appointment.where("begin = ? AND patient_id IS NULL",self.end).first) && (app.split == self.duration))
+      app.update_attribute("begin", self.begin)
+      self.destroy
+    end
   end
 
-  def book(patient_id,sub_id)
+  def book(patient_id,sub_id,comment)
     subapp = self.sub_appointments[sub_id]
-    subapp.patient_id = patient_id if subapp.patient_id.nil?
+    if subapp.patient_id.nil?
+      subapp.patient_id = patient_id 
+      subapp.comment = comment
+    end
     if subapp.save
       return true
     else

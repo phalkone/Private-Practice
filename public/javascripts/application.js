@@ -4,7 +4,11 @@ $(document).ready(function() {
    return false;
  });
  $('#login_box').mouseleave(function() {
-   $('#login_box form').slideUp();
+   $(window).mouseover(function(e){
+     x_corr = e.pageX;
+     y_corr = e.pageY;
+   });
+   setTimeout(login_hide,750);
  });
  $('input.clear').each(function() {
     $(this)
@@ -34,8 +38,15 @@ $(document).ready(function() {
       $("#show_pass").hide();
     }
   });
+
  setTimeout(flash_hide,3000);
 });
+function login_hide(){
+  if( (y_corr > $('#login_box').height()) || (x_corr < $('#login_box').offset().left) || (x_corr > ($('#login_box').width() + $('#login_box').offset().left)) ) {
+    $('#login_box form').slideUp();
+    $(window).unbind("mouseover");
+  }
+}
 function flash_hide(){
   $(".flash").hide(300);
 }

@@ -9,3 +9,13 @@
     not_available: Geen beschikbare afspraken
     and: en
     show: Toon
+    unbook: Annuleer afspraak
+    confirm: Bevestig
+    confirm_app: Bent u zeker dat u de volgende afspraak wenst vast te leggen?
+    with_doctor: Met dokter
+    at_time: om
+    on_date: op
+    success: Afspraak succesvol vastgelegd.
+    failure: Er is iets misgelopen bij het maken van de afspraak.
+    cancelled: Uw afspraak werd geannuleerd.
+    max_comment: maximum 1000 karakters

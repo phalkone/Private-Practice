@@ -30,7 +30,9 @@ $(document).ready(function() {
 </div>
 <div id ="booking_results" class="pagecontent">
 <% if @appointments.count == 0 %>
-  <%= t("bookings.not_available") %>
+  <div id="not_available">
+    <%= t("bookings.not_available").upcase %>
+  </div>
 <% else %> 
 <h2><%= t("bookings.available_apps") %></h2>
 <% prev_date = (@begin_date - 86401).to_date %>

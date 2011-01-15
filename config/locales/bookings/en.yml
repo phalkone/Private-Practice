@@ -9,3 +9,13 @@
     not_available: No Available appointments
     and: and
     show: Show
+    unbook: Unbook
+    confirm: Confirm
+    confirm_app: Please confirm that you want to book the following appointment.
+    with_doctor: With doctor
+    at_time: at
+    on_date: on
+    success: Appointment was successfully made.
+    failure: Something went wrong when making the appointment.
+    cancelled: Your appointment has been cancelled.
+    max_comment: maximum 1000 characters

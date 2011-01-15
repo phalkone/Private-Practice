@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     <% @users.each do |user| %>
-      <tr>
+      <tr class="select">
         <td class="check"><%= link_to "", user, :class => "hidden" %><%= check_box_tag 'user_delete_' + user.id.to_s, user.id %></td>
         <td class="clickable"><%= user.last_name %></td>
         <td class="clickable"><%= user.first_name %></td>

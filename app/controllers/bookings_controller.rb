@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+  before_filter :logged_in
 
   def index
     @title= t("bookings.title")
@@ -15,10 +16,34 @@ class BookingsController < ApplicationController
   end
 
   def  create
-    if @appointment = Appointment.find_by_id(params[:main_id].to_i).book(current_user.id, params[:sub_id].to_i)
-      flash[:notice] = "Succes"
+    if @appointment = Appointment.find_by_id(params[:main_id].to_i).book(current_user.id, params[:sub_id].to_i, params[:comment])
+      flash[:notice] = t("bookings.success")
+      redirect_to user_path(current_user)
+    else
+      flash[:alert] = t("bookings.failure")
+      @main_id = params[:main_id].to_i
+      @sub_id = params[:sub_id].to_i
+      @appointment = Appointment.find_by_id(@main_id).sub_appointments[@sub_id]
+      @appointment.comment = params[:comment]
+      render "new"
     end
-    redirect_to bookings_path
   end
+
+  def destroy
+    @appointment = Appointment.find(params[:id])
+    @user = @appointment.patient
+    if((current_user?(@user) || role?("admin") || role?("doctor")) && (@appointment.begin > Time.now))
+      @appointment.unbook
+      flash[:alert] = t("bookings.cancelled")
+      redirect_to user_path(@user)
+    else
+      deny_access
+    end
+  end
+
+ private
+    def logged_in
+      deny_access unless signed_in?
+    end
 
 end

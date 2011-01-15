@@ -55,13 +55,10 @@ function initialize(){
   $("tbody tr td.clickable").click(function() {
     location.href = $(this).parent().children("td:first").children("a").attr("href");
   });
-  $('.list tbody tr').hover(function() {
-    $(this).addClass('zebraHover');
-  }, function() {
-    $(this).removeClass('zebraHover');
+  $('tr.select').hover(function() {
+    $(this).toggleClass('zebraHover');
   });
   $(".list tbody tr:even").addClass('zebra');
-  $(".list tbody tr:odd").addClass('nonzebra');
 
   $(".pagination a").click(function() {
      $.get($(this).attr("href") + "&term=" + $("#search_users").val());

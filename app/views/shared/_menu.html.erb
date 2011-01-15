@@ -13,6 +13,10 @@
     <li class="<%= "active" if (controller.controller_name == "appointments") -%>">
       <%= link_to t("appointments.menutitle"), appointments_path %></li>
   <% end %>
+  <% if role?("doctor") && !role?("admin") %>
+    <li class="<%= "active" if (controller.controller_name == "users") -%>">
+      <%= link_to t("users.menutitle_doc"), users_path %></li>
+  <% end %>
   <% if role?("admin") %>
     <li class="<%= "active" if (controller.controller_name == "users") -%>">
       <%= link_to t("users.menutitle"), users_path %></li>
