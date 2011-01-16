@@ -6,6 +6,7 @@
     newapp: New appointment
     day: Day
     week: Week
+    refresh: Refresh
     booked_apps: booked appointments
     booked_app: booked appointment
     unbooked_apps: unbooked appointments

@@ -25,7 +25,7 @@ class Appointment < ActiveRecord::Base
       elsif Appointment.where("begin > ? AND ? > end AND id <> ? AND doctor_id = ? AND patient_id IS NOT NULL", self.begin, self.end, appointment_id, self.doctor_id).first
         errors.add :duration, I18n.t("appointments.duration_invalid")
       else
-        Appointment.destroy_all("begin >= '#{self.begin}' AND '#{self.end}' >= end AND id <> #{appointment_id} AND doctor_id = #{self.doctor_id} AND patient_id IS NULL")
+        Appointment.delete_all(["begin >= ? AND ? >= end AND id <> ? AND doctor_id = ? AND patient_id IS NULL",self.begin, self.end, appointment_id, self.doctor_id])
         if app = Appointment.where("begin < ? AND ? < end AND id <> ? AND doctor_id = ? AND patient_id IS NULL", self.begin, self.begin, appointment_id, self.doctor_id).first
           if (app.end > self.end)
             original_end = app.end

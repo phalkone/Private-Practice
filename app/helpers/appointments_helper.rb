@@ -14,9 +14,9 @@ module AppointmentsHelper
     maxlength = 0
 
     apps.each() do |app|
-      i = 0
+      subid = 0
       app.sub_appointments.each() do |subapp|
-      darray[subapp.begincell(start)].insert(-1, app.id.to_s+"/"+i.to_s)
+      darray[subapp.begincell(start)].insert(-1, app.id.to_s+"/"+subid.to_s)
       if (subapp.rowspan > 1) && (darray[subapp.begincell(start)][0] != -1)
         for i in 1..(subapp.rowspan - 1)
           darray[subapp.begincell(start)+i][0] = darray[subapp.begincell(start)][0]
@@ -26,7 +26,7 @@ module AppointmentsHelper
           darray[subapp.begincell(start)+i][0] = subapp.begincell(start)
         end
       end
-      i += 1
+      subid += 1
       end
     end
 

@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   before_filter :correct_user, :only => [:edit,:update,:show]
     
   def index
-    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    if role?("admin")
+      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    else
+      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    end
     @title = t("users.menutitle")
   end
 
@@ -16,23 +20,40 @@ class UsersController < ApplicationController
   end
 
   def refresh
-    if params[:term] != t('users.search')
-      @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    if params[:term] && params[:term] != t('users.search')
+      if role?("admin")
+        @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      else
+        @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      end
     else
-      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      if role?("admin")
+        @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      else
+        @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      end
     end
   end
 
   def search
-    @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    if role?("admin")
+      @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    else
+      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    end
     render "refresh"
   end
 
   def autocomplete
     @results = User.where(search_term(params[:term])).all
+    if role?("admin")
+      @results = User.where(search_term(params[:term])).order("last_name ASC").all
+    else
+      @results = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all
+    end
     result = Array.new
     @results.each() do |user|
-      result.insert(-1,user.name)
+      result.insert(-1,user.last_name + " " + user.first_name)
     end
     render :json => result.to_json
   end
@@ -48,7 +69,11 @@ class UsersController < ApplicationController
         end
       end
     end
-    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    if role?("admin")
+      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    else
+      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    end
     render "refresh"
   end
 
@@ -108,7 +133,11 @@ class UsersController < ApplicationController
         end
       end
     end
-    @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    if role?("admin")
+      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    else
+      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+    end
     render "refresh"
   end
 

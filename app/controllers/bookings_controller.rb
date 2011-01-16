@@ -4,8 +4,17 @@ class BookingsController < ApplicationController
   def index
     @title= t("bookings.title")
     @doctor = (params[:doctor]) ? params[:doctor] : Role.where("title = ?","doctor").first.users.order("last_name ASC").first.id
-    @begin_date = (params[:begin]) ? Time.new(params[:begin][:year].to_i, params[:begin][:month].to_i, params[:begin][:day].to_i,0,0,0, Time.now.utc_offset) : Time.now.beginning_of_day
-    @end_date = (params[:end]) ?  Time.new(params[:end][:year].to_i, params[:end][:month].to_i, params[:end][:day].to_i,23,59,59, Time.now.utc_offset) : Time.now.advance(:days => 7).end_of_day
+    if !(params[:begin]) || !(@begin_date = Time.new(params[:begin][:year].to_i, params[:begin][:month].to_i, params[:begin][:day].to_i,0,0,0, Time.now.utc_offset)) || (@begin_date < Time.now.beginning_of_day)
+      @begin_date = Time.now
+    end
+    if !(params[:end]) || !(@end_date = Time.new(params[:end][:year].to_i, params[:end][:month].to_i, params[:end][:day].to_i,23,59,59, Time.now.utc_offset)) || (@end_date < Time.now)
+      @end_date = Time.now.advance(:days => 7).end_of_day
+    end
+    if @end_date < @begin_date
+      temp = @end_date
+      @end_date = @begin_date
+      @begin_date = temp
+    end
     @appointments = Appointment.where("begin >= ? AND ? >= begin AND doctor_id = ? AND patient_id IS NULL", @begin_date, @end_date, @doctor).order("begin ASC").all
   end
 

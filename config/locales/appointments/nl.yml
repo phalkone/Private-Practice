@@ -6,6 +6,7 @@
     newapp: Nieuwe afspraak
     day: Dag
     week: Week
+    refresh: Vernieuw
     booked_apps: geboekte afspraken
     booked_app: geboekte afspraak
     unbooked_apps: niet geboekte afspraken

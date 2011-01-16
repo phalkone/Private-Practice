@@ -55,7 +55,11 @@ class AppointmentsController < ApplicationController
     @appointment.end_time = l(@appointment.end.to_time, :format => :time)
     @patient = User.new
     @title = t("appointments.edit")
-    @mode = (@appointment.unbooked?) ? "unbooked" : "registered" 
+    if params[:mode]
+      @mode = params[:mode]
+    else
+      @mode = (@appointment.unbooked?) ? "unbooked" : "registered" 
+    end
     render "open"
   end
 
