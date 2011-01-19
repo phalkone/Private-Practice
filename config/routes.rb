@@ -10,8 +10,12 @@ PrivatePractice::Application.routes.draw do
   end
   
   resources :appointments do
+    member do
+      get :unbook
+    end
+
     collection do
-      put :refresh
+      put :index
     end
   end
 

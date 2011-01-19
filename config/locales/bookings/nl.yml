@@ -12,6 +12,7 @@
     unbook: Annuleer afspraak
     confirm: Bevestig
     confirm_app: Bent u zeker dat u de volgende afspraak wenst vast te leggen?
+    confirm_title: Bevestig uw afspraak
     with_doctor: Met dokter
     at_time: om
     on_date: op

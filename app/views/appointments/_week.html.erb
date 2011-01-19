@@ -27,7 +27,7 @@
             <% div_class = (app.unbooked?) ? "unbooked" : "booked" %>
             <div class="<%= div_class %>"><%= l(app.begin, :format => :time) %>
             <% if app.unbooked? %>
-              <%= link_to "", appointment_path(@appointments.find_by_id(id)), :remote => true, :class => "hidden" %>
+              <%= link_to "", appointment_path(@appointments.find_by_id(id), :sub_id => subid), :remote => true, :class => "hidden" %>
               <% if @appointments.find_by_id(id).sub_appointments.length == 1 %>
                 <%= link_to t("appointments.book_now").upcase, edit_appointment_path(@appointments.find_by_id(id), :mode => "registered"), :title => t("appointments.book_now").upcase, :remote => true %>
               <% else %>

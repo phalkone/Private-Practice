@@ -124,7 +124,7 @@ class Appointment < ActiveRecord::Base
 
   def sub_appointments
     subapps = Array.new
-    if(self.split.nil? || self.split == 0 || (self.begin.advance(:minutes => self.split) > self.end))
+    if((!self.unbooked?) || self.split.nil? || self.split == 0 || (self.begin.advance(:minutes => self.split) >= self.end))
       subapps.insert(-1,self)
     else
       new_begin = self.begin

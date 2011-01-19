@@ -1,54 +1,17 @@
 $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
 
-$("#mode").buttonset().change(function() {
-  if($("#view_mode_registered").attr("checked")){
-    $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
-  } else if ($("#view_mode_unregistered").attr("checked"))  {
-    $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
-  } else {
-    $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
-    split()
-  }
-});
+initialize();
 
-$("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
-$("#appointment_date").datepicker( "option", "dateFormat", 'dd/mm/yy' );
-$("#appointment_date").css("font-size","0.95em");
-$("#appointment_date table").css("font-size","0.75em");
-
-var values = $( "#slider-range" ).slider( "option", "values" );
 <% if @appointment.date.nil? %>
 $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
-<% end %>
-<% if !@appointment.begin.nil? %>
-  var begin_slider = <%= escape_javascript((@appointment.begin.hour*60 + @appointment.begin.min).to_s) %>;
-<% else %>
-  var begin_slider = (values[0]*60);
-<% end %>
-<% if !@appointment.end.nil? %>
-  var end_slider = <%= escape_javascript((@appointment.end.hour*60 + @appointment.end.min).to_s) %>;
-<% else %>
-  var end_slider = (values[1]*60);
 <% end %>
 
 <% if @mode == "unbooked" %>
 split();
 <% end %>
 
-$("#hour-slider").slider({
-      range: true, step: 5, min: values[0]*60, max: values[1]*60, 
-      values: [begin_slider, end_slider],
-      slide: function(event, ui) {
-        var beginmin = ui.values[0] % 60;
-        var beginhour = (ui.values[0] - (beginmin))/60;
-        var endmin = ui.values[1] % 60;
-        var endhour = (ui.values[1] - (endmin))/60;
-        $("#appointment_begin_time").val(zero(beginhour) + ":" + zero(beginmin));
-        $("#appointment_end_time").val(zero(endhour) + ":" + zero(endmin));
-   }
-});
 $("#dialog").dialog({
-    modal: true, height: 520, width: 400, position: [($(window).width()-300)/2,20],
+    modal: true, height: 520, width: 400, position: [($(window).width()-400)/2,20],
     title: "<%= escape_javascript(@title) %>",
     buttons: {
        Ok: function() {
@@ -81,5 +44,46 @@ function split(){
           $("#splitlabel").html("<p><%= t('appointments.split') %> "+ ui.value +" min.</p>");
         }
      }
+  });
+}
+function initialize(){
+  $("#mode").buttonset().change(function() {
+    if($("#view_mode_registered").attr("checked")){
+      $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
+    } else if ($("#view_mode_unregistered").attr("checked"))  {
+      $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
+    } else {
+      $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
+      split()
+    }
+  });
+
+  $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]); 
+  $("#appointment_date").datepicker( "option", "dateFormat", 'dd/mm/yy' );
+  $("#appointment_date").css("font-size","0.95em");
+  $("#appointment_date table").css("font-size","0.75em");
+
+  var values = $("#slider-range").slider( "option", "values" );
+  <% if !@appointment.begin.nil? %>
+    var begin_slider = <%= escape_javascript((@appointment.begin.hour*60 + @appointment.begin.min).to_s) %>;
+  <% else %>
+    var begin_slider = (values[0]*60);
+  <% end %>
+  <% if !@appointment.end.nil? %>
+    var end_slider = <%= escape_javascript((@appointment.end.hour*60 + @appointment.end.min).to_s) %>;
+  <% else %>
+    var end_slider = (values[1]*60);
+  <% end %>
+
+  $("#hour-slider").slider({
+      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [begin_slider, end_slider],
+      slide: function(event, ui) {
+        var beginmin = ui.values[0] % 60;
+        var beginhour = (ui.values[0] - (beginmin))/60;
+        var endmin = ui.values[1] % 60;
+        var endhour = (ui.values[1] - (endmin))/60;
+        $("#appointment_begin_time").val(zero(beginhour) + ":" + zero(beginmin));
+        $("#appointment_end_time").val(zero(endhour) + ":" + zero(endmin));
+    }
   });
 }

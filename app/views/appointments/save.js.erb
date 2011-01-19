@@ -2,60 +2,8 @@
   flash_hide();
   $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
   $("#dialog").dialog( "option", "height", 550 );
-  $("#dialog").dialog( "option", "width", 400 );
-
-  $("#mode").buttonset().change(function() {
-    if($("#view_mode_registered").attr("checked")){
-      $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
-    } else if ($("#view_mode_unregistered").attr("checked"))  {
-      $("#patient").html("<%= escape_javascript(render(:partial => "user_form")) %>");
-    } else {
-      $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
-    }
-  });
-
-  $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
-  $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
-
-  if($("#appointment_split").val() > 0) {
-    $("#splitlabel").html("<p><%= t('appointments.split') %> "+ $("#appointment_split").val() +" min.</p>");
-  }
-  $("#split-slider").slider({
-    range: false, min: 0, max: 120, value: $("#appointment_split").val(),
-    slide: function(event, ui) {
-      $("#appointment_split").val(ui.value);
-      if(ui.value == 0){
-        $("#splitlabel").html("<p><%= t('appointments.unsplit') %></p>");
-      } else {
-        $("#splitlabel").html("<p><%= t('appointments.split') %> "+ ui.value +" min.</p>");
-      }
-    }
-  });
-
-  var values = $("#slider-range").slider( "option", "values" );
-  <% if !@appointment.begin.nil? %>
-    var begin_slider = <%= escape_javascript((@appointment.begin.hour*60 + @appointment.begin.min).to_s) %>;
-  <% else %>
-    var begin_slider = (values[0]*60);
-  <% end %>
-  <% if !@appointment.end.nil? %>
-    var end_slider = <%= escape_javascript((@appointment.end.hour*60 + @appointment.end.min).to_s) %>;
-  <% else %>
-    var end_slider = (values[1]*60);
-  <% end %>
-
-
-  $("#hour-slider").slider({
-      range: true, step: 5, min: values[0]*60, max: values[1]*60, values: [begin_slider, end_slider],
-      slide: function(event, ui) {
-        var beginmin = ui.values[0] % 60;
-        var beginhour = (ui.values[0] - (beginmin))/60;
-        var endmin = ui.values[1] % 60;
-        var endhour = (ui.values[1] - (endmin))/60;
-        $("#appointment_begin_time").val(zero(beginhour) + ":" + zero(beginmin));
-        $("#appointment_end_time").val(zero(endhour) + ":" + zero(endmin));
-    }
-  });
+  initialize();
+  split();
 <% else -%>
   <% flash.each do |key, value| %>
     $('<div />')
@@ -69,13 +17,4 @@
   $("#dialog").dialog( "destroy" );
   $("#viewoption form").submit();
 <% end -%>
-function zero(n){
-  if (n < 10 ) {
-    var ret = "0" + n;
-  } else {
-    var ret = n;
-  }
-  return ret;
-}
-
 

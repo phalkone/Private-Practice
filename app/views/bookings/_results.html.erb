@@ -1,0 +1,26 @@
+<% if @appointments.count == 0 %>
+  <div id="not_available">
+    <%= t("bookings.not_available").upcase %>
+  </div>
+<% else %> 
+<h2><%= t("bookings.available_apps") %></h2>
+<% prev_date = (@begin_date - 86401).to_date %>
+<div id="available_bookings">
+<% @appointments.each do |app| %>
+  <% i = 0 %>
+  <% app.sub_appointments.each do |appointment| %>
+    <% if prev_date < appointment.begin.to_date %>
+      <% if (prev_date != (@begin_date - 86401).to_date) %>
+        </ul></div>
+      <% end %>
+      <h3><a href"#"><%= l(appointment.begin.to_date, :format => :long) %></a></h3>
+      <div><ul class="normal_font">
+    <% end %>
+    <li><%= l(appointment.begin, :format => :time) %>   <%= link_to t("appointments.book_now").upcase, new_booking_path(:booking => {:main_id => app.id, :sub_id => i}), :title => t("appointments.book_now").upcase, :class => "book", :remote => true %></li>
+    <% prev_date = appointment.begin.to_date %>
+    <% i += 1 %>
+  <% end %>
+<% end %>
+<ul></div>
+</div>
+<% end %>

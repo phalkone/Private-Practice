@@ -1,0 +1,12 @@
+ <%= form_tag(bookings_path, :method => :put, :remote => true) do %>
+    <div class="field">
+      <b><%= label_tag :doctor, t("bookings.doctor") %>:</b>
+      <%= select_tag :doctor, options_from_collection_for_select( Role.where("title = ?","doctor").first.users.order("last_name ASC") , "id", "name", @doctor) %>
+    </div>
+    <div class="field">
+      <b><%= t("bookings.available_apps") %> <%= t("bookings.between") %> <%= select_date(@begin_date, :prefix => "begin", :order => [:day, :month, :year], :start_year => Time.now.year) %> <%= t("bookings.and") %> <%= select_date(@end_date, :prefix => "end", :order => [:day, :month, :year], :start_year => Time.now.year) %></b>
+    </div>
+    <div class="actions">
+      <%= submit_tag t("bookings.show") %>
+    </div>
+  <% end %>

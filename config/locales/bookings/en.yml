@@ -12,6 +12,7 @@
     unbook: Unbook
     confirm: Confirm
     confirm_app: Please confirm that you want to book the following appointment.
+    confirm_title: Confirm appointment
     with_doctor: With doctor
     at_time: at
     on_date: on

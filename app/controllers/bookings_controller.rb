@@ -6,14 +6,17 @@ class BookingsController < ApplicationController
     @doctor = (params[:doctor]) ? params[:doctor] : Role.where("title = ?","doctor").first.users.order("last_name ASC").first.id
     if !(params[:begin]) || !(@begin_date = Time.new(params[:begin][:year].to_i, params[:begin][:month].to_i, params[:begin][:day].to_i,0,0,0, Time.now.utc_offset)) || (@begin_date < Time.now.beginning_of_day)
       @begin_date = Time.now
+      @form = true
     end
     if !(params[:end]) || !(@end_date = Time.new(params[:end][:year].to_i, params[:end][:month].to_i, params[:end][:day].to_i,23,59,59, Time.now.utc_offset)) || (@end_date < Time.now)
       @end_date = Time.now.advance(:days => 7).end_of_day
+      @form = true
     end
     if @end_date < @begin_date
       temp = @end_date
       @end_date = @begin_date
       @begin_date = temp
+      @form = true
     end
     @appointments = Appointment.where("begin >= ? AND ? >= begin AND doctor_id = ? AND patient_id IS NULL", @begin_date, @end_date, @doctor).order("begin ASC").all
   end
@@ -41,7 +44,7 @@ class BookingsController < ApplicationController
   def destroy
     @appointment = Appointment.find(params[:id])
     @user = @appointment.patient
-    if((current_user?(@user) || role?("admin") || role?("doctor")) && (@appointment.begin > Time.now))
+    if( (current_user?(@user) && (@appointment.begin > Time.now)) || role?("admin") || role?("doctor"))
       @appointment.unbook
       flash[:alert] = t("bookings.cancelled")
       redirect_to user_path(@user)

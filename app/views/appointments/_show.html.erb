@@ -18,10 +18,22 @@
   <%= l(@appointment.end, :format => :long) %>
 </p>
 
+<% if @appointment.unbooked? %>
 <% if !@appointment.split.nil? && (@appointment.split != 0) %>
 <p>
   <b><%= t('appointments.split') + " " + @appointment.split.to_s %>  min.</b>
 </p>
+<% end %>
+<% if @appointment.sub_appointments.length > 1 %>
+<p>
+  <b><%= t('appointments.sel_period_begin') %>:</b>
+  <%= l(@appointment.sub_appointments[@subid].begin, :format => :long) %>
+</p>
+<p>
+  <b><%= t('appointments.sel_period_end') %>:</b>
+  <%= l(@appointment.sub_appointments[@subid].end, :format => :long) %>
+</p>
+<% end %>
 <% end %>
 <p>
   <b><%= Appointment.human_attribute_name("comment") %>:</b><br />
@@ -32,3 +44,13 @@
     :class => "hidden edit" %>
 <%= link_to "", @appointment, :remote => true, :method => :delete, 
      :class => "hidden delete" %>
+
+<% if @appointment.unbooked? && (@appointment.sub_appointments.length == 1) %>
+  <%= link_to "", edit_appointment_path(@appointment, :mode => "registered"), :remote => true, 
+    :class => "hidden book" %>
+<% elsif @appointment.unbooked? %>
+  <%= link_to '', new_appointment_path(:appointment => {:begin_time => l(@appointment.sub_appointments[@subid].begin, :format => :time), :end_time => l(@appointment.sub_appointments[@subid].end, :format => :time), :date => l(@appointment.sub_appointments[@subid].begin, :format => :datepicker)}), :remote => true, :class => "hidden book" %>
+<% else %>
+  <%= link_to "", unbook_appointment_path(@appointment), :remote => :true,
+    :class => "hidden unbook" %>
+<% end %>

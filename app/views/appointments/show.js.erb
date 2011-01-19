@@ -1,6 +1,6 @@
 $("#dialog").html("<%= escape_javascript(render(:partial => "show")) %>");
 $("#dialog").dialog({
-    modal: true, height: 400, width: 300, position: [($(window).width()-300)/2,20],
+    modal: true, height: 400, width: 400, position: [($(window).width()-400)/2,20],
     title: "<%= escape_javascript((@appointment.unbooked?) ? t("appointments.unbooked").upcase : @appointment.patient.name) %>",
     buttons: {
        "<%= escape_javascript(t("appointments.edit_short")) %>": function() {
@@ -13,8 +13,16 @@ $("#dialog").dialog({
           $("#dialog a.delete").click();
         }
       },
-       "<%= escape_javascript(t("appointments.close")) %>": function() {
-        $( this ).dialog( "destroy" );
+       "<%= escape_javascript((@appointment.unbooked?) ? t('appointments.book_now') : t('bookings.unbook')) %>": function() {
+        <% if @appointment.unbooked? %>
+          $( this ).dialog( "destroy" );
+          $("#dialog a.book").click();
+        <% else %>
+          if (confirm("<%= escape_javascript(t('appointments.confirmation')) %>")){
+            $( this ).dialog( "destroy" );
+            $("#dialog a.unbook").click();
+          }
+        <% end %>
       }
     }
 });

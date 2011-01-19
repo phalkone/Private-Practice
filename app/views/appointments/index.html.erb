@@ -7,6 +7,7 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.datepicker.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-nl.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-en.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-fr.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.slider.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
@@ -117,7 +118,7 @@ function initialize(){
 <% end %>
 <div id='dialog'></div>
 <div id="viewoption">
-<%= form_tag(refresh_appointments_path, :method => :put, :remote => true) do %>
+<%= form_tag(appointments_path, :method => :put, :remote => true) do %>
   <div class="pagecontent">
     <div id="datepicker"></div>
   

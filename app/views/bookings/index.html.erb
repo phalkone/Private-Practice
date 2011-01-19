@@ -4,7 +4,12 @@
 <% content_for :scripts do %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.draggable.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.accordion.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -13,49 +18,14 @@ $(document).ready(function() {
 });
 </script>
 <% end %>
+<div id='dialog'></div>
 <div class="pagecontent">
   <h1><%= t("bookings.title") %></h1>
-  <%= @begin_date %>
-  <%= @end_date %>
-  <%= form_tag(bookings_path, :method => :put) do %>
-    <div class="field">
-      <b><%= label_tag :doctor, t("bookings.doctor") %>:</b>
-      <%= select_tag :doctor, options_from_collection_for_select( Role.where("title = ?","doctor").first.users.order("last_name ASC") , "id", "name", @doctor) %>
-    </div>
-    <div class="field">
-      <b><%= t("bookings.available_apps") %> <%= t("bookings.between") %> <%= select_date(@begin_date, :prefix => "begin", :order => [:day, :month, :year], :start_year => Time.now.year) %> <%= t("bookings.and") %> <%= select_date(@end_date, :prefix => "end", :order => [:day, :month, :year], :start_year => Time.now.year) %></b>
-    </div>
-    <div class="actions">
-      <%= submit_tag t("bookings.show") %>
-    </div>
-  <% end %>
+  <div id="available_form">
+    <%= render "form" %>
+  </div>
 </div>
 <div id ="booking_results" class="pagecontent">
-<% if @appointments.count == 0 %>
-  <div id="not_available">
-    <%= t("bookings.not_available").upcase %>
-  </div>
-<% else %> 
-<h2><%= t("bookings.available_apps") %></h2>
-<% prev_date = (@begin_date - 86401).to_date %>
-<div id="available_bookings">
-<% @appointments.each do |app| %>
-  <% i = 0 %>
-  <% app.sub_appointments.each do |appointment| %>
-    <% if prev_date < appointment.begin.to_date %>
-      <% if (prev_date != (@begin_date - 86401).to_date) %>
-        </ul></div>
-      <% end %>
-      <h3><a href"#"><%= l(appointment.begin.to_date, :format => :long) %></a></h3>
-      <div><ul class="normal_font">
-    <% end %>
-    <li><%= l(appointment.begin, :format => :time) %>   <%= link_to t("appointments.book_now").upcase, new_booking_path(:booking => {:main_id => app.id, :sub_id => i}), :title => t("appointments.book_now").upcase, :class => "book" %></li>
-    <% prev_date = appointment.begin.to_date %>
-    <% i += 1 %>
-  <% end %>
-<% end %>
-<ul></div>
-</div>
-<% end %>
+  <%= render "results" %>
 </div>
 

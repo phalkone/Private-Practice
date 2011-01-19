@@ -1,0 +1,15 @@
+$("#dialog").html("<%= escape_javascript(render(:partial => "new")) %>");
+$("#dialog h1").addClass("hidden");
+$("#dialog .actions input").addClass("hidden");
+$("#dialog").dialog({
+    modal: true, height: 350, width: 400, position: "center",
+    title: $("#dialog h1").html(),
+    buttons: {
+       "<%= t('bookings.confirm') %>": function() {
+        $("#dialog form").submit();
+      },
+       Cancel: function() {
+        $( this ).dialog( "destroy" );
+      }
+    }
+});

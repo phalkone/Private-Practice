@@ -3,11 +3,58 @@ class AppointmentsController < ApplicationController
  
   def index
     @title = t("appointments.menutitle")
-    setValues
+    if params["view"] 
+      datesplit = params["view"]["date"].split(" ")
+      @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
+      @start = params["view"]["start"].to_i
+      @stop = params["view"]["stop"].to_i
+      @dayweek = params["view"]["dayweek"]
+      @weekend = params["view"]["weekend"].to_s
+      cookies.permanent[:settings] = { 
+       :value =>  @date.to_s + "*" + @start.to_s + "*" + @stop.to_s + "*" + @dayweek + "*" + @weekend, 
+       :domain => request.domain }
+    else
+      if cookies[:settings]
+        settings = cookies[:settings].split("*")
+        datesplit = settings[0].split("-")
+        @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
+        @start = settings[1].to_i
+        @stop = settings[2].to_i
+        @dayweek = settings[3]
+        @weekend = settings[4]
+      else
+        @date = Date.today
+        @start = 9
+        @stop = 17
+        @dayweek = "day"
+        @weekend = "1"
+      end
+    end
+    if @dayweek == "day"
+      @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
+      @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
+      @appointments = current_user.appointments.where("(begin >= ? AND begin < ?) OR (end > ? AND end <= ?)", @begin , @end, @begin , @end).order("begin ASC")
+      if (@appointments.count != 0) && (@appointments.last.end > @end)
+        @stop = @appointments.last.end.hour + 1
+      end
+      if (@appointments.count != 0) && (@appointments.first.begin < @begin)
+        @start = @appointments.first.begin.hour
+      end
+      @dayarray = dayarray(@start, @stop, @appointments)
+      @maxcols = @dayarray.last[0];
+    else
+      @date = @date.to_time
+      @begin = @date.at_beginning_of_week
+      @end = (@weekend == "1") ? @date.at_end_of_week : @date.at_end_of_week.yesterday.yesterday
+      @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
+      @weekarray = weekarray(@start, @stop, @appointments, @weekend)
+    end
+    @bookedcount = barray(@appointments)
   end
 
   def show
     @appointment = Appointment.find(params[:id])
+    @subid = params[:sub_id].to_i if params[:sub_id]
   end
 
   def new
@@ -93,68 +140,21 @@ class AppointmentsController < ApplicationController
     render "save"
   end
 
-  def refresh
-    setValues
-  end
-
   def destroy
     @appointment = Appointment.find(params[:id])
     @appointment.destroy
     flash.now[:alert] = t("appointments.destroyed")
   end
 
+  def unbook
+    @appointment = Appointment.find(params[:id])
+    @appointment.unbook
+    flash.now[:alert] = t("bookings.cancelled")
+    render "destroy"
+  end
+
   private
     def authenticate
       deny_access unless role?("doctor")
-    end
-
-    def setValues
-      if params["view"] 
-        datesplit = params["view"]["date"].split(" ")
-        @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
-        @start = params["view"]["start"].to_i
-        @stop = params["view"]["stop"].to_i
-        @dayweek = params["view"]["dayweek"]
-        @weekend = params["view"]["weekend"].to_s
-        cookies.permanent[:settings] = { 
-         :value =>  @date.to_s + "*" + @start.to_s + "*" + @stop.to_s + "*" + @dayweek + "*" + @weekend, 
-         :domain => request.domain }
-      else
-        if cookies[:settings]
-          settings = cookies[:settings].split("*")
-          datesplit = settings[0].split("-")
-          @date = Date.new(datesplit[0].to_i,datesplit[1].to_i,datesplit[2].to_i)
-          @start = settings[1].to_i
-          @stop = settings[2].to_i
-          @dayweek = settings[3]
-          @weekend = settings[4]
-        else
-          @date = Date.today
-          @start = 9
-          @stop = 17
-          @dayweek = "day"
-          @weekend = "1"
-        end
-      end
-      if @dayweek == "day"
-        @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
-        @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
-        @appointments = current_user.appointments.where("(begin >= ? AND begin <= ?) OR (end >= ? AND end <= ?)", @begin , @end, @begin , @end).order("begin ASC")
-        if (@appointments.count != 0) && (@appointments.last.end > @end)
-          @stop = @appointments.last.end.hour + 1
-        end
-        if (@appointments.count != 0) && (@appointments.first.begin < @begin)
-          @start = @appointments.first.begin.hour
-        end
-        @dayarray = dayarray(@start, @stop, @appointments)
-        @maxcols = @dayarray.last[0];
-      else
-        @date = @date.to_time
-        @begin = @date.at_beginning_of_week
-        @end = (@weekend == "1") ? @date.at_end_of_week : @date.at_end_of_week.yesterday.yesterday
-        @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
-        @weekarray = weekarray(@start, @stop, @appointments, @weekend)
-      end
-      @bookedcount = barray(@appointments)
     end
 end
