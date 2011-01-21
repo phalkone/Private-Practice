@@ -21,7 +21,7 @@
     previous: Previous
     created: Appointment was successfully created.
     updated: Appointment was successfully updated.
-    invalid: is invalid.
+    invalid: is invalid
     destroyed: Appointment was successfully deleted.
     confirmation: Are you sure?
     registered: Registered
@@ -37,3 +37,9 @@
     rev_invalid: is invalid. An appointment cannot end before it begins.
     sel_period_begin: Selected period begin
     sel_period_end: Selected period end
+    recur: Recur
+    once: once
+    daily: daily
+    weekly: weekly
+    monthly: monthly
+    until: until

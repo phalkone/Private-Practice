@@ -19,6 +19,7 @@
     profile: Profile
     signin: Log in
     or: or
+    cancel: cancel
   date:
     formats:
       default: "%Y-%m-%d"

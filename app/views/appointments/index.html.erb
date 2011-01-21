@@ -28,13 +28,13 @@ $(document).ready(function() {
   $("#slider-range").slider({
       range: true, min: 0, max: 24, values: [<%= @start %>, <%= @stop %>],
       slide: function(event, ui) {
-        $("#hourrange").html("<p>" + ui.values[0] + 'h - ' + ui.values[1] + 'h</p>');
+        $("#hourrange").html("<p>" + ui.values[0] + ':00 - ' + ui.values[1] + ':00</p>');
         $("#view_start").val(ui.values[0]);
         $("#view_stop").val(ui.values[1]);
         $("#viewoption form").submit();
      }
   });
-  $("#hourrange").html("<p>" + $("#slider-range").slider("values", 0) + 'h - ' + $("#slider-range").slider("values", 1) + 'h</p>');
+  $("#hourrange").html("<p>" + $("#slider-range").slider("values", 0) + ':00 - ' + $("#slider-range").slider("values", 1) + ':00</p>');
   $("#view_start").val($("#slider-range").slider("values", 0));
   $("#view_stop").val($("#slider-range").slider("values", 1));
   $("#dayweek").buttonset().css("float","right");

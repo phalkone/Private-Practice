@@ -33,12 +33,21 @@ class AppointmentsController < ApplicationController
     if @dayweek == "day"
       @begin = Time.new(@date.year,@date.month,@date.day,@start,0,0, Time.now.utc_offset)
       @end = Time.new(@date.year,@date.month,@date.day,@stop,0,0, Time.now.utc_offset)
-      @appointments = current_user.appointments.where("(begin >= ? AND begin < ?) OR (end > ? AND end <= ?)", @begin , @end, @begin , @end).order("begin ASC")
+      @appointments = current_user.appointments.where("(begin >= ? AND begin < ?) OR (end > ? AND end <= ?) OR (begin < ? AND end > ?)", @begin , @end, @begin , @end, @begin, @end).order("begin ASC")
       if (@appointments.count != 0) && (@appointments.last.end > @end)
-        @stop = @appointments.last.end.hour + 1
+        i = 0
+        while (@appointments.last.sub_appointments[i].end < @end) && (@appointments.last.sub_appointments[i].end != @end) do
+          i += 1
+        end
+        @stop = @appointments.last.sub_appointments[i].end.hour
+        @stop += 1 if @appointments.last.sub_appointments[i].end.min > 0
       end
       if (@appointments.count != 0) && (@appointments.first.begin < @begin)
-        @start = @appointments.first.begin.hour
+        i = @appointments.first.sub_appointments.size - 1
+        while (@appointments.first.sub_appointments[i].begin > @begin) && (@appointments.first.sub_appointments[i].begin != @begin) do
+          i -= 1
+        end
+        @start = @appointments.first.sub_appointments[i].begin.hour
       end
       @dayarray = dayarray(@start, @stop, @appointments)
       @maxcols = @dayarray.last[0];

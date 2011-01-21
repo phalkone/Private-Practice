@@ -19,6 +19,7 @@
     profile: Profiel
     signin: Log in
     or: of
+    cancel: Annuleer
   date:
     formats:
       default: "%Y-%m-%d"

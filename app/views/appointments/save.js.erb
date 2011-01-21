@@ -1,8 +1,9 @@
 <% if @appointment.errors.any? || @patient.errors.any? -%>
   flash_hide();
   $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
-  $("#dialog").dialog( "option", "height", 550 );
-  initialize();
+  $("#dialog").dialog( "option", "height", 500 );
+  $("#dialog").dialog( "option", "position", "center" );
+  form_initialize();
   split();
 <% else -%>
   <% flash.each do |key, value| %>

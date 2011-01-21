@@ -16,19 +16,23 @@ module AppointmentsHelper
     apps.each() do |app|
       subid = 0
       app.sub_appointments.each() do |subapp|
-      darray[subapp.begincell(start)].insert(-1, app.id.to_s+"/"+subid.to_s)
-      if (subapp.rowspan > 1) && (darray[subapp.begincell(start)][0] != -1)
-        for i in 1..(subapp.rowspan - 1)
-          darray[subapp.begincell(start)+i][0] = darray[subapp.begincell(start)][0]
-        end
-      elsif subapp.rowspan > 1
-        for i in 0..(subapp.rowspan - 1)
-          darray[subapp.begincell(start)+i][0] = subapp.begincell(start)
+      if (subapp.begin.hour >= start) && ((subapp.end.hour < stop) || ((subapp.end.hour == stop) && (subapp.end.min == 0)))
+        darray[subapp.begincell(start)].insert(-1, app.id.to_s+"/"+subid.to_s)
+        if (subapp.rowspan > 1) && (darray[subapp.begincell(start)][0] != -1)
+          for i in 1..(subapp.rowspan - 1)
+            darray[subapp.begincell(start)+i][0] = darray[subapp.begincell(start)][0]
+          end
+        elsif subapp.rowspan > 1
+          for i in 0..(subapp.rowspan - 1)
+            darray[subapp.begincell(start)+i][0] = subapp.begincell(start)
+          end
         end
       end
       subid += 1
       end
     end
+
+
 
     i = 0
     while i < rows do
@@ -52,9 +56,9 @@ module AppointmentsHelper
           end
           j += 1
         end
-        i = j - 2
+        i = j - 1
       end
-      
+
       i += 1
       maxlength = (length > maxlength) ? length : maxlength
     end

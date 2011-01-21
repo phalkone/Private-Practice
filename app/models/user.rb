@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
 
   has_many :appointments, :foreign_key => "doctor_id", :dependent => :destroy
-  has_many :bookings, :class_name => "Appointment", :foreign_key => "patient_id"
+  has_many :bookings, :class_name => "Appointment", :foreign_key => "patient_id", :dependent => :nullify
 
   has_many :patients, :through => :appointments, :source => :patient, :uniq => :true
   has_many :doctors, :through => :bookings, :source => :doctor, :uniq => :true
@@ -22,6 +22,13 @@ class User < ActiveRecord::Base
   validates_length_of :password, :within => 6..40, :allow_blank => true
 
   before_save :encrypt_password, :default_role, :blank_email
+  before_destroy :unbook_apps
+
+  def unbook_apps
+    self.bookings.each() do |app|
+      app.unbook
+    end
+  end
 
   def required?
     (self.super_reg) ? false : true

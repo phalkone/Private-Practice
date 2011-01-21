@@ -21,7 +21,7 @@
     previous: Vorige
     created: Afspraak succesvol aangemaakt.
     updated: Afspraak succesvol bewerkt.
-    invalid: is ongeldig.
+    invalid: is ongeldig
     destroyed: Afspraak succesvol verwijderd.
     confirmation: Bent u zeker?
     registered: Geregistereerd
@@ -37,3 +37,9 @@
     rev_invalid: is ongeldig. Een afspraak kan niet eindigen voor ze begint.
     sel_period_begin: Geselecteerde periode begin
     sel_period_end: Geselecteerde periode einde
+    recur: Herhaal
+    once: niet
+    daily: dagelijks
+    weekly: wekelijks
+    monthly: maandelijks
+    until: tot en met

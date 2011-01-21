@@ -52,7 +52,7 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
 #lightbox { position:absolute; z-index: 1002; }
 
 #error_explanation { border: 2px solid #d40000; padding: 7px;
-                     padding-bottom: 0; margin: 0 0 20px 20px;
+                     padding-bottom: 0; margin-bottom: 10px;
                      background-color: #f0f0f0; }
   #error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
                           padding: 5px 5px 5px 15px; margin-bottom: 0px; 
@@ -60,8 +60,11 @@ h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
   #error_explanation ul li { list-style: square; }
 
 #dialog { font-size:0.8em; display:none;}
+  #form_left { float:left;}
+  #form_right { margin-left: 340px; border-left: 1px solid #ddd;}
+  #form_bottom { clear:both;} 
+
 #doctor_info {margin-left: 240px; height: 100%; padding: 5px; line-height: 1.5;}
-#mode {margin: 0 0 10px 20px;}
 
 #booking_results { margin-top:5px;}
 #not_available { text-align: center; font-size: 1.5em; }
@@ -124,8 +127,9 @@ table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
 .error, .alert { background-color: #FCC; border: solid 1px #C66; }
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
-.fixed_width_errors { width: 450px;}
+.fixed_width_errors { width: 450px; margin-left: 20px;}
 div.field, div.actions { margin: 0 0 10px 20px; }
+.left_field { margin: 0 20px 10px 20px; float:left; }
 .title:hover { color: #777 }
 .small{ font-size: 7pt; }
 .superscript{ font-size: 7pt; vertical-align: top;}

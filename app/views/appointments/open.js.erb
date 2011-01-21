@@ -1,6 +1,18 @@
 $("#dialog").html("<%= escape_javascript(render(:partial => "form")) %>");
+$("#dialog").dialog({
+    modal: true, height: 375, width: 700,
+    title: "<%= escape_javascript(@title) %>",
+    buttons: {
+       Ok: function() {
+        $("#dialog form").submit();
+      },
+       "<%= t("txt.cancel") %>": function() {
+        $( this ).dialog( "destroy" );
+      }
+    }
+});
 
-initialize();
+form_initialize();
 
 <% if @appointment.date.nil? %>
 $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getDate"));
@@ -10,18 +22,6 @@ $("#appointment_date").datepicker( "setDate" , $("#datepicker").datepicker("getD
 split();
 <% end %>
 
-$("#dialog").dialog({
-    modal: true, height: 520, width: 400, position: [($(window).width()-400)/2,20],
-    title: "<%= escape_javascript(@title) %>",
-    buttons: {
-       Ok: function() {
-        $("#dialog form").submit();
-      },
-       Cancel: function() {
-        $( this ).dialog( "destroy" );
-      }
-    }
-});
 function zero(n){
   if (n < 10 ) {
     var ret = "0" + n;
@@ -46,7 +46,7 @@ function split(){
      }
   });
 }
-function initialize(){
+function form_initialize(){
   $("#mode").buttonset().change(function() {
     if($("#view_mode_registered").attr("checked")){
       $("#patient").html("<%= escape_javascript(render(:partial => "users_list")) %>");
@@ -56,12 +56,19 @@ function initialize(){
       $("#patient").html("<%= escape_javascript(render(:partial => "unbooked_form")) %>");
       split()
     }
-  });
+  }).css("margin-bottom","10px");
+
+  $("#recurrence").buttonset();
 
   $("#appointment_date").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]); 
   $("#appointment_date").datepicker( "option", "dateFormat", 'dd/mm/yy' );
   $("#appointment_date").css("font-size","0.95em");
   $("#appointment_date table").css("font-size","0.75em");
+
+  $("#recurrence_until").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]); 
+  $("#recurrence_until").datepicker( "option", "dateFormat", 'dd/mm/yy' );
+  $("#recurrence_until").css("font-size","0.95em");
+  $("#recurrence_until table").css("font-size","0.75em");
 
   var values = $("#slider-range").slider( "option", "values" );
   <% if !@appointment.begin.nil? %>

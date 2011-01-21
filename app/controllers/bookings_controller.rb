@@ -25,6 +25,9 @@ class BookingsController < ApplicationController
     @main_id = params[:booking][:main_id].to_i
     @sub_id = params[:booking][:sub_id].to_i
     @appointment = Appointment.find_by_id(@main_id).sub_appointments[@sub_id]
+    if (@appointment.begin < Time.now) || (!@appointment.unbooked?)
+      redirect_to bookings_path
+    end
   end
 
   def  create
