@@ -15,17 +15,10 @@ $(document).ready(function() {
   });
   lightbox();
   linkbox();
-  zebra();
 }); 
 </script>
 <% end %>
-<div id="submenu">
-  <ul>
-    <li class="bold"><%= link_to t("pages.title"), pages_path %></li>
-    <li><%= link_to t("images.title"), images_path %></li>
-  <ul>
-</div>
-<div id="subcontent">
+<div id="subcontent" class="span-19 colborder">
   <h2><%= t("pages.title") %></h2>
   <div id="locale_picker" class="right"><p>
   <%= form_tag(changelocale_pages_path, :method => :put, :remote => true) do %>
@@ -37,3 +30,10 @@ $(document).ready(function() {
     :class => "button ui-icon-document", :title => t("pages.new")  %></p></div><br />
   <div id="page_list" class="list"><%= render :partial => "list" %></div>
 </div>
+<div id="submenu" class="span-4 last">
+  <ul>
+    <li class="active"><%= link_to t("pages.title"), pages_path %></li>
+    <li><%= link_to t("images.title"), images_path %></li>
+  <ul>
+</div>
+

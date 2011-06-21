@@ -119,20 +119,19 @@ function initialize(){
 <div id='dialog'></div>
 <div id="viewoption">
 <%= form_tag(appointments_path, :method => :put, :remote => true) do %>
-  <div class="pagecontent">
-    <div id="datepicker"></div>
-  
-    <%= hidden_field 'view','date' %>
-    <div id="doctor_info">
-      <%= render "doctor_info" %>
-    </div>
 
-    <div class="x"></div>
-    <div id="hourrange"></div>
-    <%= hidden_field 'view','start' %>
-    <%= hidden_field 'view','stop' %>
-    <div id="slider-range"></div><br />
+  <div id="datepicker"></div>
+  
+  <%= hidden_field 'view','date' %>
+  <div id="doctor_info">
+    <%= render "doctor_info" %>
   </div>
+
+  <div class="x"></div>
+  <%= hidden_field 'view','start' %>
+  <%= hidden_field 'view','stop' %>
+  <div id="hourrange"></div>
+  <div id="slider-range"></div><br />
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>

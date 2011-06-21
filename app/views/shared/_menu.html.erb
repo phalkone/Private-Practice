@@ -8,25 +8,31 @@
       <li>
     <% end %>
     <%= link_to menuitem.get_content(I18n.locale).title, page_path(menuitem) %></li>
+    <% if menuitem != Page.where("nested = ?",false).order("sequence ASC").last %>
+      <li>&middot;</li>
+    <% end %>
+  <% end %>
+  <% if role?("doctor") || role?("admin") || role?("patient") %>
+    <li>&middot;</li>
   <% end %>
   <% if role?("doctor") %>
     <li class="<%= "active" if (controller.controller_name == "appointments") -%>">
       <%= link_to t("appointments.menutitle"), appointments_path %></li>
   <% end %>
   <% if role?("doctor") && !role?("admin") %>
-    <li class="<%= "active" if (controller.controller_name == "users") -%>">
+    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "users") -%>">
       <%= link_to t("users.menutitle_doc"), users_path %></li>
   <% end %>
   <% if role?("admin") %>
-    <li class="<%= "active" if (controller.controller_name == "users") -%>">
-      <%= link_to t("users.menutitle"), users_path %></li>
+    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "users") -%>">
+      <%= link_to t("users.menutitle"), users_path %></li><li>&middot;</li>
     <li class="<%= "active" if ((controller.controller_name == "pages") || 
                                (controller.controller_name == "images")) &&
                                (@showpage.nil?) -%>">
     <%= link_to t("pages.menutitle"), pages_path %></li>
   <% end %>
   <% if role?("patient") %>
-    <li class="<%= "active" if (controller.controller_name == "bookings") -%>">
+    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "bookings") -%>">
       <%= link_to t("bookings.menutitle"), bookings_path %></li>
   <% end %>
 </ul>

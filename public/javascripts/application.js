@@ -106,7 +106,7 @@ function lightboxImage(e){
 function lightboxFrame(e){
   $('<iframe />')
     .attr({ 'src': $(e).attr('href'),
-            'width': $(window).width()-300,
+            'width': 950,
             'height': $(window).height()-30
     })
     .css({

@@ -19,13 +19,11 @@ $(document).ready(function() {
 </script>
 <% end %>
 <div id='dialog'></div>
-<div class="pagecontent">
-  <h1><%= t("bookings.title") %></h1>
+  <h2><%= t("bookings.title") %></h2>
   <div id="available_form">
     <%= render "form" %>
   </div>
-</div>
-<div id ="booking_results" class="pagecontent">
+<div id ="booking_results">
   <%= render "results" %>
 </div>
 

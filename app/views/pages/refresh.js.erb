@@ -8,6 +8,5 @@
 <% end %>
 $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
 $("#menu").html("<%= escape_javascript(render(:partial => "shared/menu")) %>");
-zebra();
 lightbox();
 setTimeout(flash_hide,3000);

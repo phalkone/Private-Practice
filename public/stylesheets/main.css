@@ -1,46 +1,37 @@
-html, body, span, object, h1, h2, h3, h4, h5, h6, p, blockquote 
-     { margin: 0; padding: 0; border: 0; }
-body { font: .8em Arial, "Trebuchet MS", Tahoma, sans-serif; color: #777;
-       background-color: #fff; }
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 
-h1 { font-size: 2em; font-weight: bold; padding: 0 0 5px; 
-     margin: 0 0 5px; }
-h2 { font-weight: bold; font-size: 1.6em; padding: 0 0 10px;}
-h3 { font-size: 1em; font-weight: normal; margin: 0 0 20px; }
-
-#container { margin: 0 20px 0 20px; }
-
-#login_box { position:absolute; top:0; right: 20px; padding: 5px 5px 5px 5px; 
+#login_box { position:absolute; top:0; right:15px; padding: 5px 5px 5px 5px; 
              background-color: #bfbfbf; border-radius: 0 0 10px 10px; 
              margin-bottom:10px; -moz-border-radius: 0 0 010px 10px; 
              -webkit-border-radius: 0 0 10px 10px; }
   #login_box input { margin-top: 5px; }
   #login_box p { margin: 0 3px 3px 3px; }
 
-#header { height: 70px; background: #fff url(../images/headerbg.gif) repeat-x bottom; } 
+#header { height: 70px; position: relative; 
+	      background: #fff url(../images/headerbg.gif) repeat-x bottom; } 
+	
+#logo { float:left; margin-top:5px;}
+
 #title{ padding: 15px 0 0 15px; float: left; line-height: 0.9; color: #777; margin: 0;
         font: normal 40px "Trebuchet MS", Arial, Sans-Serif; }
 
-#menu { padding: 25px 10px 0 0; float:right; margin: 0; font-size: 1.1em;}
+#menu { float:left; margin-left:45px; font-size:1.3em;line-height:2em;}
   #menu li { display: inline; list-style: none; }
-  #menu li a { margin-left: 20px;  color: #888; }
-  #menu li a:hover { color: #555; border-bottom: 2px solid #ccc; }
-  #menu .active a { border-bottom: 2px solid #d40000; color: #d40000; }
+  #menu li a { margin: 0 10px 0 10px; color: #888; }
+  #menu li a:hover { color: #8f0000; }
+  #menu .active a { color: #d40000; }
 
-#content { margin: 5px 0 5px 0;} 
+#submenu { margin-bottom:10px;}
+  #submenu ul { list-style: none; margin: 0; padding: 0;}
+  #submenu li { margin-bottom: 4px; padding: 0 5px 0 0px; }
+  #submenu li a { font-weight: bold; height: 20px; text-decoration: none;
+                  color: #808080; display: block; padding: 6px 10px 0 10px; background: #fff;
+                  border-bottom: 1px dotted #ccc;}		
+  #submenu li a:hover { color: #8f0000;}
+  #submenu .active a { color: #d40000; }
 
-#submenu { width: 200px; float: left; border-top: 1px solid #ddd; margin-bottom: 5px; 
-           padding: 0; border-left: 1px solid #ddd; border-right: 1px solid #ddd;}
-  #submenu ul { margin: 0; padding: 0; border: 0px; } 
-  #submenu li {list-style: none; padding: 5px 5px 5px 10px;
-               border-bottom: 1px solid #ddd;}
-
-#subcontent { border: 1px solid #ddd;
-              padding: 10px 10px 10px 10px; margin: 0 0 5px 207px; } 
-
-#footer { padding: 5px 10px 5px 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+#footer { padding: 0px 10px 0px 10px;}
 
 #datepicker { float: left; margin-bottom: 7px; font-size: 0.95em;}
   #datepicker table {font-size: 0.75em;}
@@ -96,11 +87,11 @@ table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .users tr { height: 25px;}
   .users td { padding-left: 5px;}
   .users td.clickable { cursor: pointer; }
-  tr.zebraHover { background-color: #FCC; border: solid 1px #C66;}
+  .zebraHover { background-color: #FCC; border: solid 1px #C66;}
   .zebra { background-color: #dddddd;}
   .check { width: 16px;}
 
-#search_users {float:right; padding: 0.3em; height: 18px;}
+#search_users {float:right; padding: 0.3em; height: 18px;margin-top:2px;}
 #show_all {float: right; margin-left:5px;}
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
@@ -121,17 +112,12 @@ table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .list table tr { height:30px; text-indent:10px;}
   .list table th { text-align:left; }
 
-.pagecontent { padding: 5px 5px 5px 5px; border: 1px solid #ddd;}
 .flash { padding: 5px 8px; margin: 10px 0;}
-.notice { background-color: #CFC; border: solid 1px #6C6; }
-.error, .alert { background-color: #FCC; border: solid 1px #C66; }
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
 .fixed_width_errors { width: 450px; margin-left: 20px;}
 div.field, div.actions { margin: 0 0 10px 20px; }
 .left_field { margin: 0 20px 10px 20px; float:left; }
-.title:hover { color: #777 }
-.small{ font-size: 7pt; }
 .superscript{ font-size: 7pt; vertical-align: top;}
 .big{ font-size: 14pt; }
 .red{ color: #d40000; }
@@ -153,4 +139,4 @@ div.field, div.actions { margin: 0 0 10px 20px; }
 .no_weekend { width: 20%; }
 .pagination {float:right; margin: 4px 0 10px 0;}
 .slider-field{ margin: 0 10px 10px 20px; }
-
+.underline{ text-decoration:underline;}

@@ -1,6 +1,5 @@
-<div class="pagecontent">
-<h1><%= t("users.profile_of") + " " + @user.name %></h1>
-<h2><%= t("users.gen_info") %></h2>
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<h3><%= t("users.gen_info") %></h3>
 <p>
   <b><%= User.human_attribute_name("first_name") %>:</b>
   <%= @user.first_name %>
@@ -58,4 +57,3 @@
 <% if role?("doctor") || role?("admin") %>
  | <%= link_to t("txt.back"), users_path %>
 <% end %>
-</div>

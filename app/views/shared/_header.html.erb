@@ -1,6 +1,17 @@
-<div id="header">
+<div id="header" class="span-24 last">
+	<div id="login_box">
+	<% if signed_in? %>
+	 	<p><%= t("txt.logged") + " " %>
+	    <%= link_to current_user.first_name + " " + current_user.last_name, current_user %> | 
+	    <%= link_to t("txt.signout"), signout_path, :method => :delete %></p>
+	<% else %>
+		<%= render :partial => "shared/loginform" %>
+	<% end %>
+	</div><img src="/images/logo.png" alt="" id="logo"/> 
+	<p><a id="title" href="http://<%= I18n.locale.to_s + '.' + domain  %>"><span class="red"><%= t("txt.private") %></span><%= t("txt.practice") %></a></p>
+</div>
+<hr />
 <div id="menu">
 <%= render :partial => "shared/menu" %>
 </div>
-<p><a id="title" href="http://<%= I18n.locale.to_s + '.' + domain  %>"><span class="red"><%= t("txt.private") %></span><%= t("txt.practice") %></a></p>
-</div>
+<hr>

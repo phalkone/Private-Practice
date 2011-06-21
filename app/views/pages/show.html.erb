@@ -1,25 +1,7 @@
 <% if @subpages %> 
-  <div id="submenu">
-    <ul>
-      <% for subpage in @subpages %>
-        <% if subpage.nested and subpage == @showpage %>
-          <li class="indent bold">
-        <% elsif subpage.nested and subpage != @showpage %>
-          <li class="indent">
-        <% elsif subpage == @showpage %>
-          <li class="bold">
-        <% else %>
-          <li>
-        <% end %>
-        <%= link_to subpage.get_content(I18n.locale).title, page_path(subpage) %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-<% if @subpages %> 
-  <div id="subcontent">
+  <div id="subcontent" class="span-18 colborder">
 <% else %>
-  <div class="pagecontent">
+  <div class="span-24 last">
 <% end %>
     <% if @showpage.get_content(I18n.locale).html %>
       <%= raw @showpage.get_content(I18n.locale).body %>
@@ -27,4 +9,19 @@
       <%= raw BlueCloth.new(@showpage.get_content(I18n.locale).body).to_html %>
     <% end %>
   </div>
-
+<% if @subpages %> 
+  <div id="submenu" class="span-5 last">
+	<ul>
+      <% for subpage in @subpages %>
+        <% if subpage.nested and subpage == @showpage %>
+          <li class="active">
+        <% elsif subpage.nested and subpage != @showpage %>
+          <li>
+        <% end %>
+        <% if subpage.nested %>
+          <%= link_to subpage.get_content(I18n.locale).title, page_path(subpage) %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

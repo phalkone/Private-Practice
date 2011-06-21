@@ -58,7 +58,6 @@ function initialize(){
   $('tr.select').hover(function() {
     $(this).toggleClass('zebraHover');
   });
-  $(".list tbody tr:even").addClass('zebra');
 
   $(".pagination a").click(function() {
      $.get($(this).attr("href") + "&term=" + $("#search_users").val());

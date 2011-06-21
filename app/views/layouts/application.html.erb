@@ -4,6 +4,11 @@
 <head>
 <title><%= title %></title>
 
+<%= stylesheet_link_tag "blueprint/screen.css" %>
+<%= stylesheet_link_tag "blueprint/print.css", :media => "print" %>
+<!--[if lt IE 8]>
+  <%= stylesheet_link_tag "blueprint/ie.css" %>
+<![endif]-->
 <%= stylesheet_link_tag :all %>
 <%= yield :styles %>
 
@@ -13,26 +18,17 @@
 <%= csrf_meta_tag %>
 </head>
 <body>
-<div id="container">
-  <% if signed_in? %>
-   <div id="login_box">
-     <p><%= t("txt.logged") + " " %>
-        <%= link_to current_user.first_name + " " + current_user.last_name, current_user %> | 
-        <%= link_to t("txt.signout"), signout_path, :method => :delete %></p>
-   </div>
-  <% else %>
-    <%= render :partial => "shared/loginform" %>
-  <% end %>
+<div class="container">
   <%= render :partial => "shared/header" %>
   <div class="x"></div>
-  <div id="content">
     <div class="flashes"></div>
     <% flash.each do |key, value| %>
       <div class="flash <%= key %>"><%= value %></div>
     <% end %>
     <%= yield %>
-  </div>
   <div class="x"></div>
+  <hr class="space">
+  <hr />
   <%= render :partial => "shared/footer" %>
 </div>
 </body>
