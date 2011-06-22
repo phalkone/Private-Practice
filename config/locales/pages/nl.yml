@@ -4,7 +4,8 @@
     menutitle: Website
     title: Pagina's
     new: Nieuwe pagina
-    close: Sluit pagina (zonder opslaan)
+    close: Sluit pagina
+    confirmation: Pagina sluiten zonder de wijzigingen op te slaan?
     toggle: Wissel tussen pagina en subpagina
     up: Omhoog
     down: Omlaag

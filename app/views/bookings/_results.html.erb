@@ -14,7 +14,7 @@
         </ul></div>
       <% end %>
       <h3><a href"#"><%= l(appointment.begin.to_date, :format => :long) %></a></h3>
-      <div><ul class="normal_font">
+      <div><ul>
     <% end %>
     <li><%= l(appointment.begin, :format => :time) %>   <%= link_to t("appointments.book_now").upcase, new_booking_path(:booking => {:main_id => app.id, :sub_id => i}), :title => t("appointments.book_now").upcase, :class => "book", :remote => true %></li>
     <% prev_date = appointment.begin.to_date %>

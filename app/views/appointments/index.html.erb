@@ -28,13 +28,15 @@ $(document).ready(function() {
   $("#slider-range").slider({
       range: true, min: 0, max: 24, values: [<%= @start %>, <%= @stop %>],
       slide: function(event, ui) {
-        $("#hourrange").html("<p>" + ui.values[0] + ':00 - ' + ui.values[1] + ':00</p>');
+        $("#hourrange").html(ui.values[0] 
+        + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + ui.values[1] + ':00');
         $("#view_start").val(ui.values[0]);
         $("#view_stop").val(ui.values[1]);
         $("#viewoption form").submit();
      }
   });
-  $("#hourrange").html("<p>" + $("#slider-range").slider("values", 0) + ':00 - ' + $("#slider-range").slider("values", 1) + ':00</p>');
+  $("#hourrange").html($("#slider-range").slider("values", 0) 
+  + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + $("#slider-range").slider("values", 1) + ':00');
   $("#view_start").val($("#slider-range").slider("values", 0));
   $("#view_stop").val($("#slider-range").slider("values", 1));
   $("#dayweek").buttonset().css("float","right");
@@ -130,7 +132,7 @@ function initialize(){
   <div class="x"></div>
   <%= hidden_field 'view','start' %>
   <%= hidden_field 'view','stop' %>
-  <div id="hourrange"></div>
+  <div id="hourrange" class="quiet"></div>
   <div id="slider-range"></div><br />
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">

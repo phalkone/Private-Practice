@@ -1,14 +1,18 @@
 $("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
+$(".ui_button" ).button();
 $("#new_locale").attr('disabled','disabled');
-$('#new_page .ui-icon-document').click(function() {
+$('#new_page .erase').click(function() {
   $("#new_page :input:not(input[type=submit])").val("");
 });
-$('#new_page .ui-icon-closethick').click(function() {
-  $("#new_page").html("<p><%= escape_javascript(
-      link_to "", new_page_path, :remote => true, 
-      :class => "button ui-icon-document", 
-      :title => t("pages.new")) %></p>");
-  $("#new_locale").removeAttr("disabled");
+$('#new_page .close').click(function() {
+	if (confirm("<%= escape_javascript(t('pages.confirmation')) %>")){
+        $("#new_page").html("<p><%= escape_javascript(
+		      link_to t("pages.new"), new_page_path, :remote => true, 
+		      :class => "ui_button", 
+		      :title => t("pages.new")) %></p>");
+		  $("#new_locale").removeAttr("disabled");
+		  $(".ui_button" ).button();
+      }
 });
 $("#new_page").slideDown();
 $("#page_content_locale").val($("#new_locale").val()); 

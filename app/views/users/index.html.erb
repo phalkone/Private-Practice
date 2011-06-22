@@ -55,7 +55,12 @@ function initialize(){
   $("tbody tr td.clickable").click(function() {
     location.href = $(this).parent().children("td:first").children("a").attr("href");
   });
+  $('tr.select:even').addClass('zebra');
+  $('tr.select:even').addClass('even');
   $('tr.select').hover(function() {
+	if ($(this).hasClass('even') ){
+		$(this).toggleClass('zebra');
+	}
     $(this).toggleClass('zebraHover');
   });
 

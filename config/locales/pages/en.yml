@@ -4,7 +4,8 @@
     menutitle: Website
     title: Pages
     new: New page
-    close: Close page (without saving)
+    close: Close page
+    confirmation: Close page without saving changes?
     toggle: Toggle between page en subpage
     up: Up
     down: Down
