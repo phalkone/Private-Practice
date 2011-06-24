@@ -1,6 +1,8 @@
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 
+body { background: #fff url(../images/headerbg_orig.gif) repeat-x 0px 26px; }
+
 #login_box { position:absolute; top:0; right:15px; padding: 5px 5px 5px 5px; 
              background-color: #bfbfbf; border-radius: 0 0 10px 10px; 
              margin-bottom:10px; -moz-border-radius: 0 0 010px 10px; 

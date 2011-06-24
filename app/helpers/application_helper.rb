@@ -8,7 +8,7 @@ module ApplicationHelper
   end
   
   def domain
-    request.domain + ":" + request.port.to_s
+    request.domain(1) + ":" + request.port.to_s
   end
 
   def title

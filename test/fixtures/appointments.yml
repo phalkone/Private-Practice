@@ -1,3 +1,21 @@
+# == Schema Information
+# Schema version: 20110112082837
+#
+# Table name: appointments
+#
+#  id         :integer         not null, primary key
+#  doctor_id  :integer
+#  patient_id :integer
+#  begin      :datetime
+#  end        :datetime
+#  comment    :string(255)
+#  recurrence :integer
+#  completed  :boolean
+#  created_at :datetime
+#  updated_at :datetime
+#  split      :integer
+#
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:

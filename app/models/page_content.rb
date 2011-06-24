@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20110112082837
+#
+# Table name: page_contents
+#
+#  id         :integer         not null, primary key
+#  title      :string(255)
+#  body       :text
+#  locale     :string(255)
+#  html       :boolean
+#  page_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class PageContent < ActiveRecord::Base
   belongs_to :page
 
