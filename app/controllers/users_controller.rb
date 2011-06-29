@@ -89,7 +89,7 @@ class UsersController < ApplicationController
     else
       if @user.save
         sign_in @user unless role?("admin") || role?("doctor")
-        flash[:notice] = t("users.created")
+        flash[:success] = t("users.created")
         redirect_to @user
       else
         @title = t("users.newtitle")

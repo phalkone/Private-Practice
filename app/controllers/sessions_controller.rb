@@ -8,7 +8,9 @@ class SessionsController < ApplicationController
                              params[:session][:password])
 
     if user.nil?
-      redirect_to signin_path, :alert => t("txt.invalid")
+      @title = t("txt.signin")
+      flash[:alert] = t("txt.invalid")
+      render 'new'
     else
       sign_in(user,params[:session][:remember])
       return_to_or user

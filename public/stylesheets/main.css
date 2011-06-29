@@ -1,7 +1,7 @@
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 
-body { background: #fff url(../images/headerbg_orig.gif) repeat-x 0px 26px; }
+body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
 
 #login_box { position:absolute; top:0; right:15px; padding: 5px 5px 5px 5px; 
              background-color: #bfbfbf; border-radius: 0 0 10px 10px; 
@@ -10,7 +10,7 @@ body { background: #fff url(../images/headerbg_orig.gif) repeat-x 0px 26px; }
   #login_box input { margin-top: 5px; }
   #login_box p { margin: 0 3px 3px 3px; }
 
-#header { height: 70px; position: relative; 
+#header { height: 70px; position: relative; margin: 0 0 17px; border:none;
 	      background: #fff url(../images/headerbg.gif) repeat-x bottom; } 
 	
 #logo { float:left; margin-top:5px;}

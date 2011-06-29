@@ -127,6 +127,7 @@
         last_name: "Achternaam"
         email: "E-mail"
         password: "Paswoord"
+        password_confirmation: Paswoord bevestiging
       appointment:
         patient_id: Patiënt
         doctor_id: Dokter

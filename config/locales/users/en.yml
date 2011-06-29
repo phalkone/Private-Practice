@@ -9,7 +9,6 @@
     edited: Profile successfully updated.
     destroyed: User was successfully deleted.
     sel_destroyed: Selected users successfully deleted.
-    passconfirmation: Password Confirmation
     listing: Listing users
     new: New user
     show: Show
