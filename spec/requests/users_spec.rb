@@ -38,4 +38,16 @@ describe "Users" do
       end 
     end
   end
+  
+  describe "sign in/out" do
+    describe "failure" do
+      it "should not sign a user in" do
+        visit signin_path 
+        fill_in :email,    :with => ""
+        fill_in :password, :with => ""
+        click_button 
+        response.should render_template('sessions/new')
+      end
+    end
+  end
 end

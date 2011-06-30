@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
     if user.nil?
       @title = t("txt.signin")
-      flash[:alert] = t("txt.invalid")
+      flash.now[:alert] = t("txt.invalid")
       render 'new'
     else
       sign_in(user,params[:session][:remember])

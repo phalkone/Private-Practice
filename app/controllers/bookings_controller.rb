@@ -35,7 +35,7 @@ class BookingsController < ApplicationController
       flash[:notice] = t("bookings.success")
       redirect_to user_path(current_user)
     else
-      flash[:alert] = t("bookings.failure")
+      flash.now[:alert] = t("bookings.failure")
       @main_id = params[:main_id].to_i
       @sub_id = params[:sub_id].to_i
       @appointment = Appointment.find_by_id(@main_id).sub_appointments[@sub_id]

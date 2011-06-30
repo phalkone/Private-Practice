@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
   def delete_selected
     if params[:selected] && User.destroy(params[:selected].split(";"))
-      flash[:alert] = t("users.sel_destroyed")
+      flash.now[:alert] = t("users.sel_destroyed")
       params[:selected].split(";").each do |id|
         if apps = Appointment.where("patient_id = ?",id)
           apps.each() do |app|
@@ -126,7 +126,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      flash[:alert] = t("users.destroyed")
+      flash.now[:alert] = t("users.destroyed")
     end
     if role?("admin")
       @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
