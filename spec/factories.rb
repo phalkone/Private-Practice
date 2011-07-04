@@ -1,4 +1,4 @@
-Factory.define :user, :class => User do |user|
+Factory.define :user do |user|
   user.first_name             "Test"
   user.last_name              "User"
   user.email                  "test@user.com"

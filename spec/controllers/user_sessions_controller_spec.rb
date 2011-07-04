@@ -51,7 +51,7 @@ describe UserSessionsController do
         
         it "should sign the user in" do
           post :create, :user_session => @attr
-          UserSession.find.record.should == @user
+          controller.current_user.should == @user
           controller.should be_signed_in
         end
         
@@ -72,4 +72,5 @@ describe UserSessionsController do
         response.should redirect_to(root_path)
       end
   end
+  
 end

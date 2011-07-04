@@ -78,6 +78,16 @@ describe User do
     no_password_user.should be_valid
   end
   
+  it "should not require a password if it is an old record" do
+    user = User.create!(@attr)
+    user.should_not be_new_record
+    user.should be_required
+    (user.required? && user.new_record?).should be_false
+    user.should_not be_password_required
+    user.update_attributes(@attr.merge( :password => "", :password_confirmation => ""))
+    user.should be_valid
+  end
+  
   it "should require a matching password validation" do
     no_match_user = User.new(@attr.merge(:password_confirmation => "no_secret"))
     no_match_user.should_not be_valid
@@ -94,6 +104,13 @@ describe User do
     too_short_user = User.new(@attr.merge(:password => long, 
       :password_confirmation => long))
     too_short_user.should_not be_valid
+  end
+  
+  describe "name" do
+    it "should return the full name" do
+      user = User.create(@attr)
+      user.name.should == @attr[:last_name] + ", " + @attr[:first_name]
+    end
   end
   
   describe "authentication" do

@@ -41,11 +41,11 @@ class User < ActiveRecord::Base
                     :uniqueness => { :case_sensitive => false },
                     :presence => { :if => :required? },
                     :allow_blank => { :unless => :required?}
-  validates :password,  :presence  => {:if => (:new_record? && :required?)},
-                        :confirmation => true,
+  validates :password,  :presence  => {:if => :password_required?},
+                        :confirmation =>  {:if => :password_required?},
                         :length => {:within => 6..40},
                         :allow_blank => true
-
+                        
   before_validation :blank_email
   before_save :default_role
   before_destroy :unbook_apps
@@ -68,9 +68,13 @@ class User < ActiveRecord::Base
       app.unbook
     end
   end
+  
+  def password_required?
+     return (self.new_record? && self.required?)
+  end
 
   def required?
-    !self.super_reg
+    self.super_reg.nil? ? true : !self.super_reg
   end
 
   def name
