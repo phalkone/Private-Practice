@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110112082837
+# Schema version: 20110701091404
 #
 # Table name: users
 #
@@ -7,15 +7,24 @@
 #  first_name         :string(255)
 #  last_name          :string(255)
 #  email              :string(255)
-#  encrypted_password :string(255)
-#  salt               :string(255)
+#  crypted_password   :string(255)
+#  password_salt      :string(255)
 #  created_at         :datetime
 #  updated_at         :datetime
+#  persistence_token  :string(255)
+#  perishable_token   :string(255)
+#  login_count        :integer         default(0), not null
+#  failed_login_count :integer         default(0), not null
+#  last_request_at    :datetime
+#  current_login_at   :datetime
+#  last_login_at      :datetime
+#  current_login_ip   :string(255)
+#  last_login_ip      :string(255)
 #
 
 class User < ActiveRecord::Base
-  attr_accessor :password, :super_reg
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :super_reg
+  attr_accessor :super_reg
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
   has_and_belongs_to_many :roles
 
@@ -26,19 +35,34 @@ class User < ActiveRecord::Base
   has_many :doctors, :through => :bookings, :source => :doctor, :uniq => :true
 
   validates_presence_of :first_name, :last_name
-  validates_presence_of :email, :if => :required?
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30
   validates :email, :format     => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
                     :uniqueness => { :case_sensitive => false },
-                    :allow_blank => true
-  validates_presence_of :password, :if => (:new_record? && :required?)
-  validates_confirmation_of :password
-  validates_length_of :password, :within => 6..40, :allow_blank => true
+                    :presence => { :if => :required? },
+                    :allow_blank => { :unless => :required?}
+  validates :password,  :presence  => {:if => (:new_record? && :required?)},
+                        :confirmation => true,
+                        :length => {:within => 6..40},
+                        :allow_blank => true
 
-  before_save :encrypt_password, :default_role, :blank_email
+  before_validation :blank_email
+  before_save :default_role
   before_destroy :unbook_apps
-
+  
+  acts_as_authentic do |config|
+     config.logged_in_timeout = 20.minutes
+     config.login_field = :email
+     config.validate_login_field = false
+     config.validate_email_field = false
+     config.validate_password_field = false
+     config.require_password_confirmation = false
+  end
+  
+   def blank_email
+     self.email = (self.email.blank?) ? nil : self.email
+   end
+   
   def unbook_apps
     self.bookings.each() do |app|
       app.unbook
@@ -46,26 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def required?
-    (self.super_reg) ? false : true
-  end
-
-  def blank_email
-    self.email = (self.email.blank?) ? nil : self.email
-  end
-
-  def has_password?(submitted_password)
-    encrypted_password == encrypt(submitted_password)
-  end
-
-  def self.authenticate(email, submitted_password)
-    user = find_by_email(email)
-    return nil  if user.nil?
-    return user if user.has_password?(submitted_password)
-  end
-
-  def self.authenticate_with_salt(id, cookie_salt)
-    user = find_by_id(id)
-    (user && user.salt == cookie_salt) ? user : nil
+    !self.super_reg
   end
 
   def name
@@ -73,24 +78,6 @@ class User < ActiveRecord::Base
   end
 
   private
-
-    def encrypt_password
-      return if password.blank?
-      self.salt = make_salt if new_record? || self.salt.nil?
-      self.encrypted_password = encrypt(password)
-    end
-
-    def encrypt(string)
-      secure_hash("#{salt}--#{string}")
-    end
-
-    def make_salt
-      secure_hash("#{Time.now.utc}--#{password}")
-    end
-
-    def secure_hash(string)
-      Digest::SHA2.hexdigest(string)
-    end
 
     def default_role
       self.roles << Role.find_by_title('patient') if new_record?

@@ -3,8 +3,7 @@ namespace :db do
   desc "Fill database with sample data"
   task :populate => :environment do
     Rake::Task['db:reset'].invoke
-    User.create!(:first_name => "Example", :last_name => "User"
-    :email => "example@user.com", 
+    User.create!(:first_name => "Example", :last_name => "User", :email => "example@user.com", 
     :password => "foobar",:password_confirmation => "foobar")
     99.times do |n|
       first_name = Faker::Name.first_name

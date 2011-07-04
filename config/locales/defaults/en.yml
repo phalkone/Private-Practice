@@ -5,7 +5,7 @@
     password: Password
     email: E-mail
     login: Login
-    remember: Remember me
+    remember_me: Remember me
     forgot: Forgot login?
     invalid: Invalid email/password combination.
     deny: Please sign in to access this page.
@@ -34,6 +34,12 @@
     month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
     order: [ :year, :month, :day ]
+    
+    authlogic:
+      error_messages:
+        errors: 
+            one: "1 Error prohibited the user from being logged in"
+            other: "%{count} Erros prohibited the user from being logged in"
   
   time:
     formats:

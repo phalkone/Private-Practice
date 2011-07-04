@@ -1,4 +1,4 @@
-Factory.define :user do |user|
+Factory.define :user, :class => User do |user|
   user.first_name             "Test"
   user.last_name              "User"
   user.email                  "test@user.com"
@@ -6,6 +6,6 @@ Factory.define :user do |user|
   user.password_confirmation  "secret"
 end
 
-Factory.sequence 
-  :email do |n| "person-#{n}@example.com"
+Factory.sequence :email do |n| 
+  "person-#{n}@example.com"
 end

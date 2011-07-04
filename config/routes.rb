@@ -1,7 +1,7 @@
 PrivatePractice::Application.routes.draw do
   resources :images
   
-  resources :sessions, :only => [:new,:create,:destroy]
+  resources :user_sessions, :only => [:new,:create,:destroy]
 
   resources :bookings, :except => [:edit,:update,:show] do
     collection do
@@ -47,8 +47,8 @@ PrivatePractice::Application.routes.draw do
   end
 
   match '/signup', :to => 'users#new'
-  match '/signin', :to => 'sessions#new'
-  match '/signout', :to => 'sessions#destroy'
+  match '/signin', :to => 'user_sessions#new'
+  match '/signout', :to => 'user_sessions#destroy'
 
   root :to => "pages#homepage"
 end

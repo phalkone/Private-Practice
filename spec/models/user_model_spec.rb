@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe User do 
-  before(:each) do 
-    Role.create(:title => "admin")
-    Role.create(:title => "doctor")
+  before(:each) do
     Role.create(:title => "patient")
     @attr = { :last_name => "User", :first_name => "Example", 
       :email => "user@example.com", :password => "secret", 
@@ -25,13 +23,14 @@ describe User do
   end
   
   it "should require an email address if not doctor or administrator" do
-    no_name_user = User.new(@attr.merge(:email => ""))
-    no_name_user.should_not be_valid
+    no_email_user = User.new(@attr.merge(:email => ""))
+    no_email_user.should_not be_valid
   end
   
   it "should not require an email address if doctor or administrator" do
-    no_name_user = User.new(@attr.merge(:email => "",:super_reg => 1))
-    no_name_user.should be_valid
+    no_email_user = User.new(@attr.merge(:email => ""))
+    no_email_user.super_reg = true
+    no_email_user.should be_valid
   end
   
   it "should reject first names that are too long" do
@@ -74,8 +73,8 @@ describe User do
   end
   
   it "should not require a password if a doctor or administrator" do
-    no_password_user = User.new(@attr.merge(:super_reg => 1, :password => "", 
-      :password_confirmation => ""))
+    no_password_user = User.new(@attr.merge( :password => "", :password_confirmation => ""))
+    no_password_user.super_reg = true
     no_password_user.should be_valid
   end
   
@@ -108,27 +107,7 @@ describe User do
     end
   
     it "should have an encrypted password attribute" do
-      @user.should respond_to(:encrypted_password)
-    end
-    
-    it "should set the encrypted password" do
-      @user.encrypted_password.should_not be_blank
-    end
-    
-    it "should return true if password match" do
-      @user.has_password?(@attr[:password]).should be_true
-    end
-    
-    it "should return false if password do not match" do
-      @user.has_password?("invalid").should be_false
-    end
-    
-    it "should return user if authenticated succesfully" do
-      User.authenticate(@attr[:email],@attr[:password]).should_not be_nil
-    end
-    
-    it "should return be nil if authenticated unsuccesfully" do
-      User.authenticate(@attr[:email],"invalid").should be_nil
+      @user.should respond_to(:crypted_password)
     end
     
   end

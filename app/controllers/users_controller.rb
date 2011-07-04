@@ -78,8 +78,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
     @user = User.new(params[:user])
+    @user.super_reg = (role?("admin") || role?("doctor"))
     if params[:commit][t("users.submit.cancel")]
       if (role?("admin") || role?("doctor"))
         redirect_to users_path
@@ -88,7 +88,6 @@ class UsersController < ApplicationController
       end
     else
       if @user.save
-        sign_in @user unless role?("admin") || role?("doctor")
         flash[:success] = t("users.created")
         redirect_to @user
       else
@@ -110,9 +109,8 @@ class UsersController < ApplicationController
     if params[:commit][t("users.submit.cancel")]
       redirect_to @user
     else
-      params[:user][:super_reg] = "1" if (role?("admin") || role?("doctor"))
+      @user.super_reg = (role?("admin") || role?("doctor"))
       if @user.update_attributes(params[:user])
-        sign_in @user unless role?("admin") || role?("doctor")
         flash[:notice] = t("users.edited")
         redirect_to @user
       else

@@ -1,5 +1,5 @@
 <p><%= link_to t("txt.signin"), signin_path, :class => "login" %> <%= t("txt.or") %> <%= link_to t("users.newtitle"), signup_path %></p>
-  <%= form_for(:session, :url => sessions_path, :html => { :class => "hidden" }) do |f| %>
+  <%= form_for(UserSession.new, :html => { :class => "hidden" }) do |f| %>
     <div>
       <%= f.text_field :email, :value => t("txt.email"), :class => "clear", :size => "30" %>
     </div>
@@ -9,8 +9,8 @@
     </div>
     <div>
       <%= f.submit t("txt.login") %>
-      <%= f.check_box :remember %>
-      <%= f.label :remember, t("txt.remember"), :class => "small" %>
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me, t("txt.remember_me"), :class => "small" %>
       <a href="#" alt="Forgot login"><span class="small"><%= t("txt.forgot") %></span></a>
     </div>
   <% end %>

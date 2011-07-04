@@ -48,9 +48,10 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
                      padding-bottom: 0; margin-bottom: 10px;
                      background-color: #f0f0f0; }
   #error_explanation h3 { text-align: left; font-weight: bold; margin: -7px; 
-                          padding: 5px 5px 5px 15px; margin-bottom: 0px; 
+                          padding: 10px 10px 10px 10px; margin-bottom:10px; 
                           background-color: #d40000; color: #fff; }
-  #error_explanation ul li { list-style: square; }
+  #error_explanation p { margin-bottom:5px; }
+  #error_explanation ul li {  list-style: square; }
 
 #dialog { font-size:0.8em; display:none;}
   #form_left { float:left;}

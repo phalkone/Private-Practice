@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe UsersController do
   render_views
+ 
   
     describe "GET 'new'" do
       
@@ -14,9 +15,9 @@ describe UsersController do
     describe "GET 'show'" do
       
       before(:each) do
+        activate_authlogic
         Role.create(:title => "patient")
         @user = Factory(:user)
-        controller.sign_in(@user)
       end
     
       it "should be successful" do
@@ -35,7 +36,9 @@ describe UsersController do
         describe "failure" do
 
           before(:each) do
-            @attr = { :name => "", :email => "", :password => "",
+            activate_authlogic
+            @attr = { :first_name => "", :last_name => "",
+              :email => "", :password => "",
               :password_confirmation => "" }
           end
 
@@ -54,6 +57,7 @@ describe UsersController do
         describe "success" do
           
           before(:each) do
+            activate_authlogic
             Role.create(:title => "patient")
             @attr = { :first_name => "New", :last_name => "User",
               :email => "user@example.com", :password => "foobar", 
@@ -80,6 +84,7 @@ describe UsersController do
 
     describe "GET 'edit'" do
       before(:each) do
+        activate_authlogic
         Role.create(:title => "patient")
         @user = Factory(:user)
         test_sign_in(@user)
@@ -98,6 +103,7 @@ describe UsersController do
 
     describe "PUT 'update'" do
       before(:each) do
+        activate_authlogic
         Role.create(:title => "patient")
         @user = Factory(:user) 
         test_sign_in(@user)
@@ -122,6 +128,7 @@ describe UsersController do
       
       describe "success" do
         before(:each) do
+          activate_authlogic
           @attr = { :first_name => "New", :last_name => "Name", :email => "user@example.org",
             :password => "barbaz", :password_confirmation => "barbaz" }
         end
@@ -146,15 +153,22 @@ describe UsersController do
       end
     end
 
-    describe "authentication of edit/update pages" do
+    describe "authentication of edit/update/delete pages" do
       before(:each) do 
+        activate_authlogic
         Role.create(:title => "patient")
         @user = Factory(:user)
+        UserSession.find.destroy
       end
       
       describe "for non-signed-in users" do
         it "should deny access to 'edit'" do 
           get :edit, :id => @user
+          response.should redirect_to(signin_path)
+        end
+        
+        it "should deny access to 'destroy'" do 
+          delete :destroy, :id => @user
           response.should redirect_to(signin_path)
         end
         
@@ -166,6 +180,7 @@ describe UsersController do
     
       describe "for signed-in users" do
         before(:each) do
+          activate_authlogic
           Role.create(:title => "patient")
           wrong_user = Factory(:user, :email => "user@example.net")
           test_sign_in(wrong_user)
@@ -174,6 +189,11 @@ describe UsersController do
         it "should require matching users for 'edit'" do
           get :edit, :id => @user
           response.should redirect_to(root_path)
+        end
+        
+        it "should require to be admin to 'destroy'" do
+          delete :destroy, :id => @user
+          response.should redirect_to(signin_path)
         end
         
         it "should require matching users for 'update'" do

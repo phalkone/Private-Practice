@@ -5,7 +5,7 @@
     password: Paswoord
     email: Email
     login: Login
-    remember: Onthoudt mij
+    remember_me: Onthoudt mij
     forgot: Paswoord?
     invalid: Ongeldige email/paswoord combinatie.
     deny: Log je in om toegang te verkrijgen tot deze pagina.
@@ -153,7 +153,7 @@
         empty: "moet opgegeven zijn"
         blank: "moet opgegeven zijn"
         too_long: "is te lang (niet meer dan %{count} karakters)"
-        too_short: "is te kort (niet minder dan {{count}} karakters)"
+        too_short: "is te kort (niet minder dan %{count} karakters)"
         wrong_length: "heeft niet de juiste lengte (moet precies %{count} karakters zijn)"
         taken: "is niet beschikbaar"
         not_a_number: "is niet een getal"
@@ -164,3 +164,28 @@
         less_than_or_equal_to: "moet minder of gelijk zijn aan %{count}"
         odd: "moet oneven zijn"
         even: "moet even zijn"
+
+  authlogic:
+    error_messages:
+      login_blank: moet opgegeven zijn
+      login_not_found: is ongeldig
+      login_invalid: should use only letters, numbers, spaces, and .-_@ please.
+      consecutive_failed_logins_limit_exceeded: Aantal opeenvolgende gefaalde logins overschreden. Account is op non-actief ingesteld.
+      email_invalid: moet in het formaat zijn van een email adres
+      password_blank: moet opgegeven zijn
+      password_invalid: is ongeldig
+      not_active: Uw account is nog niet actief.
+      not_confirmed: Uw account is not niet bevestigd.
+      not_approved: Uw account is nog niet goedgekeurd.
+      no_authentication_details: Je gaf geen details op voor de authentificatie.
+      errors: 
+          one: "1 Fout zorgde ervoor dat de gebruiker niet werd ingelogd"
+          other: "%{count} Fouten zorgden ervoor dat de gebruiker niet werd ingelogd"
+    models:
+      user_session: Sessie
+    attributes:
+      user_session:
+        login: Login
+        email: Email
+        password: Paswoord
+        remember_me: Onthoudt mij

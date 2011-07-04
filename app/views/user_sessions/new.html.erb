@@ -1,0 +1,31 @@
+<h2><%= t("txt.signin") %></h2>
+<%= form_for(@user_session) do |f| %>
+<% if @user_session.errors.any? %>
+  <div id="error_explanation" class="fixed_width_errors">
+    <h3><%= t("authlogic.error_messages.errors", 
+              :count => @user_session.errors.count) %></h3>
+    <p><%= t("activerecord.errors.template.body") %></p>
+    <ul>
+      <% @user_session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :size => "30" %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, :size => "30" %>
+  </div>
+  <div class="field">
+    <%= f.label :remember_me %><br />
+    <%= f.check_box :remember_me %>
+  </div>
+  <div class="action">
+    <%= f.submit t("txt.login") %><br />
+  </div>
+<% end %><br />
+<a href="#" alt="Forgot login"><%= t("txt.forgot") %></a>
