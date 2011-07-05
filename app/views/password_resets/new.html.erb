@@ -1,0 +1,13 @@
+<h2><%= t("password_resets.title")%></h2>
+<p>
+	<%= t('password_resets.instructions')%>
+</p>
+<%= form_for(:password_resets, :url => password_resets_path) do |f| %>
+<div class="field">
+  	<%= f.label :email %><br />
+	<%= f.text_field :email %>
+</div>
+<div class="actions">
+  <%= f.submit t("password_resets.submit") %>
+</div>
+<% end %>

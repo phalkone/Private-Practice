@@ -45,7 +45,7 @@ describe UserSessionsController do
           activate_authlogic
           Role.create(:title => "patient")
           @user = Factory(:user)
-          UserSession.find.destroy
+          user_session = UserSession.find.destroy
           @attr = { :email => @user.email, :password => @user.password, :remember_me => 0 }
         end
         

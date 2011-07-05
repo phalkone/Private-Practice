@@ -1,0 +1,10 @@
+"en":
+  password_resets:
+    flash_success: Instructions to reset your password have been emailed to you.
+    flash_failure: No user was found with that email address.
+    title: Password Reset
+    instructions: Please enter your email address below and click the reset button to reset your password.
+    new_password_instructions: Please enter a new password to reset the old one.
+    success: Password successfully updated
+    not_found: "We're sorry, but we could not locate your account.\nIf you are having issues try copying and pasting the URL \nfrom your email into your browser or restarting the \nreset password process."
+    submit: Reset Password

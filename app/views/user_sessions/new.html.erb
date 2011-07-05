@@ -28,4 +28,4 @@
     <%= f.submit t("txt.login") %><br />
   </div>
 <% end %><br />
-<a href="#" alt="Forgot login"><%= t("txt.forgot") %></a>
+ <%= link_to t("txt.forgot"), new_password_reset_path %>

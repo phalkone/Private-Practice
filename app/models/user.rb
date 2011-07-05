@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
                     :presence => { :if => :required? },
                     :allow_blank => { :unless => :required?}
   validates :password,  :presence  => {:if => :password_required?},
-                        :confirmation =>  {:if => :password_required?},
+                        :confirmation =>  true,
                         :length => {:within => 6..40},
                         :allow_blank => true
                         
@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
   
   acts_as_authentic do |config|
      config.logged_in_timeout = 20.minutes
+     config.perishable_token_valid_for = 1.hour
      config.login_field = :email
      config.validate_login_field = false
      config.validate_email_field = false
@@ -79,6 +80,11 @@ class User < ActiveRecord::Base
 
   def name
     self.last_name + ", " + self.first_name
+  end
+  
+  def deliver_password_reset_instructions
+    reset_perishable_token!
+    UserMailer.password_reset_instructions(self).deliver
   end
 
   private

@@ -1,6 +1,8 @@
 PrivatePractice::Application.routes.draw do
   resources :images
   
+  resources :password_resets, :except => :destroy
+  
   resources :user_sessions, :only => [:new,:create,:destroy]
 
   resources :bookings, :except => [:edit,:update,:show] do

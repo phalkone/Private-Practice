@@ -1,0 +1,6 @@
+"nl":
+    password_reset_instructions:
+        title: "Prive Praktijk Paswoord Reset"
+        request: "Een verzoek om uw paswoord te resetten werd gemaakt. \n Indien u dit verzoek niet maakte, mag u deze e-mail negeren."
+        link: "Om uw wachtwoord te resetten volgt u de volgende link: "
+        problems: "Indien de link hierboven niet werkt, probeer hem dan te kopiëren en plakken in uw browser.\n Indien u problemen blijft hebben, contacteer ons dan alstublieft.."
