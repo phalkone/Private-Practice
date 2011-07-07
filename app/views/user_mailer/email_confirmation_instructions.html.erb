@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1><%= t("email_confirmation_instructions.title") %></h1>
+    <p>
+      	<%= t("email_confirmation_instructions.confirm") %>
+    </p>
+    <p>
+      <%= link_to @url, @url %>
+    </p>
+    <p>
+    	<%= t("email_confirmation_instructions.problems")%>
+    </p>
+	<p>
+      <%= link_to @url2, @url2 %>
+    </p>
+  </body>
+</html>

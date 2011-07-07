@@ -126,6 +126,7 @@
         first_name: "Voornaam"
         last_name: "Achternaam"
         email: "E-mail"
+        email_confirmation: "E-mail bevestiging"
         password: "Paswoord"
         password_confirmation: Paswoord bevestiging
       appointment:
@@ -174,8 +175,8 @@
       email_invalid: moet in het formaat zijn van een email adres
       password_blank: moet opgegeven zijn
       password_invalid: is ongeldig
-      not_active: Uw account is nog niet actief.
-      not_confirmed: Uw account is not niet bevestigd.
+      not_active: Uw account is niet actief.
+      not_confirmed: Uw account is nog niet bevestigd.
       not_approved: Uw account is nog niet goedgekeurd.
       no_authentication_details: Je gaf geen details op voor de authentificatie.
       errors: 

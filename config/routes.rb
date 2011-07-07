@@ -3,6 +3,8 @@ PrivatePractice::Application.routes.draw do
   
   resources :password_resets, :except => :destroy
   
+  resources :email_confirmations, :except => [:index,:destroy]
+  
   resources :user_sessions, :only => [:new,:create,:destroy]
 
   resources :bookings, :except => [:edit,:update,:show] do

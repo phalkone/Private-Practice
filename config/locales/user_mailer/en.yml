@@ -4,4 +4,8 @@
         request: "A request to reset your password has been made. \n If you did not make this request, simply ignore this email."
         link: "If you did make this request just click this link: "
         problems: "If the above URL does not work try copying and pasting it into your browser.\n If you continue to have problem please feel free to contact us."
+    email_confirmation_instructions:
+        title: "Private Practice E-mail Confirmation"
+        confirm: "Please confirm your email address by following the link below."
+        problems: "If the above URL does not work try copying and pasting it into your browser.\n If you continue to have problem please feel free to contact us. The link will expire after a short time. If no account can be found please make a new request by following the link below."
         

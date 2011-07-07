@@ -1,0 +1,18 @@
+<h2><%= t("email_confirmations.title")%></h2>
+<p>
+	<%= t('email_confirmations.instructions')%>
+</p>
+<%= form_for(@user, :url => email_confirmation_path, :method => "update") do |f| %>
+  <%= render 'shared/error_messages', :object => f.object, :modelname =>  User.model_name.human.downcase %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :value => (@user.errors.any? ? @user.email: "")  %>
+  </div>
+  <div class="field">
+    <%= f.label :email_confirmation %><br />
+    <%= f.text_field :email_confirmation %>
+  </div>
+  <div class="actions">
+    <%= f.submit t('email_confirmations.submit') %>
+  </div>
+<% end %>

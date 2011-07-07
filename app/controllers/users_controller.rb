@@ -89,7 +89,12 @@ class UsersController < ApplicationController
     else
       if @user.save
         flash[:success] = t("users.created")
-        redirect_to @user
+        if (role?("admin") || role?("doctor"))
+          redirect_to @user
+        else
+          @user.deliver_email_confirmation_instructions
+          redirect_to root_path
+        end
       else
         @title = t("users.newtitle")
         @submit_text = t("users.submit.new");

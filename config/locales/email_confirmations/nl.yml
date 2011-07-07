@@ -1,0 +1,13 @@
+"nl":
+  email_confirmations:
+    flash_success: Instructies om uw email te bevestigen zijn verzonden naar uw nieuw emailadres.
+    title: Verandering van emailadres
+    instructions: Gelieve een nieuw emailadres op te geven. U zal worden uitgelogd en uw account zal op non-actief worden ingesteld tot uw nieuw e-mailadres bevestigd is.
+    success: Emailadres succesvol bevestigd
+    not_found: "Uw account kon niet gevonden worden.\nProbeer om de URL te kopiëren en te plakken \nuit de toegezonden email naar de browser."
+    submit: Verander
+    title_request: "Verzoek bevestigingsemail"
+    instruction_request: "Typ het emailadres dat u gebruikte om te registreren met Prive Praktijk"
+    request_submit: "Verzoek"
+    flash_request: "Een nieuwe bevestigingsemail werd verzonden"
+    not_found_request: "Er is geen gebruiker met dit emailadres gevonden"

@@ -13,6 +13,12 @@
 <p>
   <b><%= User.human_attribute_name("email") %>:</b>
   <%= @user.email %>
+  <% if !role?("admin") || !role?("doctor") %>	
+	(<%= link_to "change email", edit_email_confirmation_path(@user)%>)
+  <% end %>
+</p>
+<p>
+
 </p><br />
 
 <% if @user.roles.exists?(:title => "patient") %>

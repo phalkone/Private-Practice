@@ -84,8 +84,7 @@ describe User do
     user.should be_required
     (user.required? && user.new_record?).should be_false
     user.should_not be_password_required
-    user.update_attributes(@attr.merge( :password => "", :password_confirmation => ""))
-    user.should be_valid
+    user.update_attributes(@attr.merge( :password => nil, :password_confirmation => nil)).should be_true
   end
   
   it "should require a matching password validation" do

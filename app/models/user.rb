@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110701091404
+# Schema version: 20110706033939
 #
 # Table name: users
 #
@@ -20,11 +20,13 @@
 #  last_login_at      :datetime
 #  current_login_ip   :string(255)
 #  last_login_ip      :string(255)
+#  confirmed          :boolean         not null
+#  active             :boolean         default(TRUE), not null
 #
 
 class User < ActiveRecord::Base
   attr_accessor :super_reg
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :email_confirmation, :password, :password_confirmation
 
   has_and_belongs_to_many :roles
 
@@ -37,14 +39,15 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30
-  validates :email, :format     => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
-                    :uniqueness => { :case_sensitive => false },
-                    :presence => { :if => :required? },
-                    :allow_blank => { :unless => :required?}
+  validates :email, :format       => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
+                    :uniqueness   => { :case_sensitive => false},
+                    :presence     => { :if => :required? },
+                    :allow_blank  => { :unless => :required?},
+                    :confirmation => { :if => :required? }
   validates :password,  :presence  => {:if => :password_required?},
-                        :confirmation =>  true,
+                        :confirmation => {:if => :confirmation_required?},
                         :length => {:within => 6..40},
-                        :allow_blank => true
+                        :allow_blank => {:unless => :password_required?}
                         
   before_validation :blank_email
   before_save :default_role
@@ -60,9 +63,9 @@ class User < ActiveRecord::Base
      config.require_password_confirmation = false
   end
   
-   def blank_email
-     self.email = (self.email.blank?) ? nil : self.email
-   end
+  def blank_email
+    self.email = (self.email.blank?) ? nil : self.email
+  end
    
   def unbook_apps
     self.bookings.each() do |app|
@@ -72,6 +75,10 @@ class User < ActiveRecord::Base
   
   def password_required?
      return (self.new_record? && self.required?)
+  end
+  
+  def confirmation_required?
+    return(!self.password.blank? || !self.password.nil?)
   end
 
   def required?
@@ -83,8 +90,21 @@ class User < ActiveRecord::Base
   end
   
   def deliver_password_reset_instructions
-    reset_perishable_token!
+    self.reset_perishable_token!
     UserMailer.password_reset_instructions(self).deliver
+  end
+  
+  def deliver_email_confirmation_instructions
+    self.reset_perishable_token!
+    UserMailer.email_confirmation_instructions(self).deliver
+  end
+  
+  def confirm
+    self.update_attribute("confirmed", true)
+  end
+  
+  def unconfirm
+    self.update_attribute("confirmed", false)
   end
 
   private

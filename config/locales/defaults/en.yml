@@ -105,8 +105,11 @@
         unit: '€'
         precision: 2
         format: '%u %n'
-        
+         
   activerecord:
+    attributes:
+      user:
+        unconfirmed_email: "E-mail"
     errors:
       template:
         header:

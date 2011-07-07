@@ -8,10 +8,22 @@
     <%= f.label :last_name %><br />
     <%= f.text_field :last_name, :class => "ui-widget-content ui-corner-all" %>
   </div>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email, :class => "ui-widget-content ui-corner-all" %>
-  </div>
+  <% if (role?("doctor") || role?("admin"))%>
+	<div class="field">
+	    <%= f.label :email %><br />
+	    <%= f.text_field :email, :class => "ui-widget-content ui-corner-all" %>
+	</div>
+  <% end %>
+  <% if !signed_in? %>
+  	<div class="field">
+	    <%= f.label :email %><br />
+	    <%= f.text_field :email, :class => "ui-widget-content ui-corner-all" %>
+	  </div>
+	  <div class="field">
+	    <%= f.label :email_confirmation %><br />
+	    <%= f.text_field :email_confirmation, :class => "ui-widget-content ui-corner-all" %>
+	  </div>
+  <% end %>
   <div class="field">
     <%= f.label :password %><br />
     <%= f.password_field :password, :class => "ui-widget-content ui-corner-all" %>

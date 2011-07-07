@@ -9,6 +9,14 @@ module UserSessionsHelper
     return @current_user if defined?(@current_user)
     @current_user = current_session && current_session.record
   end
+  
+  def sign_in(user, remember_me)
+    UserSession.create(user, remember_me)
+  end
+  
+  def sign_out
+    UserSession.find.destroy unless UserSession.find.nil?
+  end
 
   def signed_in?
     !current_user.nil?
