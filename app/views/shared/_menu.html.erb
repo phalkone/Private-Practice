@@ -12,11 +12,8 @@
       <li>&middot;</li>
     <% end %>
   <% end %>
-  <% if role?("doctor") || role?("admin") %>
-    <li>&middot;</li>
-  <% end %>
   <% if role?("doctor") %>
-    <li class="<%= "active" if (controller.controller_name == "appointments") -%>">
+    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "appointments") -%>">
       <%= link_to t("appointments.menutitle"), appointments_path %></li>
   <% end %>
   <% if role?("doctor") && !role?("admin") %>

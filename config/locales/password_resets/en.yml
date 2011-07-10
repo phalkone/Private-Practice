@@ -1,6 +1,6 @@
 "en":
   password_resets:
-    flash_success: Instructions to reset your password have been emailed to you.
+    flash_success: Password reset instructions have been send.
     flash_failure: No user was found with that email address.
     title: Password Reset
     instructions: Please enter your email address below and click the reset button to reset your password.

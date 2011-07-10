@@ -79,8 +79,8 @@ class AppointmentsController < ApplicationController
   def create
     @appointment = current_user.appointments.build(params[:appointment])
     if(params[:user])
-      params[:user][:super_reg] = "1"
       @patient = User.new(params[:user])
+      @patient.super_reg = (role?("admin") || role?("doctor"))
       @appointment.patient = @patient
       if @patient.save
         @mode = "registered"
@@ -122,8 +122,8 @@ class AppointmentsController < ApplicationController
   def update
     @appointment = Appointment.find(params[:id])
     if(params[:user])
-      params[:user][:super_reg] = "1"
       @patient = User.new(params[:user])
+      @patient.super_reg = (role?("admin") || role?("doctor"))
       @appointment.patient = @patient
       if @patient.save
         if @appointment.update_attributes(params[:appointment])

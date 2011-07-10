@@ -2,10 +2,11 @@
   flash_hide();
   $("#new_page").html("<%= escape_javascript(render(:partial => "form")) %>");
   $('#new_page a').click(function() {
-    $("#new_page").html("<p><%= escape_javascript(
-      link_to "", new_page_path, :remote => true, 
-      :class => "button ui-icon-document", 
-      :title => t("pages.new")) %></p>");
+	$("#new_page").html("<p><%= escape_javascript(
+	      link_to t("pages.new"), new_page_path, :remote => true, 
+	      :class => "ui_button", 
+	      :title => t("pages.new")) %></p>");
+	$(".ui_button" ).button();
     $("#new_locale").removeAttr("disabled");
   });
 <% else -%>
@@ -18,9 +19,10 @@
     .show(300);
   <% end %>
   $("#new_page").html("<p><%= escape_javascript(
-    link_to "", new_page_path, :remote => true, 
-    :class => "button ui-icon-document", 
-    :title => t("pages.new")) %></p>");
+	      link_to t("pages.new"), new_page_path, :remote => true, 
+	      :class => "ui_button", 
+	      :title => t("pages.new")) %></p>");
+  $(".ui_button" ).button();
   setTimeout(flash_hide,3000);
   $("#page_list").html("<%= escape_javascript(render(:partial => "list")) %>");
   $("#menu").html("<%= escape_javascript(render(:partial => "shared/menu")) %>");

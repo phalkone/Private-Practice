@@ -4,8 +4,7 @@ class UserMailer < ActionMailer::Base
   def email_confirmation_instructions(user)
     @user = user
     @url  = email_confirmation_url(user.perishable_token, :host => I18n.locale.to_s + ".app.local:3000")
-    @url2 = new_email_confirmation_url(:host => I18n.locale.to_s + ".app.local:3000")
-    #TODO change test e-mail
+    @url2 = new_email_confirmation_url(:host => I18n.locale.to_s + ".app.local:3000", :email => user.email)
     mail(:to => user.email,
       :subject => t("email_confirmation_instructions.title"))  do |format|
         format.html

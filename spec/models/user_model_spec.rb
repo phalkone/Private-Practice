@@ -4,8 +4,8 @@ describe User do
   before(:each) do
     Role.create(:title => "patient")
     @attr = { :last_name => "User", :first_name => "Example", 
-      :email => "user@example.com", :password => "secret", 
-      :password_confirmation => "secret" }
+      :email => "user@example.com", :email_confirmation => "user@example.com",
+       :password => "secret", :password_confirmation => "secret" }
   end
   
   it "should create a new instance given valid attributes" do
@@ -48,7 +48,7 @@ describe User do
   it "should accept valid email adddresses" do
     addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
     addresses.each() do |address|
-      new_user = User.new(@attr.merge(:email => address))
+      new_user = User.new(@attr.merge(:email => address, :email_confirmation => address))
       new_user.should be_valid
     end
   end
@@ -56,7 +56,7 @@ describe User do
   it "should reject invalid email addresses" do
     addresses = %w[user@foo,com  @foo.bar.org first.last]
     addresses.each() do |address|
-      new_user = User.new(@attr.merge(:email => address))
+      new_user = User.new(@attr.merge(:email => address, :email_confirmation => address))
       new_user.should_not be_valid
     end
   end

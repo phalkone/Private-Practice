@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :admin, :only => [:roles,:update_roles]
+  before_filter :admin_only, :only => [:admin, :update_admin]
   before_filter :admin_doctor, :only => [:index,:destroy]
   before_filter :logged_in, :only => [:edit,:update,:show]
   before_filter :correct_user, :only => [:edit,:update,:show]
@@ -41,6 +41,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -74,6 +76,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -136,6 +140,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -143,25 +149,44 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @title = @user.name
   end
-
-  def roles
+  
+  def admin
     @user = User.find(params[:id])
     @title = @user.name
   end
-
-  def update_roles
+  
+  def update_admin
     @user = User.find(params[:id])
-    if params[:commit][t("users.submit.cancel")]
-      redirect_to @user
-    else
-      @user.roles.clear
-      if params[:role]
-        params[:role].each do |role_id, on|
-          @user.roles << Role.find(role_id)
+    case params[:clicked]
+      when "confirmed" then @user.update_attribute("confirmed", params[:set])
+      when "active" then @user.update_attribute("active", params[:set])
+      when "send_confirmation" then 
+        @user.deliver_email_confirmation_instructions
+        flash.now[:notice] = t("email_confirmations.flash_request")
+      when "send_reset" then
+        @user.deliver_password_reset_instructions
+        flash.now[:notice] = t("password_resets.flash_success")
+      when "delete" then
+        if @user.destroy
+          flash[:alert] = t("users.destroyed")
+          render :update do |page|
+            page << 'window.location = "' + users_url  + '";'
+          end
+          return
         end
-      end
-      redirect_to @user
+      else
+        role = Role.find_by_title(params[:clicked])
+        if params[:set] == "true"
+          @user.roles << role unless @user.roles.include? role
+        elsif @user.roles.count != 1
+          @user.roles.delete(role) unless !@user.roles.include?(role)
+        elsif @user.roles.include?(role)
+          flash.now[:error] = t("users.one_role")
+        end
     end
+    @div = "#admin"
+    @partial = "admin"
+    render "refresh"
   end
 
   private
@@ -175,7 +200,7 @@ class UsersController < ApplicationController
       return search_t
     end
 
-    def admin
+    def admin_only
       deny_access unless role?("admin")
     end
 

@@ -1,65 +1,29 @@
 <h2><%= t("users.profile_of") + " " + @user.name %></h2>
-<h3><%= t("users.gen_info") %></h3>
-<p>
-  <b><%= User.human_attribute_name("first_name") %>:</b>
-  <%= @user.first_name %>
-</p>
+<div id="subcontent" class="span-19 colborder">
+	<h3><%= t("users.gen_info") %></h3>
+	<p>
+	  <b><%= User.human_attribute_name("first_name") %>:</b>
+	  <%= @user.first_name %>
+	</p>
 
-<p>
-  <b><%= User.human_attribute_name("last_name") %>:</b>
-  <%= @user.last_name %>
-</p>
+	<p>
+	  <b><%= User.human_attribute_name("last_name") %>:</b>
+	  <%= @user.last_name %>
+	</p>
 
-<p>
-  <b><%= User.human_attribute_name("email") %>:</b>
-  <%= @user.email %>
-  <% if !role?("admin") || !role?("doctor") %>	
-	(<%= link_to "change email", edit_email_confirmation_path(@user)%>)
-  <% end %>
-</p>
-<p>
+	<p>
+	  <b><%= User.human_attribute_name("email") %>:</b>
+	  <%= @user.email %>
+	  <% if !role?("admin") && !role?("doctor") %>	
+		(<%= link_to "change email", edit_email_confirmation_path(@user)%>)
+	  <% end %>
+	</p>
+	<p>
 
-</p><br />
+	</p>
 
-<% if @user.roles.exists?(:title => "patient") %>
-<h2><%= t("users.apps_info") %></h2>
-<p>
-  <b><%= t("users.fut_apps") %>:</b>
-  <ul>
-  <% @user.bookings.where("begin > ?",Time.now).order("begin ASC").each() do |app| %>
-    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
- <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b> <%= link_to t("bookings.unbook"), booking_path(app), 
-    :confirm => t("users.confirmation"), :method => :delete %></li>
-  <% end %>
-  </ul>
-</p>
-
-<p>
-  <b><%= t("users.prev_apps") %>:</b>
-  <ul>
-  <% @user.bookings.where("begin < ?",Time.now).order("begin ASC").each() do |app| %>
-    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
- <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b></li>
-  <% end %>
-  </ul>
-</p>
-<% end %>
-
-<% if role?("doctor") || role?("admin") %>
-<p>
-  <b><%= t("users.roles") %>:</b>
-  <ul>
-  <% @user.roles.each() do |role| %>
-    <li><%= t("txt."+role.title) %></li>
-  <% end %>
-  </ul>
-</p>
-<% end %>
-
-<%= link_to t("users.edit"), edit_user_path(@user) %>
-<% if role?("admin") %>
-| <%= link_to t("users.roles"), roles_user_path(@user) %>
-<% end %>
-<% if role?("doctor") || role?("admin") %>
- | <%= link_to t("txt.back"), users_path %>
-<% end %>
+	<%= link_to t("users.edit"), edit_user_path(@user) %>
+</div>
+<div id="submenu" class="span-4 last">
+  <%= render "shared/user_profile_menu", :active => "general" %>
+</div>

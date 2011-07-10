@@ -5,7 +5,7 @@
 <%= form_for(:user, :url => email_confirmations_path, :method => "create") do |f| %>
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.text_field :email %>
+    <%= f.text_field :email, :value => @email %>
   </div>
   <div class="actions">
     <%= f.submit t('email_confirmations.request_submit') %>

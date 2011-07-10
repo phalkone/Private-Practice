@@ -14,6 +14,7 @@ describe "Users" do
           fill_in :user_first_name,            :with => ""
           fill_in :user_last_name,             :with => ""
           fill_in :user_email,                 :with => ""
+          fill_in :user_email_confirmation,    :with => ""
           fill_in :user_password,              :with => ""
           fill_in :user_password_confirmation, :with => ""
           click_button :user_submit
@@ -31,6 +32,7 @@ describe "Users" do
           fill_in :user_first_name,            :with => "Example"
           fill_in :user_last_name,             :with => "User"
           fill_in :user_email,                 :with => "example@user.com"
+          fill_in :user_email_confirmation,    :with => "example@user.com"
           fill_in :user_password,              :with => "foobar"
           fill_in :user_password_confirmation, :with => "foobar"
           click_button :user_submit

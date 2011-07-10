@@ -9,7 +9,7 @@
       <% @user_session.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
 		<% if msg == t('authlogic.error_messages.not_confirmed') %>
-			<%= link_to t('email_confirmations.title_request').downcase, new_email_confirmation_path %>
+			<%= link_to t('email_confirmations.title_request').downcase, new_email_confirmation_path(:email => @user_session.email) %>
 		<% end %>
       <% end %>
     </ul>

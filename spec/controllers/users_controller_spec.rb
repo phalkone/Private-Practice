@@ -69,11 +69,6 @@ describe UsersController do
               post :create, :user => @attr, :commit => controller.t("users.submit.new")
             end.should change(User, :count).by(1)
           end
-            
-          it "should redirect to the user show page" do 
-            post :create, :user => @attr, :commit => controller.t("users.submit.new")
-            response.should redirect_to(user_path(assigns(:user)))
-          end
           
           it "should have a welcome message" do
             post :create, :user => @attr, :commit => controller.t("users.submit.new")

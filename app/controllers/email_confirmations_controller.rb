@@ -3,6 +3,7 @@ class EmailConfirmationsController < ApplicationController
    before_filter :authenticate, :only => [:edit,:update]
 
    def new
+     @email = params[:email].nil? ? "" : params[:email]
      @title = t("email_confirmations.title")
    end
    

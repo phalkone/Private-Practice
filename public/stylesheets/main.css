@@ -99,6 +99,8 @@ table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
 
 #search_users {float:right; padding: 0.3em; height: 18px;margin-top:2px;}
 #show_all {float: right; margin-left:5px;}
+#rolesoption ul {list-style:none;}
+table#admininfo tr {height:30px;}
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;

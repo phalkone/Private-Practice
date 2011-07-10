@@ -7,6 +7,6 @@
   .show(300);
 <% end %>
 
-$("#users_table").html("<%= escape_javascript(render(:partial => "table")) %>");
+$("<%= escape_javascript(@div) %>").html("<%= escape_javascript(render(:partial => @partial)) %>");
 initialize();
-setTimeout(flash_hide,3000);
+setTimeout(flash_hide,5000);

@@ -39,8 +39,9 @@ $(document).ready(function() {
     }
   });
 
- setTimeout(flash_hide,3000);
+ setTimeout(flash_hide,5000);
 });
+
 function login_hide(){
   if( (y_corr > $('#login_box').height()) || (x_corr < $('#login_box').offset().left) || (x_corr > ($('#login_box').width() + $('#login_box').offset().left)) ) {
     $('#login_box form').slideUp();

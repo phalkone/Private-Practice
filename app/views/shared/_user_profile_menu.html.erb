@@ -1,0 +1,6 @@
+<ul>
+    <li <%= raw 'class="active"' if active == "general" %>><%= link_to t("users.general"), user_path(@user) %></li>
+	<% if role?("admin") %>
+		<li <%= raw 'class="active"' if active == "admin" %>><%= link_to t("users.admin"), admin_user_path(@user) %></li>
+	<% end %>
+ <ul>

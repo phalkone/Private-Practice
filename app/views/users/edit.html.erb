@@ -1,5 +1,11 @@
 <% content_for :styles do %>
 <%= stylesheet_link_tag "jquery/jquery.ui.all" %>
 <% end %>
-<h2><%= t("users.edittitle") %></h2>
-<%= render "form" %>
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<div id="subcontent" class="span-19 colborder">
+<h3><%= t("users.edittitle") %></h3>
+	<%= render "form" %>
+</div>
+<div id="submenu" class="span-4 last">
+ 	<%= render "shared/user_profile_menu", :active => "general" %>
+</div>

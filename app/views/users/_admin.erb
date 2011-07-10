@@ -1,0 +1,57 @@
+<h3><%= t("users.admin") %></h3>
+<table id="admininfo">
+	<col width="50%"/>
+	<col width="50%"/>
+	<tr>
+		<td><b><%= t("users.login_count")%></b></td>
+  		<td><%= @user.login_count %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.failed_login_count")%></b></td>
+  		<td><%= @user.failed_login_count %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.last_request_at")%></b></td>
+  		<td><%= l(@user.last_request_at, :format => :long) unless @user.last_request_at.nil? %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.current_login_at")%></b></td>
+  		<td><%= l(@user.current_login_at, :format => :long) unless @user.current_login_at.nil? %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.last_login_at")%></b></td>
+  		<td><%= l(@user.last_login_at, :format => :long) unless @user.last_login_at.nil?  %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.last_login_ip")%></b></td>
+  		<td><%= @user.last_login_ip unless @user.last_login_ip.nil? %></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.confirmed")%></b></td>
+  		<td><div id="confirmed"> 
+				<input type="radio" id="yes_conf" class="yes" name="confirmed" <%= raw 'checked="checked"' if @user.confirmed? %> /><label for="yes_conf"><%= t("users.yes_true") %></label> 
+				<input type="radio" id="no_conf" class="no" name="confirmed" <%= raw 'checked="checked"' if !@user.confirmed? %> /><label for="no_conf"><%= t("users.no_false") %></label> 
+			</div></td>
+	</tr>
+	<tr>
+		<td><b><%= t("users.active")%></b></td>
+  		<td><div id="active"> 
+				<input type="radio" id="yes_act" class="yes" name="active" <%= raw 'checked="checked"' if @user.active? %> /><label for="yes_act"><%= t("users.yes_true") %></label> 
+				<input type="radio" id="no_act" class="no" name="active" <%= raw 'checked="checked"' if !@user.active? %> /><label for="no_act"><%= t("users.no_false") %></label> 
+			</div></td>
+	</tr>
+</table>
+<h3><%= t("users.roles") %></h3>
+<table id="adminroles">
+	<col width="50%"/>
+	<col width="50%"/>
+	<% Role.all.each do |role| %>
+	  <tr>
+		<td><b><%=  t("txt." + role.title) %></b></td>
+		<td><div id="<%= role.title %>" class="role"> 
+				<input type="radio" id="yes<%= role.id %>" class="yes" name="<%= role.title %>" <%= raw 'checked="checked"' if @user.roles.include? role %> /><label for="yes<%= role.id %>"><%= t("users.yes_true") %></label> 
+				<input type="radio" id="no<%= role.id %>" class="no" name="<%= role.title %>" <%= raw 'checked="checked"' if !@user.roles.include?(role) %> /><label for="no<%= role.id %>"><%= t("users.no_false") %></label> 
+			</div></td>
+	  </tr>
+    <% end %>
+</table>

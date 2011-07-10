@@ -1,0 +1,43 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.autocomplete.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("button, #subcontent a").button().css("font-size","0.9em");
+  $("button").click(function(){
+	if(($(this).attr("id") == "delete") && confirm("<%= escape_javascript(t('users.confirmation')) %>")){
+		$.post("<%= update_admin_user_path(@user) %>", { clicked: $(this).attr("id")} );
+	} else if($(this).attr("id") != "delete"){
+		$.post("<%= update_admin_user_path(@user) %>", { clicked: $(this).attr("id")} );
+	}
+  });
+  initialize();
+});
+function initialize(){
+  $( "#confirmed, #active, .role" ).buttonset().css("font-size","0.9em");
+  $("#confirmed input, #active input, .role input").click(function(){
+	$.post("<%= update_admin_user_path(@user) %>", { clicked: $(this).parent().attr("id"), set: $(this).hasClass("yes") } );
+  });
+}
+</script>
+<% end %>
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<div id="subcontent" class="span-19 colborder">
+	<div id="admin">
+		<%= render "admin" %>
+	</div>
+	<p>
+		<button id="send_confirmation"><%= t("users.send_confirm") %></button>
+		<button id="send_reset"><%=  t("users.send_reset") %></button>
+		<button id="delete"><%=  t("users.delete") %></button>
+	</p>
+</div>
+<div id="submenu" class="span-4 last">
+  <%= render "shared/user_profile_menu", :active => "admin" %>
+</div>

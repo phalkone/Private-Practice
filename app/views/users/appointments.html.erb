@@ -1,0 +1,21 @@
+<h3><%= t("users.apps_info") %></h3>
+<p>
+  <b><%= t("users.fut_apps") %>:</b>
+  <ul>
+  <% @user.bookings.where("begin > ?",Time.now).order("begin ASC").each() do |app| %>
+    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
+ <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b> <%= link_to t("bookings.unbook"), booking_path(app), 
+    :confirm => t("users.confirmation"), :method => :delete %></li>
+  <% end %>
+  </ul>
+</p>
+
+<p>
+  <b><%= t("users.prev_apps") %>:</b>
+  <ul>
+  <% @user.bookings.where("begin < ?",Time.now).order("begin ASC").each() do |app| %>
+    <li><%= t("bookings.with_doctor") %> <b><%= app.doctor.name %></b>
+ <%= t("bookings.on_date") %> <b><%= l(app.begin.to_date, :format => :long) %> <%= t("bookings.at_time") %> <%= l(app.begin, :format => :time) %></b></li>
+  <% end %>
+  </ul>
+</p>

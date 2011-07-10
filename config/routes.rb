@@ -25,8 +25,8 @@ PrivatePractice::Application.routes.draw do
 
   resources :users do
     member do
-      get :roles
-      post :update_roles
+      get :admin
+      post :update_admin
     end
 
    collection do

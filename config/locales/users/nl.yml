@@ -12,20 +12,36 @@
     listing: Lijst van gebruikers
     new: Nieuwe gebruiker
     show: Toon
-    edit: Bewerk profiel
+    edit: Bewerk
     destroy: Verwijder
     roles: Functie's
     confirmation: Ben je zeker?
     sel_confirmation: Ben je zeker dat je de geslecteerde gebruikers wenst te verwijderen?
     search: Zoek...
     show_all: Wis zoekopdracht
-    previous: << Volgende
-    next: Vorige >>
+    previous: << Vorige
+    next: Volgende >>
     profile_of: Profiel van
     fut_apps: Toekomstige afspraken
     prev_apps: Vroegere afspraken
     gen_info: Algemene informatie
+    general: Algemeen
     apps_info: Afspraken
+    admin: Beheer
+    login_count: Aantal logins
+    failed_login_count: Gefaalde aantal logins
+    last_request_at: Laatste verzoek op
+    current_login_at: Huidige login op
+    last_login_at: Laatste login op
+    last_login_ip: Laatste login IP
+    confirmed: Geconfirmeerd
+    active: Actief
+    no_false: nee
+    yes_true: ja
+    one_role: Tenminste één functie moet gekozen zijn
+    send_confirm: Zend bevestiging
+    send_reset: Zend paswoord reset
+    delete: Verwijder gebruiker
     submit:
       new: Registeer
       edit: Sla wijzigingen op

@@ -12,7 +12,7 @@
     listing: Listing users
     new: New user
     show: Show
-    edit: Edit profile
+    edit: Edit
     destroy: Delete
     roles: Roles
     confirmation: Are you sure?
@@ -25,7 +25,23 @@
     fut_apps: Future appointments
     prev_apps: Past appointments
     gen_info: General information
+    general: General
     apps_info: Appointments
+    admin: Administer
+    login_count: Login count
+    failed_login_count: Failed login count
+    last_request_at: Last request at
+    current_login_at: Current login at
+    last_login_at: Last login at
+    last_login_ip: Last login IP
+    confirmed: Confirmed
+    active: Active
+    no_false: no
+    yes_true: yes
+    one_role: At least one role has to be selected
+    send_confirm: Send confirmation
+    send_reset: Send password reset
+    delete: Verwijder gebruiker
     submit:
       new: Register
       edit: Save changes
