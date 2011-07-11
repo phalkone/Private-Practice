@@ -2,7 +2,7 @@
 	<div id="login_box">
 	<% if signed_in? %>
 	 	<p><%= t("txt.logged") + " " %>
-	    <%= link_to current_user.first_name + " " + current_user.last_name, current_user %> | 
+	    <span <%= "class='bold'" if menu_active == "profile" %>><%= link_to current_user.first_name + " " + current_user.last_name, current_user %></span> | 
 	    <%= link_to t("txt.signout"), signout_path, :method => :delete %></p>
 	<% else %>
 		<%= render :partial => "shared/loginform" %>

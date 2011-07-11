@@ -20,6 +20,8 @@ class UsersController < ApplicationController
   end
 
   def refresh
+    @div ||= "#users_table"
+    @partial ||= "table"
     if params[:term] && params[:term] != t('users.search')
       if role?("admin")
         @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
@@ -41,8 +43,6 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
-    @div = "#users_table"
-    @partial = "table"
     render "refresh"
   end
 
@@ -76,8 +76,6 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
-    @div = "#users_table"
-    @partial = "table"
     render "refresh"
   end
 
@@ -140,19 +138,19 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
-    @div = "#users_table"
-    @partial = "table"
     render "refresh"
   end
 
   def show
     @user = User.find(params[:id])
     @title = @user.name
+    @menu_active = "profile" if (@user.id == current_user.id)
   end
   
   def admin
     @user = User.find(params[:id])
     @title = @user.name
+    @menu_active = "profile" if (@user.id == current_user.id)
   end
   
   def update_admin

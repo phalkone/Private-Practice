@@ -25,6 +25,7 @@ class BookingsController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
+    @menu_active = (@user.id == current_user.id) ? "profile" : "users"
   end
 
   def new

@@ -20,9 +20,10 @@ class EmailConfirmationsController < ApplicationController
    end
   
    def show
+     @title = t("email_confirmations.title")
      @user.confirm
      sign_in(@user,false)
-     flash[:notice] = @title = t("email_confirmations.success")
+     flash[:notice] = t("email_confirmations.success")
      redirect_to @user
    end
    

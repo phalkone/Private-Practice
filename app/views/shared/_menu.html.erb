@@ -13,23 +13,23 @@
     <% end %>
   <% end %>
   <% if role?("doctor") %>
-    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "appointments") -%>">
+    <li>&middot;</li><li <%= "class='active'" if (menu_active == "appointments") -%>>
       <%= link_to t("appointments.menutitle"), appointments_path %></li>
   <% end %>
   <% if role?("doctor") && !role?("admin") %>
-    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "users") -%>">
+    <li>&middot;</li><li <%= "class='active'" if (menu_active == "users") -%>>
       <%= link_to t("users.menutitle_doc"), users_path %></li>
   <% end %>
   <% if role?("admin") %>
-    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "users") -%>">
+    <li>&middot;</li><li <%= "class='active'" if (menu_active == "users") -%>>
       <%= link_to t("users.menutitle"), users_path %></li><li>&middot;</li>
-    <li class="<%= "active" if ((controller.controller_name == "pages") || 
-                               (controller.controller_name == "images")) &&
+    <li class="<%= "active" if ((menu_active == "pages") || 
+                               (menu_active == "images")) &&
                                (@showpage.nil?) -%>">
     <%= link_to t("pages.menutitle"), pages_path %></li>
   <% end %>
   <% if role?("patient") %>
-    <li>&middot;</li><li class="<%= "active" if (controller.controller_name == "bookings") -%>">
+    <li>&middot;</li><li <%= "class='active'" if (menu_active == "bookings") -%>>
       <%= link_to t("bookings.menutitle"), bookings_path %></li>
   <% end %>
 </ul>

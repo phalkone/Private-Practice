@@ -19,5 +19,9 @@ module ApplicationHelper
       "#{base_title} | #{@title}"
     end
   end
+  
+  def menu_active
+    @menu_active ||= controller.controller_name
+  end
 
 end
