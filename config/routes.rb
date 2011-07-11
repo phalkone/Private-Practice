@@ -7,7 +7,7 @@ PrivatePractice::Application.routes.draw do
   
   resources :user_sessions, :only => [:new,:create,:destroy]
 
-  resources :bookings, :except => [:edit,:update,:show] do
+  resources :bookings, :except => [:edit,:update] do
     collection do
       put :index
     end

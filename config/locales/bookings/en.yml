@@ -15,7 +15,7 @@
     confirm_title: Confirm appointment
     with_doctor: With doctor
     at_time: at
-    on: on
+    on_date: on
     success: Appointment was successfully made.
     failure: Something went wrong when making the appointment.
     cancelled: Your appointment has been cancelled.

@@ -15,7 +15,7 @@
     confirm_title: Bevestig uw afspraak
     with_doctor: Met dokter
     at_time: om
-    on: op
+    on_date: op
     success: Afspraak succesvol vastgelegd.
     failure: Er is iets misgelopen bij het maken van de afspraak.
     cancelled: Uw afspraak werd geannuleerd.

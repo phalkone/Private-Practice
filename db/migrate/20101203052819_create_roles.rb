@@ -9,9 +9,6 @@ class CreateRoles < ActiveRecord::Migration
       t.integer :user_id
     end
 
-    Role.create(:title => "admin")
-    Role.create(:title => "doctor")
-    Role.create(:title => "patient")
   end
 
   def self.down

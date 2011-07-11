@@ -1,5 +1,6 @@
 class BookingsController < ApplicationController
   before_filter :logged_in
+  before_filter :correct_user, :only => :show
 
   def index
     @title= t("bookings.title")
@@ -19,6 +20,11 @@ class BookingsController < ApplicationController
       @form = true
     end
     @appointments = Appointment.where("begin >= ? AND ? >= begin AND doctor_id = ? AND patient_id IS NULL", @begin_date, @end_date, @doctor).order("begin ASC").all
+  end
+  
+  def show
+    @user = User.find(params[:id])
+    @title = @user.name
   end
 
   def new
@@ -60,5 +66,11 @@ class BookingsController < ApplicationController
     def logged_in
       deny_access unless signed_in?
     end
+    
+    def correct_user
+     @user = User.find(params[:id])
+     redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
+    end
+    
 
 end
