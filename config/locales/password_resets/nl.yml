@@ -2,9 +2,9 @@
   password_resets:
     flash_success: Paswoord reset instructies werden verzonden.
     flash_failure: Er is geen gebruiker met dit email adres.
-    title: Paswoord Reset
+    title: Wijzig Paswoord
     instructions: Gelieve uw emailadres op te geven en op de reset knop te drukken om uw paswoord te resetten.
     new_password_instructions: Gelieve een nieuw paswoord op te geven.
     success: Paswoord succesvol bijgewerkt
     not_found: "Uw account kon niet gevonden worden.\nProbeer om de URL te kopiëren en te plakken \nuit de toegezonden email naar de browser \nof het paswoord reset proces te herstarten."
-    submit: Reset Paswoord
+    submit: Wijzig Paswoord

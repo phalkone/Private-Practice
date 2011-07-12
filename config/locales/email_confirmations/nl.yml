@@ -2,6 +2,7 @@
   email_confirmations:
     flash_success: Instructies om uw email te bevestigen zijn verzonden naar uw nieuw emailadres.
     title: Verandering van emailadres
+    change_email: Wijzig email
     instructions: Gelieve een nieuw emailadres op te geven. U zal worden uitgelogd en uw account zal op non-actief worden ingesteld tot uw nieuw e-mailadres bevestigd is.
     success: Emailadres succesvol bevestigd
     not_found: "Uw account kon niet gevonden worden.\nProbeer om de URL te kopiëren en te plakken \nuit de toegezonden email naar de browser."

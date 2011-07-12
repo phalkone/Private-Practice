@@ -1,6 +1,6 @@
 class PasswordResetsController < ApplicationController
-  before_filter :load_user_using_perishable_token, :only => [:edit, :update]
-  before_filter :require_no_user
+  before_filter :load_user, :only => [:edit, :update]
+  before_filter :require_no_user, :only => [:new, :create]
   
   def new
     @title = t("password_resets.title")
@@ -32,8 +32,14 @@ class PasswordResetsController < ApplicationController
   end
   
   private  
-    def load_user_using_perishable_token  
-      @user = User.find_using_perishable_token(params[:id])  
+    def load_user
+      if signed_in?
+        @user = User.find(params[:id])
+        redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
+      else
+        User.find_using_perishable_token(params[:id])
+      end
+
       unless @user  
         flash[:notice] = t("password_resets.not_found")
         redirect_to new_password_reset_path

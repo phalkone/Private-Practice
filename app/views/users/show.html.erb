@@ -1,3 +1,16 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#subcontent a").button().css("font-size","0.9em");
+});
+</script>
+<% end %>
 <h2><%= t("users.profile_of") + " " + @user.name %></h2>
 <div id="subcontent" class="span-19 colborder">
 	<h3><%= t("users.gen_info") %></h3>
@@ -14,15 +27,15 @@
 	<p>
 	  <b><%= User.human_attribute_name("email") %>:</b>
 	  <%= @user.email %>
-	  <% if !role?("admin") && !role?("doctor") %>	
-		(<%= link_to "change email", edit_email_confirmation_path(@user)%>)
-	  <% end %>
 	</p>
 	<p>
 
 	</p>
-
-	<%= link_to t("users.edit"), edit_user_path(@user) %>
+	<% if !role?("admin") && !role?("doctor") %>	
+		<%= link_to t("email_confirmations.change_email"), edit_email_confirmation_path(@user)%> 
+		<%= link_to t("password_resets.title"), edit_password_reset_path(@user) %> 
+	<% end %>
+	<%= link_to t("users.edittitle"), edit_user_path(@user) %>
 </div>
 <div id="submenu" class="span-4 last">
   <%= render "shared/user_profile_menu", :active => "general" %>

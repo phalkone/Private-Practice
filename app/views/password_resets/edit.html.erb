@@ -2,7 +2,7 @@
 <p>
 	<%= t('password_resets.new_password_instructions')%>
 </p>
-<%= form_for(@user, :url => password_reset_path(@user.perishable_token), :method => "update") do |f| %>
+<%= form_for(@user, :url => password_reset_path(signed_in? ? @user.id : @user.perishable_token), :method => "update") do |f| %>
   <%= render 'shared/error_messages', :object => f.object, :modelname =>  User.model_name.human.downcase %>
   <div class="field">
     <%= f.label :password %><br />

@@ -2,6 +2,7 @@
   email_confirmations:
     flash_success: Instructions to confirm your e-mail address have been send to you. Upon confirmation your account will be activated.
     title: Change e-mail address
+    change_email: Change e-mail
     instructions: Please enter your new email address below. You will be logged out and your account will be deactivated until your new email address is confirmed.
     success: Email address successfully confirmed
     not_found: "We're sorry, but we could not locate your account.\nIf you are having issues try copying and pasting the URL \nfrom your email into your browser."
