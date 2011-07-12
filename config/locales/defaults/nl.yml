@@ -20,6 +20,8 @@
     signin: Log in
     or: of
     cancel: Annuleer
+    contact: Contact
+    route: Route
   date:
     formats:
       default: "%Y-%m-%d"
@@ -129,6 +131,11 @@
         email_confirmation: "E-mail bevestiging"
         password: "Paswoord"
         password_confirmation: Paswoord bevestiging
+        address: "Adres"
+        postcode: "Postcode"
+        town: "Gemeente"
+        phone: "Telefoon"
+        mobile: "GSM"
       appointment:
         patient_id: Patiënt
         doctor_id: Dokter

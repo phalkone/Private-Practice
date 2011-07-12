@@ -11,12 +11,16 @@ class PasswordResetsController < ApplicationController
   end
       
   def update
-    if @user.update_attributes(params[:user])
-      flash[:notice] = t("password_resets.success")
+    if params[:commit][t("users.submit.cancel")]
       redirect_to @user
-    else  
-      render :action => :edit  
-    end  
+    else
+      if @user.update_attributes(params[:user])
+        flash[:notice] = t("password_resets.success")
+        redirect_to @user
+      else  
+        render :action => :edit  
+      end
+    end
   end
 
   def create
@@ -37,7 +41,7 @@ class PasswordResetsController < ApplicationController
         @user = User.find(params[:id])
         redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
       else
-        User.find_using_perishable_token(params[:id])
+        @user = User.find_using_perishable_token(params[:id])
       end
 
       unless @user  

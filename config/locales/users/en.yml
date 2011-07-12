@@ -41,7 +41,8 @@
     one_role: At least one role has to be selected
     send_confirm: Send confirmation
     send_reset: Send password reset
-    delete: Verwijder gebruiker
+    delete: Delete user
+    contact_info: Contact information
     submit:
       new: Register
       edit: Save changes

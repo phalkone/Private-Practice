@@ -8,3 +8,5 @@
     success: Password successfully updated
     not_found: "We're sorry, but we could not locate your account.\nIf you are having issues try copying and pasting the URL \nfrom your email into your browser or restarting the \nreset password process."
     submit: Change Password
+    send_email: Send email
+    reset_pass: Reset Password

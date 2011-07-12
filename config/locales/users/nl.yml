@@ -42,6 +42,7 @@
     send_confirm: Zend bevestiging
     send_reset: Zend paswoord reset
     delete: Verwijder gebruiker
+    contact_info: Contactinformatie
     submit:
       new: Registeer
       edit: Sla wijzigingen op

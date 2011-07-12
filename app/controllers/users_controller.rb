@@ -147,6 +147,18 @@ class UsersController < ApplicationController
     @menu_active = "profile" if (@user.id == current_user.id)
   end
   
+  def contact_info
+    @user = User.find(params[:id])
+    @title = @user.name
+    @menu_active = "profile" if (@user.id == current_user.id)
+  end
+  
+  def edit_contact_info
+    @user = User.find(params[:id])
+    @title = @user.name
+    @menu_active = "profile" if (@user.id == current_user.id)
+  end
+  
   def admin
     @user = User.find(params[:id])
     @title = @user.name

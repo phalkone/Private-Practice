@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110706033939) do
+ActiveRecord::Schema.define(:version => 20110712002141) do
 
   create_table "appointments", :force => true do |t|
     t.integer  "doctor_id"
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(:version => 20110706033939) do
     t.string   "last_login_ip"
     t.boolean  "confirmed",          :default => false, :null => false
     t.boolean  "active",             :default => true,  :null => false
+    t.string   "address"
+    t.string   "postcode"
+    t.string   "town"
+    t.string   "phone"
+    t.string   "mobile"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

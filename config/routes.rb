@@ -27,6 +27,8 @@ PrivatePractice::Application.routes.draw do
     member do
       get :admin
       post :update_admin
+      get :contact_info
+      get :edit_contact_info
     end
 
    collection do

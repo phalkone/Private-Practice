@@ -1,3 +1,16 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("input:submit").button().css("font-size","0.9em");
+});
+</script>
+<% end %>
 <h2><%= t("password_resets.title")%></h2>
 <p>
 	<%= t('password_resets.new_password_instructions')%>
@@ -14,5 +27,6 @@
   </div>
   <div class="actions">
     <%= f.submit t("password_resets.submit") %>
+    <%= submit_tag t("users.submit.cancel") if signed_in? %>
   </div>
 <% end %>

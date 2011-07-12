@@ -1,3 +1,16 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("input:submit").button().css("font-size","0.9em");
+});
+</script>
+<% end %>
 <h2><%= t("email_confirmations.title_request")%></h2>
 <p>
 	<%= t('email_confirmations.instruction_request')%>

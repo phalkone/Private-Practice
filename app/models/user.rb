@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110706033939
+# Schema version: 20110712002141
 #
 # Table name: users
 #
@@ -22,11 +22,18 @@
 #  last_login_ip      :string(255)
 #  confirmed          :boolean         not null
 #  active             :boolean         default(TRUE), not null
+#  address            :string(255)
+#  postcode           :string(255)
+#  town               :string(255)
+#  phone              :string(255)
+#  mobile             :string(255)
 #
 
 class User < ActiveRecord::Base
   attr_accessor :super_reg
-  attr_accessible :first_name, :last_name, :email, :email_confirmation, :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :email_confirmation, 
+                  :password, :password_confirmation, :address, :postcode, :town,
+                  :phone, :mobile
 
   has_and_belongs_to_many :roles
 

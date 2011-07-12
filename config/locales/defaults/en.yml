@@ -20,6 +20,8 @@
     signin: Log in
     or: or
     cancel: cancel
+    contact: Contact
+    route: Route
   date:
     formats:
       default: "%Y-%m-%d"

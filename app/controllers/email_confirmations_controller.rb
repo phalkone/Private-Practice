@@ -34,15 +34,19 @@ class EmailConfirmationsController < ApplicationController
 
    def update
      @user = User.find(params[:id])
-     if @user.update_attributes(params[:user])
-       @user.unconfirm
-       @user.deliver_email_confirmation_instructions
-       flash[:notice] = t("email_confirmations.flash_success")
-       redirect_to Page.order("sequence ASC").first unless Page.count == 0
+     if params[:commit][t("users.submit.cancel")]
+       redirect_to @user
      else
-       @title = t("email_confirmations.title")
-       render "edit"
-     end  
+       if @user.update_attributes(params[:user])
+          @user.unconfirm
+          @user.deliver_email_confirmation_instructions
+          flash[:notice] = t("email_confirmations.flash_success")
+          redirect_to Page.order("sequence ASC").first unless Page.count == 0
+        else
+          @title = t("email_confirmations.title")
+          render "edit"
+        end
+      end
    end
 
    private  

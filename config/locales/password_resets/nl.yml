@@ -8,3 +8,5 @@
     success: Paswoord succesvol bijgewerkt
     not_found: "Uw account kon niet gevonden worden.\nProbeer om de URL te kopiëren en te plakken \nuit de toegezonden email naar de browser \nof het paswoord reset proces te herstarten."
     submit: Wijzig Paswoord
+    send_email: Verzend Email
+    reset_pass: Reset Paswoord

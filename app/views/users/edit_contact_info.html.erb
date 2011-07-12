@@ -14,8 +14,15 @@ $(document).ready(function() {
 <h2><%= t("users.profile_of") + " " + @user.name %></h2>
 <div id="subcontent" class="span-19 colborder">
 <h3><%= t("users.edittitle") %></h3>
-	<%= render "form" %>
+	<%= form_for(@user) do |f| %>
+	  <%= render 'shared/error_messages', :object => f.object, :modelname =>  User.model_name.human.downcase %>
+	  <%= render 'contact_info_form', :f => f %>
+	  <div class="actions">
+	    <%= f.submit @submit_text %>
+	    <%= submit_tag t("users.submit.cancel") %>
+	  </div>
+	<% end %>
 </div>
 <div id="submenu" class="span-4 last">
- 	<%= render "shared/user_profile_menu", :active => "general" %>
+ 	<%= render "shared/user_profile_menu", :active => "contact_info" %>
 </div>
