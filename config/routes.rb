@@ -34,6 +34,9 @@ PrivatePractice::Application.routes.draw do
    collection do
      get :autocomplete
      get :refresh
+     get :contact
+     post :send_message
+     post :contact_update
      post :search
      post :delete_selected
    end
@@ -55,6 +58,7 @@ PrivatePractice::Application.routes.draw do
   match '/signup', :to => 'users#new'
   match '/signin', :to => 'user_sessions#new'
   match '/signout', :to => 'user_sessions#destroy'
+  match '/contact', :to => 'users#contact'
 
   root :to => "pages#homepage"
 end

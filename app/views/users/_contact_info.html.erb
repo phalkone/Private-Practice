@@ -1,0 +1,14 @@
+<p>
+  <b><%= User.human_attribute_name("address") %>:</b><br />
+  <%= @doctor.address unless @doctor.address.nil? %><br />
+<%= @doctor.postcode unless @doctor.postcode.nil? %>
+<%= @doctor.town unless @doctor.town.nil? %>
+</p>
+<p>
+  <b><%= User.human_attribute_name("phone") %>:</b><br />
+  <%= @doctor.phone unless @doctor.phone.nil? %>
+</p>
+<p>
+  <b><%= User.human_attribute_name("mobile") %>:</b><br />
+  <%= @doctor.mobile unless @doctor.mobile.nil? %>
+</p>

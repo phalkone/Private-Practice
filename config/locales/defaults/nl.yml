@@ -22,6 +22,13 @@
     cancel: Annuleer
     contact: Contact
     route: Route
+    name: naam
+    subject: onderwerp
+    message: boodschap
+    message_for: Boodschap voor
+    refresh: vernieuw
+    send_message: Verzend boodschap
+    message_send: Uw boodschap werd verzonden
   date:
     formats:
       default: "%Y-%m-%d"

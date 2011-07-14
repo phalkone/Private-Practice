@@ -43,6 +43,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -76,6 +78,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -138,6 +142,8 @@ class UsersController < ApplicationController
     else
       @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
     end
+    @div = "#users_table"
+    @partial = "table"
     render "refresh"
   end
 
@@ -197,6 +203,31 @@ class UsersController < ApplicationController
     @div = "#admin"
     @partial = "admin"
     render "refresh"
+  end
+  
+  def contact
+    @title = t("txt.contact")
+    @menu_active = "contact"
+    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
+    if params[:doctor]
+      @user = User.find(params[:doctor])
+      @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
+    else
+      @doctor = @doctors.first
+    end
+  end
+   
+  def contact_update
+    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
+    @user = User.find(params[:id])
+    @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
+  end
+  
+  def send_message
+    UserMailer.contact_message(params[:name], params[:email], 
+      params[:subject], params[:message], params[:id]).deliver
+    flash[:notice] = t("txt.message_send")
+    redirect_to Page.order("sequence ASC").first unless Page.count == 0
   end
 
   private

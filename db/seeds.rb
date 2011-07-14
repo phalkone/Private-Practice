@@ -6,10 +6,25 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-admin = Role.create(:title => "admin")
-doctor = Role.create(:title => "doctor")
-patient = Role.create(:title => "patient")
-User.create(:first_name => "admin", :last_name => "admin", 
-  :email => "admin@admin.com", :email_confirmation => "admin@admin.com",
-  :password => "secret", :password_confirmation => "secret",
-  :roles => admin )
+roles = Role.create([{:title => "admin"}, {:title => "doctor"}, {:title => "patient"}])
+
+#Sample user
+user = User.create(:first_name => "Tim", :last_name => "Pintens", 
+  :email => "tim@air.local", :email_confirmation => "tim@air.local",
+  :password => "secret", :password_confirmation => "secret")
+user.roles<<roles.first
+user.roles<<roles.find_by_title("doctor")
+user.update_attribute("confirmed",true)
+
+#Sample pages
+pages = Page.create([{ :nested => false, :sequence => 1, :permalink => "dermatologie"}, 
+                 { :nested => false, :sequence => 2, :permalink => "behandelingen"}])
+pages.first.page_contents.create([{:title => "Dermatologie", :body => "Eerste pagina",
+                                  :locale => "nl", :html => false},
+                                  {:title => "Dermatology", :body => "First page",
+                                   :locale => "en", :html => false}])
+pages.last.page_contents.create([{:title => "Behandelingen", :body => "Tweede pagina",
+                                  :locale => "nl", :html => false},
+                                  {:title => "Treatments", :body => "Seconde page",
+                                   :locale => "en", :html => false}])
+  
