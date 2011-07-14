@@ -20,15 +20,7 @@
     signin: Log in
     or: of
     cancel: Annuleer
-    contact: Contact
     route: Route
-    name: naam
-    subject: onderwerp
-    message: boodschap
-    message_for: Boodschap voor
-    refresh: vernieuw
-    send_message: Verzend boodschap
-    message_send: Uw boodschap werd verzonden
   date:
     formats:
       default: "%Y-%m-%d"
@@ -117,6 +109,7 @@
       patient: "Patiënt"
       appointment: "Afspraak"
       user: "Gebruiker"
+      message: "Boodschap"
     attributes:
       page:
         permalink: "Permalink"
@@ -153,6 +146,12 @@
         begin: Begin
         end: Einde
         duration: Tijdsduur
+      message:
+        email: Email
+        name: Naam
+        subject: Onderwerp
+        body: Boodschap
+        read: Gelezen
     errors:
       template:
         header:

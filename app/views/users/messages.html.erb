@@ -1,0 +1,63 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<script type="text/javascript">
+$(document).ready(function() {
+ 	$("tbody tr td.clickable").click(function() {
+	    location.href = $(this).parent().children("td:first").children("a").attr("href");
+	  });
+	
+	$('tr.select:even').addClass('zebra');
+	  $('tr.select:even').addClass('even');
+	  $('tr.select').hover(function() {
+		if ($(this).hasClass('even') ){
+			$(this).toggleClass('zebra');
+		}
+	    $(this).toggleClass('zebraHover');
+	  });
+});
+</script>
+<% end %>
+
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<div id="subcontent" class="span-19 colborder">
+	<h3><%= t("messages.messages")%></h3>
+	<table class="users">
+	  <thead>
+	  <tr>
+		<th></th>
+	    <th><%= t("messages.from") %></th>
+	    <th><%= Message.human_attribute_name("subject") %></th>
+	    <th><%= t("messages.received") %></th>
+		<th></th>
+	  </tr>
+	  </thead>
+	<tbody>
+	<% @messages.each do |message| %>
+	  <tr class="select">
+		<td class="clickable icon"><%= link_to "", message, :class => "hidden" %>
+	        <% if message.read %>
+	          <span class="button icon-blank ui-icon-mail-open"></span>
+	        <% else %><span class="button ui-icon-mail-closed"></span><% end %></td>
+	    <td  class="clickable"><%= message.name %></td>
+	    <td  class="clickable"><%=  message.subject.nil? ? t("messages.none") : message.subject %></td>
+	    <td  class="clickable"><%= l(message.created_at, :format => :long) %></td>
+	    <td class="icon"><%= link_to "", message, 
+	        :confirm => t("users.confirmation"), :method => :delete,
+	        :class => "button ui-icon-trash", :title => t("users.destroy") %></td>
+	  </tr>
+	<% end %>
+	<% if @messages.count == 0 %>
+		<tr>
+			<td></td>
+			<td><%= t("messages.none")%></td>
+		</tr>
+	<% end %>
+	</tbody>
+   </table>
+<%= will_paginate @messages, :previous_label => t("users.previous"), :next_label => t("users.next") %>
+</div>
+<div id="submenu" class="span-4 last">
+  <%= render "shared/user_profile_menu", :active => "messages" %>
+</div>

@@ -1,10 +1,10 @@
 class UserMailer < ActionMailer::Base
   default :from => "webmaster@app.local"
   
-  def contact_message(name, email, subject, body, id)
-    @message = body
-    mail(:from => email, :to => User.find(id).email,
-      :subject => subject) do |format|
+  def contact_message(message)
+    @url = message_url(message, :host => I18n.locale.to_s + ".app.local:3000")
+    mail(:from => message.email, :to => message.user.email,
+      :subject => message.subject) do |format|
         format.text
       end
   end

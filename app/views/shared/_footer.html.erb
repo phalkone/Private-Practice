@@ -9,7 +9,7 @@
          · 
       <% end %>
    <% end %></p>
-  <p class="quiet">Copyright &copy; 2010 <a href="mailto:webmaster@app.local" class="quiet underline">Webmaster</a> | 
-	<%= link_to t("txt.contact"), contact_users_path , :class => "quiet underline" %> | <a href="#" class="quiet underline"><%= t("txt.route") %></a></p>
+  <p class="quiet">Copyright &copy; 2010 <%= mail_to "webmaster@app.local", "Webmaster", :class=> "quiet underline" %> | 
+	<%= link_to t("messages.contact"), new_message_path , :class => "quiet underline" %> | <a href="#" class="quiet underline"><%= t("txt.route") %></a></p>
 </div>
 

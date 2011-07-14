@@ -13,6 +13,12 @@ PrivatePractice::Application.routes.draw do
     end
   end
   
+  resources :messages, :except => [:edit, :update, :index] do
+    collection do
+      post :update_contact
+    end
+  end
+  
   resources :appointments do
     member do
       get :unbook
@@ -29,14 +35,12 @@ PrivatePractice::Application.routes.draw do
       post :update_admin
       get :contact_info
       get :edit_contact_info
+      get :messages
     end
 
    collection do
      get :autocomplete
      get :refresh
-     get :contact
-     post :send_message
-     post :contact_update
      post :search
      post :delete_selected
    end

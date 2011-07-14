@@ -20,15 +20,7 @@
     signin: Log in
     or: or
     cancel: cancel
-    contact: Contact
     route: Route
-    name: name
-    subject: subject
-    message: message
-    message_for: Message for
-    refresh: refresh
-    send_message: Send message
-    message_send: Your message has been send
   date:
     formats:
       default: "%Y-%m-%d"

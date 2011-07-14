@@ -1,0 +1,13 @@
+"en":
+  messages:
+    messages: Messages
+    from: From
+    contact: Contact
+    message_for: Message for
+    refresh: refresh
+    send_message: Send message
+    message_send: Your message has been send
+    must_be_doctor: Must be a doctor.
+    received: Received
+    none: (none)
+    deleted: Message successfully deleted.

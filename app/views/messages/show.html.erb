@@ -1,0 +1,27 @@
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<div id="subcontent" class="span-19 colborder">
+	<p>
+	  <b><%= t("messages.from") %>: </b>
+		<% if @message.patient %>
+	  		<%= link_to @message.name, user_path(@message.patient) %>
+		<% else %>
+	  		<%= mail_to @message.email, @message.name %>
+		<% end %>
+	</p>
+	<p>
+	  <b><%= Message.human_attribute_name("subject") %>: </b>
+	  <%= @message.subject.nil? ? t("messages.none") : @message.subject %>
+	</p>
+	<p>
+	  <b><%= Message.human_attribute_name("body") %>:</b><br />
+	  <%= @message.body %>
+	</p>
+	<p>
+		<%= link_to t("txt.back"), messages_user_path(@user) %> | 
+		<%= link_to t("users.destroy"), @message, 
+	        :confirm => t("users.confirmation"), :method => :delete %>
+	</p>
+</div>
+<div id="submenu" class="span-4 last">
+  <%= render "shared/user_profile_menu", :active => "messages" %>
+</div>

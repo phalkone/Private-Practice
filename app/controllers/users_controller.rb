@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   before_filter :admin_only, :only => [:admin, :update_admin]
   before_filter :admin_doctor, :only => [:index,:destroy]
-  before_filter :logged_in, :only => [:edit,:update,:show]
+  before_filter :logged_in, :only => [:edit,:update,:show,:message]
   before_filter :correct_user, :only => [:edit,:update,:show]
+  before_filter :correct_doctor, :only => [:messages,:edit,:update,:show]
     
   def index
     if role?("admin")
@@ -205,29 +206,11 @@ class UsersController < ApplicationController
     render "refresh"
   end
   
-  def contact
-    @title = t("txt.contact")
-    @menu_active = "contact"
-    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
-    if params[:doctor]
-      @user = User.find(params[:doctor])
-      @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
-    else
-      @doctor = @doctors.first
-    end
-  end
-   
-  def contact_update
-    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
+  def messages
     @user = User.find(params[:id])
-    @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
-  end
-  
-  def send_message
-    UserMailer.contact_message(params[:name], params[:email], 
-      params[:subject], params[:message], params[:id]).deliver
-    flash[:notice] = t("txt.message_send")
-    redirect_to Page.order("sequence ASC").first unless Page.count == 0
+    @title = @user.name
+    @menu_active = "profile" if (@user.id == current_user.id)
+    @messages = @user.messages.order("created_at DESC").paginate :page => params[:page], :per_page => 10
   end
 
   private
@@ -252,10 +235,15 @@ class UsersController < ApplicationController
     def logged_in
       deny_access unless signed_in?
     end
+    
+    def correct_doctor
+      @user = User.find(params[:id])
+      deny_access unless current_user?(@user) || role?("admin")
+    end
 
     def correct_user
      @user = User.find(params[:id])
-     redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
+     deny_access unless current_user?(@user) || role?("admin") || role?("doctor")
     end
 
 end

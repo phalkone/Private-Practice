@@ -10,8 +10,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
   	$("#doctor_picker").change(function() {
-			$.post("<%= contact_update_users_path %>", { id: $("#doctor").val()} );
-			$("#id").val($("#doctor").val());
+			$.post("<%= update_contact_messages_path %>", { id: $("#doctor").val()} );
+			$("#message_user").val($("#doctor").val());
 			$("#doctor_name").html($("#doctor option:selected").text());
 	 });
 	$("#doctor_picker input:submit").remove();
@@ -21,37 +21,38 @@ $(document).ready(function() {
 <% end %>
 <h2><%= t("txt.contact") %></h2>
 <div id="subcontent" class="span-18 colborder">
-	<h3><%= t("txt.message_for")%> <span id="doctor_name"><%= @doctor.name %></span></h3>
-	<%= form_tag(send_message_users_path) do -%>
-	    <%= hidden_field_tag "id" , @doctor.id %>
+	<h3><%= t("messages.message_for")%> <span id="doctor_name"><%= @doctor.name %></span></h3>
+	<%= form_for @message do |f| %>
+		<%= render 'shared/error_messages', :object => f.object, :modelname =>  Message.model_name.human.downcase %>
+	    <%= f.hidden_field :user, :value => @doctor.id %>
 		<div class="field">
-	    	<%= label_tag t("txt.name") %><br />
-	    	<%= text_field_tag "name", (current_user.name unless !signed_in?) ,:class => "ui-widget-content ui-corner-all" , :size => 40 %>
+	    	<%= f.label :name %><br />
+	    	<%= f.text_field :name, :class => "ui-widget-content ui-corner-all" , :size => 40 %>
 	  	</div>
 		<div class="field">
-	    	<%= label_tag t("txt.email") %><br />
-	    	<%= text_field_tag "email", (current_user.email unless !signed_in?) , :class => "ui-widget-content ui-corner-all", :size => 40 %>
+	    	<%= f.label :email %><br />
+	    	<%= f.text_field :email, :class => "ui-widget-content ui-corner-all", :size => 40 %>
 	  	</div>
 		<div class="field">
-	    	<%= label_tag t("txt.subject") %><br />
-	    	<%= text_field_tag "subject", nil, :class => "ui-widget-content ui-corner-all", :size => 40 %>
+	    	<%= f.label :subject %><br />
+	    	<%= f.text_field :subject, :class => "ui-widget-content ui-corner-all", :size => 40 %>
 	  	</div>
 		<div class="field">
-	    	<%= label_tag t("txt.message") %><br />
-	    	<%= text_area_tag "message", nil, :class => "resizable ui-widget-content ui-corner-all", :size => "80x30" %>
+	    	<%= f.label :body %><br />
+	    	<%= f.text_area :body , :class => "resizable ui-widget-content ui-corner-all", :size => "80x30" %>
 	  	</div>
 	
 	    <div class="actions">
-			<%= submit_tag t("txt.send_message") %>
+			<%= f.submit t("messages.send_message") %>
 		</div>
 	<% end -%>
 	
 </div>
 <div id="submenu" class="span-5 last">
 	<div id="doctor_picker">
-		<%= form_tag(contact_users_path, :method => :get) do %>
+		<%= form_tag(new_message_path, :method => :get) do %>
 			<%= select_tag :doctor, options_from_collection_for_select( @doctors , "id", "name", @doctor.id) %>
-			<%= submit_tag t("txt.refresh") %>
+			<%= submit_tag t("messages.refresh") %>
 		<% end %>
 	</div>
 	<div id="contact_info">

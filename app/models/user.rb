@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
 
   has_many :patients, :through => :appointments, :source => :patient, :uniq => :true
   has_many :doctors, :through => :bookings, :source => :doctor, :uniq => :true
+  
+  has_many :messages
 
   validates_presence_of :first_name, :last_name
   validates_length_of :first_name, :maximum => 30

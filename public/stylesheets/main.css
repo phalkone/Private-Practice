@@ -86,7 +86,7 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
 
 #weekendcheck, #dayweek{margin:2px 5px 0 0;}
 
-table.users { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
+table.users { width: 100%; border-collapse: collapse;
             margin: 5px 0 0 0; padding: 0;}
   .users th { text-align: left; font-size: 1em; margin-bottom: 2px; padding: 5px;}
   .users tr { height: 25px; }

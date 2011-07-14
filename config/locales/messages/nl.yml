@@ -1,0 +1,13 @@
+"nl":
+  messages:
+    messages: Berichten
+    from: Van
+    contact: Contact
+    message_for: Boodschap voor
+    refresh: vernieuw
+    send_message: Verzend boodschap
+    message_send: Uw boodschap werd verzonden
+    must_be_doctor: Moet een doctor zijn.
+    received: Ontvangen
+    none: (geen)
+    deleted: Bericht succesvol verwijderd.

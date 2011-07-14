@@ -21,11 +21,12 @@
       <%= link_to t("users.menutitle_doc"), users_path %></li>
   <% end %>
   <% if role?("admin") %>
-    <li>&middot;</li><li <%= "class='active'" if (menu_active == "users") -%>>
+    <li>&middot;</li><li <%= "class='active'" if ((menu_active == "users") || 
+												(menu_active == "messages")) -%>>
       <%= link_to t("users.menutitle"), users_path %></li><li>&middot;</li>
-    <li class="<%= "active" if ((menu_active == "pages") || 
+    <li <%= "class='active'" if ((menu_active == "pages") || 
                                (menu_active == "images")) &&
-                               (@showpage.nil?) -%>">
+                               (@showpage.nil?) -%>>
     <%= link_to t("pages.menutitle"), pages_path %></li>
   <% end %>
   <% if role?("patient") %>
