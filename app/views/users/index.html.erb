@@ -9,8 +9,14 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.autocomplete.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
-  $("#toolbar a").button();
-  $("#toolbar button").button().click(function() {
+  $("#toolbar a").button(	{
+	            icons: { primary: "ui-icon-plusthick" },
+	            text: false
+	   });
+  $("#toolbar button").button(	{
+	            icons: { primary: "ui-icon-minusthick" },
+	            text: false
+	   }).click(function() {
     if (($("tbody input:checked").length > 0) && (confirm("<%= escape_javascript(t('users.sel_confirmation')) %>"))){    
       var term = "";
       $("tbody input:checked").each(function() {
@@ -75,7 +81,7 @@ function initialize(){
    <%= link_to t("users.new"), new_user_path %>
    <button><%= t("users.destroy") %></button>
    <button id="show_all"><%= t("users.show_all") %></button>
-   <%= text_field_tag "search_users", t("users.search"), :class => "clear ui-widget-content ui-corner-all" %>
+   <%= text_field_tag "search_users",@term, :class => "clear ui-widget-content ui-corner-all" %>
 </div>
 <div id="users_table">
   <%= render "table" %>

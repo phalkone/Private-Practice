@@ -36,7 +36,7 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
 #footer { padding: 0px 10px 0px 10px;}
 
 #datepicker { float: left; margin-bottom: 7px; }
-#toolbar { padding: 4px 4px; font-size: 0.8em; margin-top: 5px;}
+#toolbar { padding: 4px; font-size: 0.8em; margin-top: 5px; height:28px;}
 
 #new_page{font-size:0.8em;}
 
@@ -97,7 +97,7 @@ table.users { width: 100%; border-collapse: collapse;
   .check { width: 16px;}
   table.users tbody tr:nth-child(odd) td, tbody tr.odd td { background: inherit;}
 
-#search_users {float:right; padding: 0.3em; height: 18px;margin-top:2px;}
+#search_users {float:right; padding:2px; height: 18px; margin-top:2px;}
 #show_all {float: right; margin-left:5px;}
 #rolesoption ul {list-style:none;}
 table#admininfo tr {height:30px;}

@@ -1,4 +1,4 @@
-<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<%= render "shared/user_profile_header" %>
 <div id="subcontent" class="span-19 colborder">
 	<p>
 	  <b><%= t("messages.from") %>: </b>
@@ -17,11 +17,10 @@
 	  <%= @message.body %>
 	</p>
 	<p>
-		<%= link_to t("txt.back"), messages_user_path(@user) %> | 
+		<%= link_to t("txt.back"), messages_user_path(@user), :class => "fancy-button" %>  
 		<%= link_to t("users.destroy"), @message, 
-	        :confirm => t("users.confirmation"), :method => :delete %>
+	        :confirm => t("users.confirmation"), :method => :delete, :class => "fancy-button" %>
 	</p>
 </div>
-<div id="submenu" class="span-4 last">
-  <%= render "shared/user_profile_menu", :active => "messages" %>
-</div>
+
+<%= render "shared/user_profile_menu", :active => "messages" %>

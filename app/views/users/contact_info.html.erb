@@ -1,17 +1,4 @@
-<% content_for :styles do %>
-<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
-<% end %>
-<% content_for :scripts do %>
-<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
-<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
-<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#subcontent a").button().css("font-size","0.9em");
-});
-</script>
-<% end %>
-<h2><%= t("users.profile_of") + " " + @user.name %></h2>
+<%= render "shared/user_profile_header" %>
 <div id="subcontent" class="span-19 colborder">
 	<h3><%= t("users.contact_info") %></h3>
 	<p>
@@ -36,8 +23,7 @@ $(document).ready(function() {
 	  <b><%= User.human_attribute_name("mobile") %>:</b>
 	  <%= @user.mobile unless @user.mobile.nil? %>
 	</p>
-	<%= link_to t("users.edittitle"), edit_contact_info_user_path(@user) %>
+	<%= link_to t("users.edittitle"), edit_contact_info_user_path(@user), :class => "fancy-button" %>
 </div>
-<div id="submenu" class="span-4 last">
-  <%= render "shared/user_profile_menu", :active => "contact_info" %>
-</div>
+
+<%= render "shared/user_profile_menu", :active => "contact_info" %>

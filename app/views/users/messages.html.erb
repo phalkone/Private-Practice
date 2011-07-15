@@ -1,9 +1,7 @@
-<% content_for :styles do %>
-<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
-<% end %>
+<%= render "shared/user_profile_header" %>
 <% content_for :scripts do %>
 <script type="text/javascript">
-$(document).ready(function() {
+function initialize() {
  	$("tbody tr td.clickable").click(function() {
 	    location.href = $(this).parent().children("td:first").children("a").attr("href");
 	  });
@@ -16,11 +14,9 @@ $(document).ready(function() {
 		}
 	    $(this).toggleClass('zebraHover');
 	  });
-});
+}
 </script>
 <% end %>
-
-<h2><%= t("users.profile_of") + " " + @user.name %></h2>
 <div id="subcontent" class="span-19 colborder">
 	<h3><%= t("messages.messages")%></h3>
 	<table class="users">
@@ -58,6 +54,5 @@ $(document).ready(function() {
    </table>
 <%= will_paginate @messages, :previous_label => t("users.previous"), :next_label => t("users.next") %>
 </div>
-<div id="submenu" class="span-4 last">
-  <%= render "shared/user_profile_menu", :active => "messages" %>
-</div>
+
+<%= render "shared/user_profile_menu", :active => "messages" %>

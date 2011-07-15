@@ -1,0 +1,55 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.autocomplete.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".fancy-button, input:submit, button").button().css("font-size","0.9em");
+
+  <% if role?('admin') || role?('doctor') %>
+  $("#new_user").button({
+            icons: { primary: "ui-icon-plusthick" },
+            text: false
+   });
+
+  $("#delete_user").button({
+            icons: { primary: "ui-icon-minusthick" },
+            text: false
+   });
+
+  $("#show_all").button({
+            icons: { primary: "ui-icon-close" },
+            text: false
+   });
+  
+  $( "#search_users" ).autocomplete({
+    source: "/users/autocomplete",
+    minLength: 2
+   }).keydown(function(event) {
+     if (event.keyCode == '13') {
+       $.post("/users/search", {term: $(this).val(), profile: true});
+       $(this).blur();
+       
+     }
+   });
+   initialize()
+   <% end %>
+});
+</script>
+<% end %>
+<% if role?('admin') || role?('doctor') %>
+<div id="toolbar" class="ui-widget-header ui-corner-all">
+   <%= link_to t("users.new"), new_user_path, :id => "new_user" %>
+   <%= link_to t("users.destroy"), user_path(@user, :profile => true), :confirm => t("users.confirmation"), 
+	:method => :delete, :id => "delete_user" %>
+   <%= link_to t("users.listing"), users_path, :id => "show_all" %>
+   <%= text_field_tag "search_users", t("users.search"), :class => "clear ui-widget-content ui-corner-all" %>
+</div>
+<hr class="space">
+<% end %>
+<h2><%= t("users.profile_of") + " " + @user.name %></h2>

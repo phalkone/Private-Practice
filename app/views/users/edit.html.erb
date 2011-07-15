@@ -16,6 +16,5 @@ $(document).ready(function() {
 <h3><%= t("users.edittitle") %></h3>
 	<%= render "form" %>
 </div>
-<div id="submenu" class="span-4 last">
- 	<%= render "shared/user_profile_menu", :active => "general" %>
-</div>
+
+<%= render "shared/user_profile_menu", :active => "general" %>

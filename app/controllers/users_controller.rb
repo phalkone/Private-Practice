@@ -8,10 +8,12 @@ class UsersController < ApplicationController
     :delete_selected,:destroy]
   
   def index
+    @term = params[:term] ? params[:term] : t("users.search")
+    params[:term] ||= ""
     if role?("admin")
-      @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
+      @users = User.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     end
     @title = t("users.menutitle")
   end
@@ -45,6 +47,18 @@ class UsersController < ApplicationController
       @users = User.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
       @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
+    end
+    if @users.count == 1
+      render :update do |page|
+        page << 'window.location = "' + user_url(@users.first)  + '";'
+      end
+      return false
+    end
+    if params[:profile] == "true"
+      render :update do |page|
+        page << 'window.location = "' + users_url(:term => params[:term])  + '";'
+      end
+      return false
     end
     @div = "#users_table"
     @partial = "table"
@@ -138,7 +152,13 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      flash.now[:alert] = t("users.destroyed")
+      if params[:profile] == "true"
+        flash[:alert] = t("users.destroyed")
+        redirect_to users_url
+        return false
+      else
+        flash.now[:alert] = t("users.destroyed")
+      end
     end
     if role?("admin")
       @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
@@ -185,14 +205,6 @@ class UsersController < ApplicationController
       when "send_reset" then
         @user.deliver_password_reset_instructions
         flash.now[:notice] = t("password_resets.flash_success")
-      when "delete" then
-        if @user.destroy
-          flash[:alert] = t("users.destroyed")
-          render :update do |page|
-            page << 'window.location = "' + users_url  + '";'
-          end
-          return
-        end
       else
         role = Role.find_by_title(params[:clicked])
         if params[:set] == "true"
@@ -221,7 +233,7 @@ class UsersController < ApplicationController
       search_t = ""
       search_split.each() do |term|
         search_t += "(first_name LIKE '"+term+"%' OR last_name LIKE '"+term+"%')"
-        search_t+= " AND " unless (term == search_split.last) 
+        search_t += " AND " unless (term == search_split.last) 
       end
       return search_t
     end

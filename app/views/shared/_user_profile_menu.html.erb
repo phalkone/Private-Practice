@@ -1,11 +1,13 @@
-<ul>
-    <li <%= raw 'class="active"' if active == "general" %>><%= link_to t("users.general"), user_path(@user) %></li>
-    <li <%= raw 'class="active"' if active == "contact_info" %>><%= link_to t("users.contact_info"), contact_info_user_path(@user) %></li>
-    <li <%= raw 'class="active"' if active == "appointments" %>><%= link_to t("users.apps_info"), booking_path(@user) %></li>
-	<% if role?("admin") || role?("doctor") %>
-		<li <%= raw 'class="active"' if active == "messages" %>><%= link_to t("messages.messages") + " ("+ @user.messages.count(:conditions => {:read => false}).to_s + ")", messages_user_path(@user) %></li>
-	<% end %>
-	<% if role?("admin") %>
-		<li <%= raw 'class="active"' if active == "admin" %>><%= link_to t("users.admin"), admin_user_path(@user) %></li>
-	<% end %>
- <ul>
+<div id="submenu" class="span-4 last">
+	<ul>
+	    <li <%= raw 'class="active"' if active == "general" %>><%= link_to t("users.general"), user_path(@user) %></li>
+	    <li <%= raw 'class="active"' if active == "contact_info" %>><%= link_to t("users.contact_info"), contact_info_user_path(@user) %></li>
+	    <li <%= raw 'class="active"' if active == "appointments" %>><%= link_to t("users.apps_info"), booking_path(@user) %></li>
+		<% if @user.roles.exists?(:title => "doctor") %>
+			<li <%= raw 'class="active"' if active == "messages" %>><%= link_to t("messages.messages") + " ("+ @user.messages.count(:conditions => {:read => false}).to_s + ")", messages_user_path(@user) %></li>
+		<% end %>
+		<% if role?("admin") %>
+			<li <%= raw 'class="active"' if active == "admin" %>><%= link_to t("users.admin"), admin_user_path(@user) %></li>
+		<% end %>
+	 <ul>
+</div>
