@@ -4,12 +4,14 @@ class UsersController < ApplicationController
   before_filter :logged_in, :only => [:edit,:update,:show,:message]
   before_filter :correct_user, :only => [:edit,:update,:show]
   before_filter :correct_doctor, :only => [:messages,:edit,:update,:show]
-    
+  before_filter :set_sort, :only => [:index,:refresh,:search,:autocomplete,
+    :delete_selected,:destroy]
+  
   def index
     if role?("admin")
-      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     end
     @title = t("users.menutitle")
   end
@@ -25,24 +27,24 @@ class UsersController < ApplicationController
     @partial ||= "table"
     if params[:term] && params[:term] != t('users.search')
       if role?("admin")
-        @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+        @users = User.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
       else
-        @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+        @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
       end
     else
       if role?("admin")
-        @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+        @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
       else
-        @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+        @users = Role.where("title = ?","patient").first.users.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
       end
     end
   end
 
   def search
     if role?("admin")
-      @users = User.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = User.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     end
     @div = "#users_table"
     @partial = "table"
@@ -52,9 +54,9 @@ class UsersController < ApplicationController
   def autocomplete
     @results = User.where(search_term(params[:term])).all
     if role?("admin")
-      @results = User.where(search_term(params[:term])).order("last_name ASC").all
+      @results = User.where(search_term(params[:term])).order(cookies[:sort]).all
     else
-      @results = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order("last_name ASC").all
+      @results = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all
     end
     result = Array.new
     @results.each() do |user|
@@ -75,9 +77,9 @@ class UsersController < ApplicationController
       end
     end
     if role?("admin")
-      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     end
     @div = "#users_table"
     @partial = "table"
@@ -139,9 +141,9 @@ class UsersController < ApplicationController
       flash.now[:alert] = t("users.destroyed")
     end
     if role?("admin")
-      @users = User.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = User.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.order("last_name ASC").all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
     end
     @div = "#users_table"
     @partial = "table"
@@ -244,6 +246,14 @@ class UsersController < ApplicationController
     def correct_user
      @user = User.find(params[:id])
      deny_access unless current_user?(@user) || role?("admin") || role?("doctor")
+    end
+    
+    def set_sort
+      if params[:sort]
+        cookies.permanent[:sort] = { :value => params[:sort], :domain => request.domain }
+      elsif !cookies[:sort]
+        cookies.permanent[:sort] = { :value => "last_name ASC", :domain => request.domain }
+      end
     end
 
 end

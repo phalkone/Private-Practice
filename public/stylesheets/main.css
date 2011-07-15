@@ -129,6 +129,7 @@ div.field, div.actions { margin: 0 20px 10px 20px; }
 .big{ font-size:1.5em;line-height:2.5em;margin-bottom:1.25em; }
 .red{ color: #d40000; }
 .grey { color: #888; }
+.black { color : #000;}
 .x{ clear:both; }
 .icon { width:20px;}
 .nested { text-indent:3em; }

@@ -2,9 +2,18 @@
   <thead>
     <tr>
       <th class="check"><%= check_box_tag 'delete_all' %></th>
-      <th><%= User.human_attribute_name("last_name") %></th>
-      <th><%= User.human_attribute_name("first_name") %></th>
-      <th><%= User.human_attribute_name("email") %></th>
+      <th><%= raw "<span class='button icon-blank ui-icon-carat-1-n'></span>" if cookies[:sort] == "last_name ASC" %>
+	<%= raw "<span class='button icon-blank ui-icon-carat-1-s'></span>" if cookies[:sort] == "last_name DESC" %>
+<% last_name_sort = cookies[:sort] == "last_name ASC" ? "last_name DESC" : "last_name ASC"%>
+<%= link_to User.human_attribute_name("last_name"), users_path(:sort => last_name_sort), :class => "black" %></th>
+      <th><%= raw "<span class='button icon-blank ui-icon-carat-1-n'></span>" if cookies[:sort] == "first_name ASC" %>
+	<%= raw "<span class='button icon-blank ui-icon-carat-1-s'></span>" if cookies[:sort] == "first_name DESC" %>
+<% first_name_sort = cookies[:sort] == "first_name ASC" ? "first_name DESC" : "first_name ASC"%>
+	<%= link_to User.human_attribute_name("first_name"), users_path(:sort => first_name_sort), :class => "black" %></th>
+      <th><%= raw "<span class='button icon-blank ui-icon-carat-1-n'></span>" if cookies[:sort] == "email ASC" %>
+	<%= raw "<span class='button icon-blank ui-icon-carat-1-s'></span>" if cookies[:sort] == "email DESC" %>
+<% email_sort = cookies[:sort] == "email ASC" ? "email DESC" : "email ASC"%>
+	<%= link_to User.human_attribute_name("email"), users_path(:sort => email_sort), :class => "black" %></th>
       <th></th>
       <th></th>
     </tr>
