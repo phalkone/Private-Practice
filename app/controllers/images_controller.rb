@@ -12,8 +12,7 @@ class ImagesController < ApplicationController
       @image.picture = params[:file][:picture].read
     end
     if @image.save
-      flash[:notice] = t("images.created")
-      redirect_to images_path
+      redirect_to images_path, :notice => t("images.created")
     else
       @images = Image.all
       render :template => "images/index"

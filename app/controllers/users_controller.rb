@@ -139,8 +139,7 @@ class UsersController < ApplicationController
     else
       @user.super_reg = (role?("admin") || role?("doctor"))
       if @user.update_attributes(params[:user])
-        flash[:notice] = t("users.edited")
-        redirect_to (params[:form] ? contact_info_user_path(@user) : @user)
+        redirect_to (params[:form] ? contact_info_user_path(@user) : @user), :notice => t("users.edited")
       else
         @title = t("users.edittitle")
         @submit_text = t("users.submit.edit");
@@ -153,8 +152,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.destroy
       if params[:profile] == "true"
-        flash[:alert] = t("users.destroyed")
-        redirect_to users_url
+        redirect_to users_url, :alert => t("users.destroyed")
         return false
       else
         flash.now[:alert] = t("users.destroyed")

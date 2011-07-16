@@ -11,8 +11,7 @@ class EmailConfirmationsController < ApplicationController
      @user = User.find_by_email(params[:user][:email])
      if @user
        @user.deliver_email_confirmation_instructions
-       flash[:notice] = t("email_confirmations.flash_request")
-       redirect_to Page.order("sequence ASC").first unless Page.count == 0
+       redirect_to Page.order("sequence ASC").first, :notice => t("email_confirmations.flash_request") unless Page.count == 0
      else
        flash.now[:notice] = t("email_confirmations.not_found_request")
        render "new"
@@ -23,8 +22,7 @@ class EmailConfirmationsController < ApplicationController
      @title = t("email_confirmations.title")
      @user.confirm
      sign_in(@user,false)
-     flash[:notice] = t("email_confirmations.success")
-     redirect_to @user
+     redirect_to @user, :notice => t("email_confirmations.success")
    end
    
    def edit
@@ -40,8 +38,7 @@ class EmailConfirmationsController < ApplicationController
        if @user.update_attributes(params[:user])
           @user.unconfirm
           @user.deliver_email_confirmation_instructions
-          flash[:notice] = t("email_confirmations.flash_success")
-          redirect_to Page.order("sequence ASC").first unless Page.count == 0
+          redirect_to Page.order("sequence ASC").first, :notice => t("email_confirmations.flash_success") unless Page.count == 0
         else
           @title = t("email_confirmations.title")
           render "edit"
@@ -55,8 +52,7 @@ class EmailConfirmationsController < ApplicationController
       @user = User.find_using_perishable_token(params[:id])  
       unless @user  
         flash[:notice] = @title = t("email_confirmations.not_found")
-        #TODO redirect to send new request path
-        redirect_to signin_path
+        redirect_to new_email_confirmation_path
       end
     end
 

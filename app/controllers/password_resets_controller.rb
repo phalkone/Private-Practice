@@ -15,8 +15,7 @@ class PasswordResetsController < ApplicationController
       redirect_to @user
     else
       if @user.update_attributes(params[:user])
-        flash[:notice] = t("password_resets.success")
-        redirect_to @user
+        redirect_to @user, :notice => t("password_resets.success")
       else  
         render :action => :edit  
       end
@@ -27,8 +26,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:password_resets][:email])
     if @user
       @user.deliver_password_reset_instructions
-      flash[:notice] = t("password_resets.flash_success")
-      redirect_to Page.order("sequence ASC").first unless Page.count == 0
+      redirect_to Page.order("sequence ASC").first, :notice => t("password_resets.flash_success") unless Page.count == 0
     else
       flash.now[:notice] = t("password_resets.flash_failure")
       render "new"
@@ -45,8 +43,7 @@ class PasswordResetsController < ApplicationController
       end
 
       unless @user  
-        flash[:notice] = t("password_resets.not_found")
-        redirect_to new_password_reset_path
+        redirect_to new_password_reset_path, :notice => t("password_resets.not_found")
       end
     end
     

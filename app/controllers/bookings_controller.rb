@@ -39,8 +39,7 @@ class BookingsController < ApplicationController
 
   def  create
     if @appointment = Appointment.find_by_id(params[:main_id].to_i).book(current_user.id, params[:sub_id].to_i, params[:comment])
-      flash[:notice] = t("bookings.success")
-      redirect_to user_path(current_user)
+      redirect_to user_path(current_user), :notice => t("bookings.success")
     else
       flash.now[:alert] = t("bookings.failure")
       @main_id = params[:main_id].to_i
@@ -56,8 +55,7 @@ class BookingsController < ApplicationController
     @user = @appointment.patient
     if( (current_user?(@user) && (@appointment.begin > Time.now)) || role?("admin") || role?("doctor"))
       @appointment.unbook
-      flash[:alert] = t("bookings.cancelled")
-      redirect_to user_path(@user)
+      redirect_to user_path(@user), :alert => t("bookings.cancelled")
     else
       deny_access
     end

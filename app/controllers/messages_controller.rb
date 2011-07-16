@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
     if @doctor.save
       @message.deliver
       flash[:notice] = t("messages.message_send")
-      redirect_to Page.order("sequence ASC").first unless Page.count == 0
+      redirect_to Page.order("sequence ASC").first, :notice => t("messages.message_send") unless Page.count == 0
     else
       @title = t("messages.contact")
       @menu_active = "contact"
@@ -50,8 +50,7 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
     @user = User.find(@message.user.id)
     if @message.destroy
-      flash[:notice] = t("messages.deleted")
-      redirect_to messages_user_path(@user)
+      redirect_to messages_user_path(@user), :notice => t("messages.deleted")
     end
   end
     
