@@ -135,16 +135,16 @@ class UsersController < ApplicationController
    def update
     @user = User.find(params[:id])
     if params[:commit][t("users.submit.cancel")]
-      redirect_to @user
+      redirect_to (params[:form] ? contact_info_user_path(@user) : @user)
     else
       @user.super_reg = (role?("admin") || role?("doctor"))
       if @user.update_attributes(params[:user])
         flash[:notice] = t("users.edited")
-        redirect_to @user
+        redirect_to (params[:form] ? contact_info_user_path(@user) : @user)
       else
         @title = t("users.edittitle")
         @submit_text = t("users.submit.edit");
-        render 'edit'
+        render (params[:form] ? "edit_contact_info" : "edit")
       end
     end
   end
