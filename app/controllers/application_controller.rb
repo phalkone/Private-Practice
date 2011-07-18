@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   include AppointmentsHelper
   include UserSessionsHelper
+  include CalendarHelper
+  include BookingsHelper
   
   def set_locale 
     I18n.locale = extract_locale_from_subdomain

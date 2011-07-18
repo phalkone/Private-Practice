@@ -10,19 +10,35 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
-<%= javascript_include_tag "jquery-ui/jquery.ui.accordion.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
-  $("#available_bookings").accordion();
-  $( "a.book" ).button();
+	$(".unbooked, .booked").click(function(e) {
+		
+	    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+	      $(this).children("a:first").click();
+	      return false;
+	    }
+	  });
 });
 </script>
 <% end %>
 <div id='dialog'></div>
-  <h2><%= t("bookings.title") %></h2>
-  <div id="available_form">
-    <%= render "form" %>
-  </div>
-<div id ="booking_results">
-  <%= render "results" %>
+<div id="subcontent" class="span-17 colborder">
+	 <h3><%= t("bookings.title") + " " + @doctor.name %></h3>
+	<%= week_view(:appointments => @appointments, :begin_week => @begin_week, :weekend => @weekend) %>
+</div>
+<div id="submenu" class="span-6 last">
+<%=	calendar(:year => @year, :month => @month, :day => @day, :previous_month_text => ((link_to "<<", :action=>"index", :year=> @selected.prev_month.year, :month=> @selected.prev_month.month, :day => @selected.prev_month.day) unless (@selected.prev_month < Date.today) && (@selected.prev_month.month != Date.today.month)),:next_month_text => (link_to ">>", :action=>"index", :year=> @selected.next_month.year, :month=> @selected.next_month.month, :day => @selected.next_month.day)) do |d|
+  	link_to d.mday, :action=>"index", :year=>d.year, :month=>d.month, :day=>d.day, :doctor => @doctor.id
+ end %>
+<hr class="space">
+	<div id="doctor_picker">
+		<%= form_tag(bookings_path, :method => :get) do %>
+			<%= select_tag :doctor, options_from_collection_for_select( @doctors , "id", "name", @doctor.id) %>
+			<%= hidden_field_tag 'year', @year %>
+			<%= hidden_field_tag 'month', @month %>
+			<%= hidden_field_tag 'day', @day %>
+			<%= submit_tag t("messages.refresh") %>
+		<% end %>
+	</div>
 </div>

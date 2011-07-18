@@ -2,7 +2,7 @@
   bookings:
     booking: Booking
     menutitle: Booking
-    title: Book appointment
+    title: Book an appointment with doctor
     doctor: Doctor
     available_apps: Available appointments
     between: between

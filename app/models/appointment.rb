@@ -18,6 +18,9 @@
 
 class Appointment < ActiveRecord::Base
   attr_accessor :date, :begin_time, :end_time
+  
+  scope :unbooked, where(:patient_id => nil)
+  scope :booked, where("patient_id IS NOT :null", :null => nil)
 
   belongs_to :doctor, :class_name => "User",  :foreign_key => "doctor_id" 
   belongs_to :patient, :class_name => "User",  :foreign_key => "patient_id"

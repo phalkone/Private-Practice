@@ -31,7 +31,7 @@
       long: "%A %e %B, %Y"
 
     day_names: [Zondag, Maandag, Dinsdag, Woensdag, Donderdag, Vrijdag, Zaterdag]
-    abbr_day_names: [Zo, Ma, Di, Wo, Do, Vr, Za,]
+    abbr_day_names: [Zo, Ma, Di, Wo, Do, Vr, Za]
     month_names: [~, Januari, Februari, Maart, April, Mei, Juni, Juli, Augustus, September, Oktober, November, December]
     abbr_month_names: [~, Jan, Feb, Mrt, Apr, Mei, Jun, Jul, Aug, Sep, Okt, Nov, Dec]
     order: [:day, :month, :year]

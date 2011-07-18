@@ -4,22 +4,22 @@ class BookingsController < ApplicationController
 
   def index
     @title= t("bookings.title")
-    @doctor = (params[:doctor]) ? params[:doctor] : Role.where("title = ?","doctor").first.users.order("last_name ASC").first.id
-    if !(params[:begin]) || !(@begin_date = Time.new(params[:begin][:year].to_i, params[:begin][:month].to_i, params[:begin][:day].to_i,0,0,0, Time.now.utc_offset)) || (@begin_date < Time.now.beginning_of_day)
-      @begin_date = Time.now
-      @form = true
+    @year = params[:year] ? params[:year].to_i : Date.current.year
+    @month = params[:month] ? params[:month].to_i : Date.current.month
+    @day = params[:day] ? params[:day].to_i : Date.current.day
+    @selected = Date.civil(@year,@month,@day)
+    @begin_week = @selected.to_datetime.at_beginning_of_week
+    @end_week =  @selected.to_datetime.at_end_of_week
+    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
+    if params[:doctor]
+      @user = User.find(params[:doctor])
+      @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
+    else
+      @doctor = @doctors.first
     end
-    if !(params[:end]) || !(@end_date = Time.new(params[:end][:year].to_i, params[:end][:month].to_i, params[:end][:day].to_i,23,59,59, Time.now.utc_offset)) || (@end_date < Time.now)
-      @end_date = Time.now.advance(:days => 7).end_of_day
-      @form = true
-    end
-    if @end_date < @begin_date
-      temp = @end_date
-      @end_date = @begin_date
-      @begin_date = temp
-      @form = true
-    end
-    @appointments = Appointment.where("begin >= ? AND ? >= begin AND doctor_id = ? AND patient_id IS NULL", @begin_date, @end_date, @doctor).order("begin ASC").all
+    # TODO only futue appointments
+    @appointments = @doctor.appointments.unbooked.where("begin >= ? AND ? >= begin", @begin_week, @end_week).order("begin ASC")
+    @weekend = ((@appointments.count != 0) && (@appointments.last.end > @end_week.advance(:days => -2)))? 7 : 5
   end
   
   def show
@@ -70,6 +70,5 @@ class BookingsController < ApplicationController
      @user = User.find(params[:id])
      redirect_to(root_path) unless current_user?(@user) || role?("admin") || role?("doctor")
     end
-    
 
 end
