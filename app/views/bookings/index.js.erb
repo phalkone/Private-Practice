@@ -1,6 +1,2 @@
-$("#booking_results").html("<%= escape_javascript(render(:partial => "results")) %>");
-<% if @form %>
-  $("#available_form").html("<%= escape_javascript(render(:partial => "form")) %>");
-<% end %>
-$("#available_bookings").accordion();
-$( "a.book" ).button();
+$("#subcontent").html("<%= escape_javascript(render(:partial => "results")) %>");
+initialize();

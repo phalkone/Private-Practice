@@ -10,35 +10,55 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.position.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-nl.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-en.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.datepicker-fr.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
+	$(".calendar, input:submit").hide();
+	$("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
+	$("#datepicker").datepicker( "option", "minDate", new Date() );
+	$("#datepicker").datepicker( "option", "hideIfNoPrevNext", true );
+	$("#datepicker").datepicker().change(function() {
+		$("#year").val($(this).datepicker( "getDate" ).getYear()+1900);
+		$("#month").val($(this).datepicker( "getDate" ).getMonth()+1);
+		$("#day").val($(this).datepicker( "getDate" ).getDate());
+		$("form").submit();
+  	});
+	$("#doctor").datepicker().change(function() {
+		$("form").submit();
+  	});
+	initialize();
+});
+function initialize(){
 	$(".unbooked, .booked").click(function(e) {
-		
 	    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 	      $(this).children("a:first").click();
 	      return false;
 	    }
 	  });
-});
+}
 </script>
 <% end %>
 <div id='dialog'></div>
 <div id="subcontent" class="span-17 colborder">
-	 <h3><%= t("bookings.title") + " " + @doctor.name %></h3>
-	<%= week_view(:appointments => @appointments, :begin_week => @begin_week, :weekend => @weekend) %>
+	<%= render "results" %>
 </div>
 <div id="submenu" class="span-6 last">
-<%=	calendar(:year => @year, :month => @month, :day => @day, :previous_month_text => ((link_to "<<", :action=>"index", :year=> @selected.prev_month.year, :month=> @selected.prev_month.month, :day => @selected.prev_month.day) unless (@selected.prev_month < Date.today) && (@selected.prev_month.month != Date.today.month)),:next_month_text => (link_to ">>", :action=>"index", :year=> @selected.next_month.year, :month=> @selected.next_month.month, :day => @selected.next_month.day)) do |d|
-  	link_to d.mday, :action=>"index", :year=>d.year, :month=>d.month, :day=>d.day, :doctor => @doctor.id
- end %>
-<hr class="space">
-	<div id="doctor_picker">
-		<%= form_tag(bookings_path, :method => :get) do %>
-			<%= select_tag :doctor, options_from_collection_for_select( @doctors , "id", "name", @doctor.id) %>
-			<%= hidden_field_tag 'year', @year %>
-			<%= hidden_field_tag 'month', @month %>
-			<%= hidden_field_tag 'day', @day %>
-			<%= submit_tag t("messages.refresh") %>
-		<% end %>
-	</div>
+	<%= form_tag(bookings_path, :method => :put, :remote => true) do %>
+	  <%= label_tag Appointment.human_attribute_name("doctor_id") %>: <br />
+	  <%= select_tag :doctor, options_from_collection_for_select( @doctors , "id", "name", @doctor.id) %>
+	  <%= hidden_field_tag 'year', @year %>
+	  <%= hidden_field_tag 'month', @month %>
+	  <%= hidden_field_tag 'day', @day %>
+	  <%= submit_tag t("messages.refresh") %>
+	<% end %>
+	
+	<hr class="space">
+	
+	<div id="datepicker"></div>
+	<%=	calendar(:year => @year, :month => @month, :day => @day, :previous_month_text => ((link_to "<<", :action=>"index", :year=> @selected.prev_month.year, :month=> @selected.prev_month.month, :day => @selected.prev_month.day) unless (@selected.prev_month < Date.today) && (@selected.prev_month.month != Date.today.month)),:next_month_text => (link_to ">>", :action=>"index", :year=> @selected.next_month.year, :month=> @selected.next_month.month, :day => @selected.next_month.day)) do |d|
+		  	link_to d.mday, :action=>"index", :year=>d.year, :month=>d.month, :day=>d.day, :doctor => @doctor.id
+		 end %>
 </div>
