@@ -1,2 +1,4 @@
 <h3><%= t("bookings.title") + " " + @doctor.name %></h3>
-<%= week_view(:appointments => @appointments, :begin_week => @begin_week, :weekend => @weekend) %>
+<%= week_view(:appointments => @appointments, :begin_week => @begin_week, :weekend => @weekend) do |a|
+	content_tag(:div, link_to(l(a.begin, :format => :time), new_booking_path(:booking => {:main_id => a.main_id, :sub_id => a.sub_id}), :title => t("appointments.book_now").upcase, :class => "book", :remote => true), :class => "unbooked center")
+	end %>

@@ -22,7 +22,7 @@ module BookingsHelper
     end
 
     # Table header
-    cal = %(<table class="#{options[:table_class]}">).html_safe
+    cal = tag("table", {:class => options[:table_class]}, true)
     cal << %(<thead><tr><th></th>).html_safe
     next_day = options[:begin_week]
     for i in 0..(options[:weekend]-1)
@@ -35,17 +35,15 @@ module BookingsHelper
     warray = Array.new(stop-start){Array.new(options[:weekend])}
 
     options[:appointments].each do |app|
-      i = 0
       app.sub_appointments.each() do |subapp|
         row = subapp.begin.hour - start
         column = subapp.begin.to_date.cwday - 1
-        cell = %( <div class="unbooked center">#{link_to I18n.l(subapp.begin, :format => :time), new_booking_path(:booking => {:main_id => app.id, :sub_id => i}), :title => t("appointments.book_now").upcase, :class => "book", :remote => true}</div>)
+        cell = block.call(subapp)
         if warray[row][column] == nil 
           warray[row][column] = cell
         else
           warray[row][column].insert(-1, cell)
         end
-        i += 1
       end
     end
     

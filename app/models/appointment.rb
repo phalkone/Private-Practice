@@ -17,7 +17,7 @@
 #
 
 class Appointment < ActiveRecord::Base
-  attr_accessor :date, :begin_time, :end_time
+  attr_accessor :date, :begin_time, :end_time, :sub_id, :main_id
   
   scope :unbooked, where(:patient_id => nil)
   scope :booked, where("patient_id IS NOT :null", :null => nil)
@@ -154,6 +154,7 @@ class Appointment < ActiveRecord::Base
     subapps = Array.new
     if((!self.unbooked?) || self.split.nil? || self.split == 0 || (self.begin.advance(:minutes => self.split) >= self.end))
       subapps.insert(-1,self)
+      subapps[0].update_attributes(:sub_id => 0, :main_id => self.id)
     else
       new_begin = self.begin
       new_end = self.begin.advance(:minutes => self.split)
@@ -161,7 +162,9 @@ class Appointment < ActiveRecord::Base
         subapp = Appointment.new(:doctor_id => self.doctor_id,
                                  :begin => new_begin,
                                  :end => new_end,
-                                 :comment => self.comment )    
+                                 :comment => self.comment,
+                                 :sub_id => subapps.size,
+                                 :main_id => self.id )    
         subapps.insert(-1,subapp)
         new_begin = new_end
         new_end = new_end.advance(:minutes => self.split)
@@ -169,7 +172,9 @@ class Appointment < ActiveRecord::Base
           subapp = Appointment.new(:doctor_id => self.doctor_id,
                                    :begin => new_begin,
                                    :end => self.end,
-                                   :comment => self.comment ) 
+                                   :comment => self.comment,
+                                   :sub_id => subapps.size ,
+                                   :main_id => self.id) 
           subapps.insert(-1,subapp)
         end
       end

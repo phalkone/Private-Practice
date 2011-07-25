@@ -24,10 +24,10 @@ $(document).ready(function() {
 		$("#year").val($(this).datepicker( "getDate" ).getYear()+1900);
 		$("#month").val($(this).datepicker( "getDate" ).getMonth()+1);
 		$("#day").val($(this).datepicker( "getDate" ).getDate());
-		$("form").submit();
+		$("#submenu form").submit();
   	});
 	$("#doctor").datepicker().change(function() {
-		$("form").submit();
+		$("#submenu form").submit();
   	});
 	initialize();
 });
