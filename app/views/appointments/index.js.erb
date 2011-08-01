@@ -1,4 +1,3 @@
-$("#doctor_info").html("<%= escape_javascript(render(:partial => "doctor_info")) %>");
 <% if @dayweek == "day" %>
   $("#calendar").html("<%= escape_javascript(render(:partial => "day")) %>");
 <% else %>

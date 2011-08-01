@@ -18,29 +18,7 @@
       <td class="hour"><span class="big"><%= (hour.to_s.length < 2) ? "0" + hour.to_s : hour %></span><span class="superscript">00</span></td>
       <% @next = @begin %>
       <% for i2 in 0..y %>
-        <% if !@weekarray[i][i2].nil? %>
-          <% @apps = @weekarray[i][i2].split(";") %>
-          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"><% @apps.each() do |a| %>
-            <% id = a.split("/")[0].to_i %>
-            <% subid = a.split("/")[1].to_i %>
-            <% app = @appointments.find_by_id(id).sub_appointments[subid] %>
-            <% div_class = (app.unbooked?) ? "unbooked" : "booked" %>
-            <div class="<%= div_class %>"><%= l(app.begin, :format => :time) %>
-            <% if app.unbooked? %>
-              <%= link_to "", appointment_path(@appointments.find_by_id(id), :sub_id => subid), :remote => true, :class => "hidden" %>
-              <% if @appointments.find_by_id(id).sub_appointments.length == 1 %>
-                <%= link_to t("appointments.book_now").upcase, edit_appointment_path(@appointments.find_by_id(id), :mode => "registered"), :title => t("appointments.book_now").upcase, :remote => true %>
-              <% else %>
-                <%= link_to t("appointments.book_now").upcase, new_appointment_path(:appointment => {:begin_time => l(app.begin, :format => :time), :end_time => l(app.end, :format => :time), :date => l(app.begin, :format => :datepicker)}), :title => t("appointments.book_now").upcase, :remote => true %>
-              <% end %>
-            <% else %>
-              <%= link_to app.patient.name, appointment_path(@appointments.find_by_id(id)), :title => app.patient.name, :remote => true %>
-            <% end %>
-            </div>
-          <% end %></td>
-        <% else %>
-          <td class="<%= (@weekend == "1")? "weekend" : "no_weekend" %>"></td>
-        <% end %>
+        <td class="<%= (@weekend == "1")? "weekend #{i}_#{i2}" : "no_weekend #{i}_#{i2}" %>"></td>
         <% @next = @next.tomorrow %>
       <% end %>
     </tr>

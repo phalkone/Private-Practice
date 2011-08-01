@@ -25,7 +25,7 @@ PrivatePractice::Application.routes.draw do
     end
 
     collection do
-      put :index
+      get :get_appointments
     end
   end
 

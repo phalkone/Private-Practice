@@ -1,5 +1,6 @@
 class AppointmentsController < ApplicationController
   before_filter :authenticate
+  respond_to :html, :js, :json
  
   def index
     @title = t("appointments.menutitle")
@@ -55,10 +56,23 @@ class AppointmentsController < ApplicationController
       @date = @date.to_time
       @begin = @date.at_beginning_of_week
       @end = (@weekend == "1") ? @date.at_end_of_week : @date.at_end_of_week.yesterday.yesterday
-      @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", @begin , @end).order("begin ASC")
-      @weekarray = weekarray(@start, @stop, @appointments, @weekend)
     end
-    @bookedcount = barray(@appointments)
+  end
+  
+  def get_appointments
+    @appointments = current_user.appointments.where("begin >= ? AND begin <= ?", params[:begintime] , params[:endtime])
+    subapps = Array.new
+    @appointments.each() do |app|
+      app.sub_appointments.each() do |subapp|
+        subapps << subapp
+      end
+    end
+    
+    #TODO  include correct json fields
+    respond_to do |format|
+      format.html { redirect_to appointments_path }
+      format.json  { render :json => subapps.to_json(:include => {:patient => {:only => [:id, :first_name, :last_name]}}) }
+    end
   end
 
   def show

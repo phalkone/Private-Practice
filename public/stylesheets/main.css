@@ -80,7 +80,7 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .week tbody td { border: 1px solid #ddd; margin: 0;}
   .week td.hour { vertical-align: top; text-align: center; padding: 0 5px 0 5px;}
   .week td div.booked { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
-                     padding-left: 3px; }
+                     padding-left: 3px; cursor: pointer; }
   .week td div.unbooked { background-color: #CFC; border: solid 1px #6C6; margin-bottom: 2px;
                      padding-left: 3px; }
 

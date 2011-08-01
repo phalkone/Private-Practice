@@ -1,10 +1,9 @@
-source 'http://rubygems.org'
-
 gem 'rails', '3.0.9'
 gem 'sqlite3'
 gem 'bluecloth', '>= 2.0.0'
 gem 'will_paginate', '3.0.pre2'
 gem 'authlogic', '3.0.3'
+gem 'rake', '0.9.2'
 
 group :development do
   gem 'rspec-rails', '2.5.0'

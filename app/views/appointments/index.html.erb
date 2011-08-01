@@ -115,18 +115,48 @@ function initialize(){
     return Math.round((dur/total)*height) + "px";
   });
 
+  $.getJSON('/appointments/get_appointments.json',{begintime: "<%= @begin.to_formatted_s(:db) %>", endtime:  "<%= @end.to_formatted_s(:db) %>"}, function(data) {
+	$.each(data, function(i,app){
+		var begintime = new Date(app.begin);
+		if(begintime.getDay() == 0){
+			var column = 6;
+		} else {
+			var column = begintime.getUTCDay() - 1;
+		}
+		var row = begintime.getUTCHours() - $("#view_start").val();
+		var cell = '.'+ row.toString() + "_" + column.toString();
+		if(begintime.getUTCMinutes().toString().length == 1){
+			var time = begintime.getUTCHours() + ":0" + begintime.getUTCMinutes()
+		} else {
+			var time = begintime.getUTCHours() + ":" + begintime.getUTCMinutes()
+		}
+		if(app.patient_id != null){
+			var name = app.patient.last_name + ", " + app.patient.first_name;
+			$("<div class='booked'>" + time + " <span class='red'>" + name + "</span></div>").click(function() {
+				$.get("/appointments/"+app.id.toString());
+			}).appendTo(cell);
+		} else {
+			$(cell).append('<div class="unbooked">' + time + " <%= t("appointments.book_now").upcase %>"  + '</div>').click(function() {
+				$.get("/appointments/" + app.id.toString(), {sub_id: app.id.toString()});
+			});
+		}
+		
+		
+	});
+	
+  });
+
 }
 </script>
 <% end %>
 <div id='dialog'></div>
 <div id="viewoption">
-<%= form_tag(appointments_path, :method => :put, :remote => true) do %>
+<%= form_tag(appointments_path, :method => :get, :remote => true) do %>
 
   <div id="datepicker"></div>
   
   <%= hidden_field 'view','date' %>
   <div id="doctor_info">
-    <%= render "doctor_info" %>
   </div>
 
   <div class="x"></div>
