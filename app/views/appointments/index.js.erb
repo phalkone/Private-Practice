@@ -1,6 +1,0 @@
-<% if @dayweek == "day" %>
-  $("#calendar").html("<%= escape_javascript(render(:partial => "day")) %>");
-<% else %>
-  $("#calendar").html("<%= escape_javascript(render(:partial => "week")) %>");
-<% end %>
-initialize();

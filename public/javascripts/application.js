@@ -48,9 +48,11 @@ function login_hide(){
     $(window).unbind("mouseover");
   }
 }
+
 function flash_hide(){
   $(".flash").hide(300);
 }
+
 function linkbox() {
   $(".link_box").each(function() {
     $(this)
@@ -66,6 +68,7 @@ function linkbox() {
     });
   });
 }
+
 function lightbox() {
   $('a.lightbox.picture').click(function(e) {
     createLightbox();
@@ -78,6 +81,7 @@ function lightbox() {
     return false;   
   });
 }
+
 function createLightbox(){
  $('body').css('overflow-y', 'hidden');
  $('body').css('overflow-x', 'hidden');
@@ -93,6 +97,7 @@ function createLightbox(){
     .hide()
     .appendTo('body');
 }
+
 function lightboxImage(e){
   $('<img />')
     .attr('src', $(e).attr('href'))
@@ -104,6 +109,7 @@ function lightboxImage(e){
     })
     .appendTo('#lightbox');
 }
+
 function lightboxFrame(e){
   $('<iframe />')
     .attr({ 'src': $(e).attr('href'),
@@ -123,6 +129,7 @@ function lightboxFrame(e){
     })
     .appendTo('#lightbox');
 }
+
 function positionLightboxFrame() {
   $('#lightbox')
   .css({
@@ -131,6 +138,7 @@ function positionLightboxFrame() {
   })
   .fadeIn();
 }
+
 function positionLightboxImage() {
   if ($(window).width() < $("#lightbox").width()){
     $("#lightbox img").attr("width",$(window).width()-30);
@@ -149,6 +157,7 @@ function positionLightboxImage() {
   })
   .fadeIn();
 }
+
 function removeLightbox() {
   $('#overlay, #lightbox')
   .fadeOut('slow', function() {
@@ -157,6 +166,34 @@ function removeLightbox() {
     $('body').css('overflow-x', 'auto');
   });
 }
+
 function zebra() {
   $(".list tr:even").css('background-color','#dddddd');
+}
+
+function writeCookie(name, value, days){
+	var expires = "";
+	
+	// TODO change to real domain
+	var domain = ";domain=app.local";
+	
+	if(days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		expires = ";expires=" + date.toGMTString();
+ 	}
+	document.cookie = name + "=" + value + domain + expires + ";path=/"; 
+}
+
+function getCookie(searchName) {
+	var cookies = document.cookie.split(";");
+	for (var i = 0; i < cookies.length; i++) {
+		var cookieCrumbs = cookies[i].split("="); 
+		var cookieName = cookieCrumbs[0].replace(" ","");
+		var cookieValue = cookieCrumbs[1];
+		if (cookieName == searchName) {
+			return cookieValue;
+		}
+	}
+	return false;
 }

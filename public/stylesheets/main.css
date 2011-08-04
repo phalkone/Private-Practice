@@ -82,7 +82,7 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .week td div.booked { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
                      padding-left: 3px; cursor: pointer; }
   .week td div.unbooked { background-color: #CFC; border: solid 1px #6C6; margin-bottom: 2px;
-                     padding-left: 3px; }
+                     padding-left: 3px; cursor: pointer;}
 
 #weekendcheck, #dayweek{margin:2px 5px 0 0;}
 
@@ -101,6 +101,19 @@ table.users { width: 100%; border-collapse: collapse;
 #show_all {float: right; margin-left:5px;}
 #rolesoption ul {list-style:none;}
 table#admininfo tr {height:30px;}
+
+table.calendar tbody tr:nth-child(odd) td, tbody tr.odd td { background: #ffffff;}
+table.calendar tbody tr:nth-child(even) td, tbody tr.even td { background: #ffffff;}
+.calendar { margin: auto; }
+	.monthName th { font-weight: normal; text-align: right;
+  					padding-top: 0.7em; padding-bottom: 0.4em;}
+	.dayName th { font-size: 0.4em; padding-top: 0.3em; padding-bottom: 0.1em;
+  				  background-color: #303030; color: white; }
+    .otherMonth, .day, .specialDay { padding: 0.4em 0.4em; 
+	                                 border-right: 1px solid white; }
+	.otherMonth { color: #eeeeee; background-color: white; }
+    .day, .specialDay { text-align: center; border-bottom: 1px dotted #bbbbbb;}
+    .selected { font-weight:bold; }
 
 .button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;

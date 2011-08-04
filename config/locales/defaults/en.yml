@@ -21,6 +21,8 @@
     or: or
     cancel: cancel
     route: Route
+    day_names: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    abbr_month_names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   date:
     formats:
       default: "%Y-%m-%d"

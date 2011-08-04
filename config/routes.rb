@@ -23,10 +23,6 @@ PrivatePractice::Application.routes.draw do
     member do
       get :unbook
     end
-
-    collection do
-      get :get_appointments
-    end
   end
 
   resources :users do

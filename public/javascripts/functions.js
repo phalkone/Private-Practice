@@ -23,3 +23,8 @@ $.fn.extend({
     })
   }
 });
+(function($) { 
+	$.advance = function(time, min){
+		return new Date(time.getTime() + (min * 60 * 1000));
+	}; 
+})(jQuery);

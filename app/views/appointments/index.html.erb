@@ -18,41 +18,72 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
-  $("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ]);
-  $("#datepicker").datepicker( "option", "altField", "#view_date" );
-  $("#datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );
-  $("#datepicker").datepicker( "setDate" , "<%= l(@date, :format => :datepicker) %>");
-  $("#datepicker").datepicker( "option", "altFormat", "yy mm dd" ).change(function() {
-      $("#viewoption form").submit();
+  $("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ])	.change(function() {
+	writeCookie("date", $(this).datepicker("getDate").getTime(), 20 * 365);
+	refresh();
   });
+
+  var cookieDate = getCookie("date");
+  if(cookieDate){
+	var date = new Date();
+	date.setTime(cookieDate);
+	$("#datepicker").datepicker( "setDate" , date);
+   }
+  
+  var cookieStartStop = getCookie("start_stop");
+  if(cookieStartStop){
+	var splitValue =  cookieStartStop.split("*");
+	var start = splitValue[0];
+	var stop = splitValue[1];
+  } else {
+	var start = 9;
+	var stop = 17
+  }
   $("#slider-range").slider({
-      range: true, min: 0, max: 24, values: [<%= @start %>, <%= @stop %>],
+      range: true, min: 0, max: 24, values: [start, stop],
       slide: function(event, ui) {
         $("#hourrange").html(ui.values[0] 
         + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + ui.values[1] + ':00');
-        $("#view_start").val(ui.values[0]);
-        $("#view_stop").val(ui.values[1]);
-        $("#viewoption form").submit();
-     }
+     },
+     change: function(event,ui) {
+	    writeCookie("start_stop",ui.values[0].toString() + '*' + ui.values[1], 20 * 365);
+		refresh();
+	 }
   });
   $("#hourrange").html($("#slider-range").slider("values", 0) 
   + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + $("#slider-range").slider("values", 1) + ':00');
-  $("#view_start").val($("#slider-range").slider("values", 0));
-  $("#view_stop").val($("#slider-range").slider("values", 1));
-  $("#dayweek").buttonset().css("float","right");
-  $("#view_weekend").button();
-  $("#viewoption input").change(function() {
-      $("#viewoption form").submit();
+
+  $("#dayweek").buttonset().css("float","right").change(function(){
+	writeCookie("day_week",$("#dayweek input:checked").val(), 20 * 365);
+	refresh();
   });
+  var day_week = getCookie("day_week");
+  if(day_week){
+	$("#view_dayweek_"+day_week).attr("checked","checked");
+	$("#dayweek").buttonset("refresh");
+  }
+
+  $("#view_weekend").button().change(function(){
+	writeCookie("weekend",$(this).attr("checked"), 20 * 365);
+	refresh();
+  });
+  if(getCookie("weekend") == "true" ){
+	$("#view_weekend").attr("checked","checked");
+	$("#view_weekend").button("refresh");
+   } else if(getCookie("weekend") == "false") {
+	$("#view_weekend").removeAttr("checked");
+	$("#view_weekend").button("refresh");
+   }
+
   $("a.newapp").button();
+
   $("#previous").button({
     icons: {
       primary: "ui-icon-circle-triangle-w"
     },
     text: false
   }).click(function() {
-    var currDate = $("#view_date").val().split(" ");
-    var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
+    var presDate = new Date($("#datepicker").datepicker("getDate"));
     var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
     if($("#view_dayweek_week").attr("checked")){
       var prevDate = presDate.getTime() - (60 * 60 * 24 * 7 * 1000);
@@ -60,7 +91,7 @@ $(document).ready(function() {
       var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
     }
     $("#datepicker").datepicker( "setDate" , new Date(prevDate));
-    $("#viewoption form").submit();
+	refresh();
   });
   $("#next").button({
     icons: {
@@ -68,15 +99,14 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    var currDate = $("#view_date").val().split(" ");
-    var presDate = new Date(currDate[0],currDate[1]-1,currDate[2]);
+    var presDate = new Date($("#datepicker").datepicker("getDate"));
     if($("#view_dayweek_week").attr("checked")){
       var nextDate = presDate.getTime() + (60 * 60 * 24 * 7 * 1000);
     } else {
       var nextDate = presDate.getTime() + (60 * 60 * 24 * 1000);
     }
     $("#datepicker").datepicker( "setDate" , new Date(nextDate));
-    $("#viewoption form").submit();
+    refresh();
   });
   $("#refresh").button({
     icons: {
@@ -84,18 +114,12 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    $("#viewoption form").submit();
+    refresh();
   });
-  initialize();
+  refresh();
 });
-function initialize(){
-  $(".unbooked, .booked").click(function(e) {
-    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-      $.get($(this).children("a:first").attr("href"));
-      return false;
-    }
-  });
 
+function initialize(){
   $("div.bar").css('height',function(){
     var height = $(this).parent().height();
     return height + "px";
@@ -114,76 +138,192 @@ function initialize(){
     var total = $(this).parent().parent().attr("rowspan")*15;
     return Math.round((dur/total)*height) + "px";
   });
+}
 
-  $.getJSON('/appointments/get_appointments.json',{begintime: "<%= @begin.to_formatted_s(:db) %>", endtime:  "<%= @end.to_formatted_s(:db) %>"}, function(data) {
+function refresh(){
+	clearCalendar();
+	drawWeekGrid();
+	var beginTime = beginningOfWeek($("#datepicker").datepicker("getDate"));
+	var endTime = endOfWeek($("#datepicker").datepicker("getDate"));
+	fetchAndDisplayWeek( Math.round(beginTime.getTime() / 1000),Math.round(endTime.getTime() / 1000));
+}
+
+function clearCalendar(){
+	$("#calendar table").remove();
+}
+
+function drawWeekGrid(){
+	var table = $("<table/>").addClass("week").appendTo("#calendar");
+	table.append("<thead/>").append("<tr/>");
+	$("<tr />").appendTo(".week thead");
+	$("<th />").appendTo(".week thead tr");
+	table.append("<tbody/>");
+	var dayNames = <%= raw t("txt.day_names") %>;
+	var monthNames = <%= raw t("txt.abbr_month_names") %>;
+	var presDate = new Date($("#datepicker").datepicker("getDate"));
+	if($("#view_weekend").attr("checked")){
+		var y = 7;
+	} else {
+		var y = 5;
+	}
+	var next = beginningOfWeek($("#datepicker").datepicker("getDate"));
+	for(var i = 0; i < y; i++){
+		var dateString = next.getDate() + " " + monthNames[next.getMonth()] + " " + next.getFullYear();
+		$("<th/>").html(dayNames[i] + "<br />" + dateString).appendTo(".week thead tr");
+		next = new Date(next.getTime() + (60 * 60 * 24 * 1 * 1000));
+	}
+	
+	var start = $("#slider-range").slider("values", 0);
+	var stop = $("#slider-range").slider("values", 1);
+	for(var i = 0; i < (stop-start); i++){
+		$("<tr />").appendTo(".week tbody");
+		var hour = i + start;
+		if(hour.toString().length < 2){
+			hour = "0" + hour.toString();
+		} else {
+			hour = hour.toString();
+		}
+		$("<td />").addClass("hour").html("<span class='big'>" + hour + "</span><span class='superscript'>00</span>").appendTo(".week tbody tr:last");
+		for(var i2 = 0; i2 < y; i2++){
+			if(y == 7){
+				var cellClass = "weekend " + i.toString() + "_" + i2.toString();
+			} else {
+				var cellClass = "no_weekend " + i.toString() + "_" + i2.toString();
+			}
+			$("<td />").addClass(cellClass).appendTo(".week tbody tr:last");
+		}
+	}
+	
+}
+
+function beginningOfWeek(presDate){
+	if(presDate.getDay() == 0){
+		var days_to_monday = 6;
+	} else {
+		var days_to_monday = presDate.getDay() - 1;
+	}
+	var beginning = presDate.getTime() - (60 * 60 * 24 * days_to_monday * 1000);
+	return new Date(beginning);
+}
+
+function endOfWeek(presDate){
+	if(presDate.getDay() == 0){
+		var days_to_sunday = 0;
+	} else {
+		var days_to_sunday = 7 - presDate.getDay();
+	}
+	var end = presDate.getTime() + (60 * 60 * 24 * days_to_sunday * 1000) + ((60 * 60 * 24 * 1 * 1000) - 1000);
+	return new Date(end);
+}
+
+function fetchAndDisplayWeek(start_time,end_time){
+	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
 		var begintime = new Date(app.begin);
+		var endtime = new Date(app.end);
 		if(begintime.getDay() == 0){
 			var column = 6;
 		} else {
 			var column = begintime.getUTCDay() - 1;
 		}
-		var row = begintime.getUTCHours() - $("#view_start").val();
+		var row = begintime.getUTCHours() - $("#slider-range").slider("values", 0);
 		var cell = '.'+ row.toString() + "_" + column.toString();
-		if(begintime.getUTCMinutes().toString().length == 1){
-			var time = begintime.getUTCHours() + ":0" + begintime.getUTCMinutes()
-		} else {
-			var time = begintime.getUTCHours() + ":" + begintime.getUTCMinutes()
-		}
+		var time = formatTime(begintime);
 		if(app.patient_id != null){
 			var name = app.patient.last_name + ", " + app.patient.first_name;
-			$("<div class='booked'>" + time + " <span class='red'>" + name + "</span></div>").click(function() {
+			$("<div/>").addClass("booked").html(time + " <span class='red'>" + name + "</span>").click(function() {
 				$.get("/appointments/"+app.id.toString());
 			}).appendTo(cell);
 		} else {
-			$(cell).append('<div class="unbooked">' + time + " <%= t("appointments.book_now").upcase %>"  + '</div>').click(function() {
-				$.get("/appointments/" + app.id.toString(), {sub_id: app.id.toString()});
-			});
-		}
-		
-		
-	});
-	
-  });
+			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
+			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
+				var div = $("<div/>").addClass("unbooked").html(time + " ").click(function(e) {
+					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+						$.get("/appointments/"+app.id.toString());
+					}
+				}).appendTo(cell);
+				$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+					"data-remote": true,
+					href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
+				}).appendTo(div);
+			} else {
+				var i = 0;
+				var newbegin = new Date(begintime);
+				while(newend <= endtime){
+					var row = newbegin.getUTCHours() - $("#slider-range").slider("values", 0);
+					var cell = '.'+ row.toString() + "_" + column.toString();
+					var time_begin = formatTime(newbegin);
+					var time_end = formatTime(newend);
+					var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
+					var div = $("<div/>").addClass("unbooked").html(time_begin + " ").click(function(e) {
+					    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+					      $.get($(this).children("a:first").attr("href"));
+					      return false;
+					    }
+					 }).appendTo(cell);
+					$("<a/>").addClass("hidden").attr({
+						"data-remote": true,
+						href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
+					}).appendTo(div);
+					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+						"data-remote": true,
+						href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
+					}).appendTo(div);
 
+					i++;
+					newbegin = $.advance(newbegin,app.split);
+					newend = $.advance(newend,app.split);
+
+					if((newend > endtime) && (newbegin < endtime)){
+						newend = endtime;
+					}
+				}
+			}
+		}
+	});
+
+  });
+}
+
+function formatTime(time){
+	if(time.getUTCMinutes().toString().length == 1){
+		return time.getUTCHours() + ":0" + time.getUTCMinutes()
+	} else {
+		return time.getUTCHours() + ":" + time.getUTCMinutes()
+	}
 }
 </script>
 <% end %>
 <div id='dialog'></div>
 <div id="viewoption">
-<%= form_tag(appointments_path, :method => :get, :remote => true) do %>
-
   <div id="datepicker"></div>
-  
-  <%= hidden_field 'view','date' %>
+
   <div id="doctor_info">
+	<!-- TODO display booked and unbooked -->
+	<h2><%= t("appointments.cal_for") + " " + current_user.name %></h2>
+	<p><span class="legend-icon booked-icon"></span><span id="booked_count"></span> <%= t("appointments.booked_app") +t("appointments.booked_apps")%><br />
+	<span class="legend-icon unbooked-icon"></span><span id="unbooked_count"></span> <%= t("appointments.unbooked_app") +t("appointments.unbooked_apps")%><br /></p>
   </div>
 
   <div class="x"></div>
-  <%= hidden_field 'view','start' %>
-  <%= hidden_field 'view','stop' %>
   <div id="hourrange" class="quiet"></div>
   <div id="slider-range"></div><br />
 
   <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
     <button id="refresh"><%= t("appointments.refresh") %></button>
-    <span id="weekendcheck" class="right"><%= check_box_tag 'view[weekend]', "1", (true if (@weekend == "1")) %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
+    <span id="weekendcheck" class="right"><%= check_box_tag 'view[weekend]', "1", true %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
     <span id="dayweek">
-      <%= radio_button "view", "dayweek", "day" , :checked => (true if (@dayweek == "day")) %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
-      <%= radio_button "view", "dayweek", "week" , :checked => (true if (@dayweek == "week")) %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
+      <%= radio_button "view", "dayweek", "day" %><%= label_tag 'view_dayweek_day', t("appointments.day") %>
+      <%= radio_button "view", "dayweek", "week", :checked => true %><%= label_tag 'view_dayweek_week', t("appointments.week") %>
     </span>
     <button id="previous"><%= t("appointments.previous") %></button>
     <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 
         :class => "newapp", :title => t("appointments.newapp")%>
   </div>
-<% end %>
 </div>
+
 <div id="calendar">
-<% if @dayweek == "day" %>
-  <%= render "day" %>
-<% else %>
-  <%= render "week" %>
-<% end %>
+
 </div>
 
