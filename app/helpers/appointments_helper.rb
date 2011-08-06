@@ -1,11 +1,4 @@
 module AppointmentsHelper
-  def barray(apps)
-    barray = Array.new(2, 0)
-    apps.each() do |app|
-      (app.unbooked?) ? barray[1] += app.sub_appointments.length : barray[0] += 1
-    end
-    return barray
-  end
 
   def dayarray(start, stop, apps)
     rows = ((stop-start)*4)
@@ -65,28 +58,6 @@ module AppointmentsHelper
 
     darray.last[0] = (maxlength*60)
     return darray
-  end
-
-  def weekarray(start, stop, apps, weekend)
-    warray = Array.new(stop-start){Array.new((@weekend == "1")? 7 : 5)}
-
-    apps.each() do |app|
-      i = 0
-      app.sub_appointments.each() do |subapp|
-        row = subapp.begin.hour - start
-        column = subapp.begin.to_date.cwday - 1
-        if (row >= 0) && (row < (stop-start)) 
-          if warray[row][column] == nil 
-            warray[row][column] = app.id.to_s + "/" + i.to_s
-          else
-            warray[row][column].insert(-1, ';' + app.id.to_s + "/" + i.to_s)
-          end
-        end
-      i += 1
-      end
-    end
-
-    return warray
   end
 
 end

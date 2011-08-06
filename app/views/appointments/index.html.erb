@@ -145,6 +145,9 @@ function refresh(){
 	drawWeekGrid();
 	var beginTime = beginningOfWeek($("#datepicker").datepicker("getDate"));
 	var endTime = endOfWeek($("#datepicker").datepicker("getDate"));
+	if(!$("#view_weekend").attr("checked")){
+		endTime = new Date(endTime.getTime() - (60 * 60 * 24 * 2 * 1000));
+	}	
 	fetchAndDisplayWeek( Math.round(beginTime.getTime() / 1000),Math.round(endTime.getTime() / 1000));
 }
 
@@ -217,6 +220,10 @@ function endOfWeek(presDate){
 }
 
 function fetchAndDisplayWeek(start_time,end_time){
+	var start =  $("#slider-range").slider("values", 0);
+	var stop = $("#slider-range").slider("values", 1);
+	var booked = 0;
+	var unbooked = 0;
 	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
 		var begintime = new Date(app.begin);
@@ -226,10 +233,14 @@ function fetchAndDisplayWeek(start_time,end_time){
 		} else {
 			var column = begintime.getUTCDay() - 1;
 		}
-		var row = begintime.getUTCHours() - $("#slider-range").slider("values", 0);
+		var row = begintime.getUTCHours() - start;
 		var cell = '.'+ row.toString() + "_" + column.toString();
 		var time = formatTime(begintime);
 		if(app.patient_id != null){
+			if((row < 0) || (row >= (stop-start))){
+				return true;
+			}
+			booked++;
 			var name = app.patient.last_name + ", " + app.patient.first_name;
 			$("<div/>").addClass("booked").html(time + " <span class='red'>" + name + "</span>").click(function() {
 				$.get("/appointments/"+app.id.toString());
@@ -237,6 +248,10 @@ function fetchAndDisplayWeek(start_time,end_time){
 		} else {
 			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
 			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
+				if((row < 0) || (row >= (stop-start))){
+					return true;
+				}
+				unbooked++;
 				var div = $("<div/>").addClass("unbooked").html(time + " ").click(function(e) {
 					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 						$.get("/appointments/"+app.id.toString());
@@ -250,7 +265,17 @@ function fetchAndDisplayWeek(start_time,end_time){
 				var i = 0;
 				var newbegin = new Date(begintime);
 				while(newend <= endtime){
-					var row = newbegin.getUTCHours() - $("#slider-range").slider("values", 0);
+					var row = newbegin.getUTCHours() - start;
+					if(row >= (stop-start)){
+						break;
+					} else if(row < 0) {
+						i++;
+						newbegin = $.advance(newbegin,app.split);
+						newend = $.advance(newend,app.split);
+						continue;
+					}
+
+					unbooked++;
 					var cell = '.'+ row.toString() + "_" + column.toString();
 					var time_begin = formatTime(newbegin);
 					var time_end = formatTime(newend);
@@ -281,8 +306,23 @@ function fetchAndDisplayWeek(start_time,end_time){
 			}
 		}
 	});
-
+	updateBookedCount(booked,unbooked);
   });
+  
+}
+
+function updateBookedCount(booked,unbooked){
+	if(booked != 1){
+		$("#booked_count").html(" " + booked.toString() + " " + "<%= t('appointments.booked_apps') %>");
+	} else{
+		$("#booked_count").html(" " + booked.toString() + " " + "<%= t('appointments.booked_app') %>");
+	}
+	
+	if(unbooked != 1){
+		$("#unbooked_count").html(" " + unbooked.toString() + " " + "<%= t('appointments.unbooked_apps') %>");
+	} else{
+		$("#unbooked_count").html(" " + unbooked.toString() + " " + "<%= t('appointments.unbooked_app') %>");
+	}
 }
 
 function formatTime(time){
@@ -299,10 +339,9 @@ function formatTime(time){
   <div id="datepicker"></div>
 
   <div id="doctor_info">
-	<!-- TODO display booked and unbooked -->
 	<h2><%= t("appointments.cal_for") + " " + current_user.name %></h2>
-	<p><span class="legend-icon booked-icon"></span><span id="booked_count"></span> <%= t("appointments.booked_app") +t("appointments.booked_apps")%><br />
-	<span class="legend-icon unbooked-icon"></span><span id="unbooked_count"></span> <%= t("appointments.unbooked_app") +t("appointments.unbooked_apps")%><br /></p>
+	<p><span class="legend-icon booked-icon"></span><span id="booked_count"></span><br />
+	<span class="legend-icon unbooked-icon"></span><span id="unbooked_count"></span></p>
   </div>
 
   <div class="x"></div>
