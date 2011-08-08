@@ -86,34 +86,8 @@ class Appointment < ActiveRecord::Base
       self.end = nil
   end
 
-  def begincell(start)
-    min = (self.begin.min - (self.begin.min % 15))/15
-    return (min + ((self.begin.hour-start)*4))
-  end
-
-  def endcell(start)
-    return (begincell(start) + self.rowspan - 1)
-  end
-
   def duration
     return ((self.end - self.begin)/60).to_i
-  end
-
-  def top
-    (self.begin.min % 15)
-  end
-
-  def rowspan
-    a = 15 - top  
-    dur = ((self.end - self.begin - (a*60))/900).to_i
-    if (self.end - self.begin - (a*60)) <= 0
-      dur = 1
-    elsif ((self.end - self.begin - (a*60)) % 900) != 0
-      dur += 2
-    else
-      dur += 1
-    end
-    return dur
   end
 
   def unbooked?

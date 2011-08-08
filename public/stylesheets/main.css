@@ -71,6 +71,8 @@ table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
   .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center;}
   .day td.booked { background-color: #FCC; border: solid 1px #C66;}
   .day td.unbooked { background-color: #CFC; border: solid 1px #6C6;}
+table.day tbody tr:nth-child(odd) td, tbody tr.odd td { background: #ffffff;}
+table.day tbody tr:nth-child(even) td, tbody tr.even td { background: #ffffff;}
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}

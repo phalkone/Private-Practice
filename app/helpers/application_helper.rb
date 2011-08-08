@@ -8,7 +8,8 @@ module ApplicationHelper
   end
   
   def domain
-    request.domain(1) + ":" + request.port.to_s
+    # FIXME for production mode
+    request.host.split(".")[1] + "." + request.host.split(".").last + ":" + request.port.to_s
   end
 
   def title

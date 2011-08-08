@@ -6,7 +6,7 @@ class AppointmentsController < ApplicationController
     @title = t("appointments.menutitle")
     respond_to do |format|
       format.html
-      format.json  { render :json => current_user.appointments.where("begin >= ? AND begin <= ?", Time.at(params[:begintime].to_i).to_formatted_s(:db), Time.at(params[:endtime].to_i).to_formatted_s(:db)).to_json(
+      format.json  { render :json => current_user.appointments.where("begin >= ? AND begin <= ?", Time.at(params[:begintime].to_i).to_formatted_s(:db), Time.at(params[:endtime].to_i).to_formatted_s(:db)).order("begin ASC").to_json(
         :include => {:patient => {:only => [:id, :first_name, :last_name]}},
         :only => [:id, :begin, :end, :split, :patient_id]) }
     end
@@ -19,8 +19,10 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = (params[:appointment]) ? Appointment.new(params[:appointment]) : Appointment.new
-    @appointment.convert_begin_time if params[:appointment]
-    @appointment.convert_end_time if params[:appointment]
+    if params[:appointment]
+      @appointment.convert_begin_time
+      @appointment.convert_end_time
+    end
     @patient = User.new
     @title = t("appointments.newapp")
     @mode = "registered"
