@@ -75,7 +75,10 @@ $(document).ready(function() {
 	$("#view_weekend").button("refresh");
    }
 
-  $("a.newapp").button();
+  $("a.newapp").button(	{
+	            icons: { primary: "ui-icon-plusthick" },
+	            text: false
+	   });
 
   $("#previous").button({
     icons: {
@@ -119,7 +122,7 @@ $(document).ready(function() {
   refresh(true);
 });
 
-function initialize(){
+function setBars(){
   $("div.bar").css('height',function(){
     var height = $(this).parent().height();
     return height + "px";
@@ -169,7 +172,7 @@ function refresh(viewChanged){
 }
 
 function clearCalendar(){
-	$(".booked, .unbooked").remove();
+	$(".booked, .unbooked, .empty").remove();
 }
 
 function drawDayGrid(){
@@ -203,33 +206,193 @@ function drawDayGrid(){
 			}
 			$("<td />").attr("rowspan","4").addClass("hour").html("<span class='big'>"+ hour +"</span><span class='superscript'>00</span>").appendTo(".day tbody tr:last");
 		}
-		$(".day tbody tr:last").append("<td/>");
 	}
 	
 }
 
 function fetchAndDisplayDay(start_time,end_time){
+	$("<td/>").addClass("empty").appendTo(".day tbody tr");
+	var start =  $("#slider-range").slider("values", 0);
+	var stop = $("#slider-range").slider("values", 1);
+	var booked = 0;
+	var unbooked = 0;
+	var maxlength = 1;
+	var previousbegincell = null;
+	var previousendcell = null;
+	var currentlength = 0;
+	var begincell = null;
 	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
-		$.each(data, function(i,app){
-		
-		});
+	$.each(data, function(i,app){
+		var begintime = new Date(app.begin);
+		var endtime = new Date(app.end);
+		var time = formatTime(begintime);
+		var time2 = formatTime(endtime);
+		if(app.patient_id != null){
+			if(endCell(begintime,endtime,start) > (((stop-start)*4)-1)){
+				return false;
+			}
+			booked++;
+			var begincell = beginCell(begintime,start);
+			var row = "."+ begincell.toString();
+			var rowspan = rowSpan(begintime,endtime);
+			var name = app.patient.last_name + ", " + app.patient.first_name;
+			$("<td/>").addClass("booked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(begintime) + "px;height:" + duration(begintime, endtime) + "px;'></div></div>" + time + "-" + time2 +" <span class='red'>" + name + "</span>").click(function() {
+				$.get("/appointments/"+app.id.toString());
+			}).appendTo(row);
+			for(var j = begincell; j < (begincell + rowspan); j++ ){
+				$("." + j.toString() + " td.empty").remove();
+			}
+			if((previousbegincell != begincell) && (previousbegincell != null)){
+				if((previousendcell == begincell) && (currentlength == 1)){
+					currentlength = 2;
+				}
+				if(currentlength > maxlength){
+					maxlength = currentlength;
+				}
+				$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
+				currentlength = 0;
+			}
+			if((previousendcell == begincell) && (previousbegincell != begincell)) {
+				currentlength += 2;
+			} else {
+				currentlength += 1;
+			}
+			previousbegincell = begincell;
+			previousendcell = begincell + rowspan - 1;
+		} else {
+			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
+			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
+				if(endCell(begintime,endtime,start) > (((stop-start)*4)-1)){
+					return false;
+				}
+				unbooked++;
+				var begincell = beginCell(begintime,start);
+				var row = "."+ begincell.toString();
+				var rowspan = rowSpan(begintime,endtime);
+				var td = $("<td/>").addClass("unbooked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(begintime) + "px;height:" + duration(begintime, endtime) + "px;'></div></div>" + time + "-" + time2 + " ").click(function(e) {
+					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+						$.get("/appointments/"+app.id.toString());
+					}
+				}).appendTo(row);
+				$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+					"data-remote": true,
+					href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
+				}).appendTo(td);
+				for(var j = begincell; j < (begincell + rowspan); j++ ){
+					$("." + j.toString() + " td.empty").remove();
+				}
+				if((previousbegincell != begincell) && (previousbegincell != null)){
+					if((previousendcell == begincell) && (currentlength == 1)){
+						currentlength = 2;
+					}
+					if(currentlength > maxlength){
+						maxlength = currentlength;
+					}
+					$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
+					currentlength = 0;
+				}
+				if((previousendcell == begincell) && (previousbegincell != begincell)) {
+					currentlength += 2;
+				} else {
+					currentlength += 1;
+				}
+				previousbegincell = begincell;
+				previousendcell = begincell + rowspan - 1;
+			} else {
+				var i = 0;
+				var newbegin = new Date(begintime);
+				while(newend <= endtime){
+					if(endCell(newbegin,newend) > (((stop-start)*4)-1)){
+						return false;
+					}
+					unbooked++;
+					var time_begin = formatTime(newbegin);
+					var time_end = formatTime(newend);
+					var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
+					var begincell = beginCell(newbegin,start);
+					var row = "."+ begincell.toString();
+					var rowspan = rowSpan(newbegin,newend);
+					var td = $("<td/>").addClass("unbooked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(newbegin) + "px;height:" + duration(newbegin, newend) + "px;'></div></div>" + time_begin + "-" + time_end + " ").click(function(e) {
+					    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+					      $.get($(this).children("a:first").attr("href"));
+					      return false;
+					    }
+					 }).appendTo(row);
+					$("<a/>").addClass("hidden").attr({
+						"data-remote": true,
+						href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
+					}).appendTo(td);
+					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+						"data-remote": true,
+						href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
+					}).appendTo(td);
+					for(var j = begincell; j < (begincell + rowspan); j++ ){
+						$("." + j.toString() + " td.empty").remove();
+					}
+					if((previousbegincell != begincell) && (previousbegincell != null)){
+						if((previousendcell == begincell) && (currentlength == 1)){
+							currentlength = 2;
+						}
+						if(currentlength > maxlength){
+							maxlength = currentlength;
+						}
+						$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
+						currentlength = 0;
+					}
+					if((previousendcell == begincell) && (previousbegincell != begincell)) {
+						currentlength += 2;
+					} else {
+						currentlength += 1;
+					}
+					previousbegincell = begincell;
+					previousendcell = begincell + rowspan - 1;
+
+					i++;
+					newbegin = $.advance(newbegin,app.split);
+					newend = $.advance(newend,app.split);
+
+					if((newend > endtime) && (newbegin < endtime)){
+						newend = endtime;
+					}
+				}
+			}
+		}
 	});
+	if((previousbegincell != begincell) && (previousbegincell != null)){
+		if(currentlength > maxlength){
+			maxlength = currentlength;
+		}
+		$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
+		currentlength = 0;
+	}
+	if((previousendcell == begincell) && (previousbegincell != begincell)) {
+		currentlength += 2;
+	} else {
+		currentlength += 1;
+	}
+	updateBookedCount(booked,unbooked);
+	maxlength = maxlength * 60;
+	$(".booked, .unbooked").attr("colspan",function(){
+		return maxlength/$(this).attr("colspan");
+	});
+	$(".empty").attr("colspan",maxlength.toString());
+	$(".day thead tr th").attr("colspan", maxlength+1);
+	setBars();
+  });
+  
 }
 
-function top(app){
-	var begin = new Date(app.begin);
-	return begin.getMinutes() % 15;
+function top(beginTime){
+	return beginTime.getUTCMinutes() % 15;
 }
 
-function rowspan(app){
-  var begin = new Date(app.begin);
-  var end = new Date(app.end);
-  var duration = Math.round((end.getTime() - begin.getTime())/1000);
-  var a = 15 - top(app);
-  var dur = ((duration - (a*60))/900);
+function rowSpan(beginTime, endTime){
+  var duration = Math.round((endTime.getTime() - beginTime.getTime())/1000);
+  var a = 15 - top(beginTime);
+  var dur = parseInt(((duration - (a*60))/900));
   if ((duration - (a*60)) <= 0){
     dur = 1;
-  } else if (((duration - (a*60)) % 900) != 0){
+  } else if ( ((duration - (a*60)) % 900) != 0){
     dur += 2;
   } else {
     dur += 1
@@ -237,14 +400,17 @@ function rowspan(app){
   return dur
 }
 
-function begincell(app,start){
-	var begin = new Date(app.begin);
-  	var min = (begin.getMinutes() - (begin.getMinutes() % 15))/15;
-  	return (min + ((begin.getHours()-start)*4));
+function duration(beginTime, endTime){
+	return Math.round((endTime.getTime() - beginTime.getTime())/60000);
 }
 
-function endcell(app,start){
-  return (begincell(app,start) + rowspan(app) - 1);
+function beginCell(beginTime,start){
+  	var min = (beginTime.getUTCMinutes() - (beginTime.getUTCMinutes() % 15))/15;
+  	return (min + ((beginTime.getUTCHours()-start)*4));
+}
+
+function endCell(beginTime,endTime,start){
+  return (beginCell(beginTime,start) + rowSpan(beginTime,endTime) - 1);
 }
 
 function drawWeekGrid(beginning){

@@ -66,13 +66,11 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
 table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
   .day th { text-align: center; font-size: 1.5em; margin: 0; padding: 0; border: 0;}
-  .day tbody tr { height: 32px; margin: 0; padding: 0; border: 0;}
+  .day tbody tr { height: 17px; margin: 0; padding: 0;}
   .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
-  .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center;}
-  .day td.booked { background-color: #FCC; border: solid 1px #C66;}
-  .day td.unbooked { background-color: #CFC; border: solid 1px #6C6;}
-table.day tbody tr:nth-child(odd) td, tbody tr.odd td { background: #ffffff;}
-table.day tbody tr:nth-child(even) td, tbody tr.even td { background: #ffffff;}
+  .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center; background: #ffffff;}
+  .day td.booked { background-color: #FCC; border: solid 1px #C66; text-align: left; cursor: pointer; }
+  .day td.unbooked { background-color: #CFC; border: solid 1px #6C6; text-align: left; cursor: pointer; }
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
