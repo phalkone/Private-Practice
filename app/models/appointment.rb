@@ -94,6 +94,7 @@ class Appointment < ActiveRecord::Base
     return true if self.patient.nil?
   end
 
+  # TODO fix me joining
   def unbook
     self.update_attribute("patient_id", nil)
     if ((app = Appointment.where("end = ? AND patient_id IS NULL",self.begin).first) && (app.split == self.duration))

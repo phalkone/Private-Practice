@@ -35,8 +35,8 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
 
 #footer { padding: 0px 10px 0px 10px;}
 
-#datepicker { float: left; margin-bottom: 7px; }
-#toolbar { padding: 4px; font-size: 0.8em; margin-top: 5px; height:28px;}
+#toolbar { padding: 4px; font-size: 0.8em; margin-bottom: 10px; height:28px;}
+#slider-range{float:right; height: 250px;}
 
 #new_page{font-size:0.8em;}
 
@@ -58,19 +58,20 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
   #form_right { margin-left: 340px; border-left: 1px solid #ddd;}
   #form_bottom { clear:both;} 
 
-#doctor_info {margin-left: 240px; height: 100%; padding: 5px; line-height: 1.5;}
-
 #booking_results { margin-top:5px;}
 #not_available { text-align: center; font-size: 1.5em; }
 
-table.day { width: 100%; border-collapse: separate; border: 1px solid #ddd;
-            border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
-  .day th { text-align: center; font-size: 1.5em; margin: 0; padding: 0; border: 0;}
-  .day tbody tr { height: 17px; margin: 0; padding: 0;}
-  .day tbody td { border: 1px solid #ddd; text-indent:15px; margin: 0; padding: 0;}
-  .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center; background: #ffffff;}
-  .day td.booked { background-color: #FCC; border: solid 1px #C66; text-align: left; cursor: pointer; }
-  .day td.unbooked { background-color: #CFC; border: solid 1px #6C6; text-align: left; cursor: pointer; }
+table.day { border-collapse: collapse; border: 1px solid #ddd;
+            margin: 0; padding: 0;}
+  .day th { text-align: center; font-size: 1.5em; padding: 0; border: 0;}
+  .day tbody tr { height: 30px; margin: 0; padding: 0; max-height: 30px;}
+  .day tbody td { border: 1px solid #ddd; margin: 0; padding: 0; vertical-align: top;  max-height: 30px;}
+  .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center; background: #ffffff; margin-top: 0px; padding-top: 0; }
+  .hour-text{font-size: 1.2em; position: relative; top: -10px; background-color: #ffffff;}
+  .day div.booked { background-color: #FCC; text-align: left; cursor: pointer; padding: 0 5px 0 5px; border: solid 1px #C66; overflow: hidden; z-index: 2; position: absolute;}
+  .day div.unbooked { background-color: #CFC; text-align: left; cursor: pointer; padding: 0 5px 0 5px; border: solid 1px #6C6; overflow: hidden; z-index: 2; position: absolute; width: 452px;}
+table.day tbody tr:nth-child(odd) td, tbody tr.odd td { background: #ffffff;}
+table.day tbody tr:nth-child(even) td, tbody tr.even td { background: #ffffff;}
 
 table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
             border-spacing: 2px; margin: 5px 0 0 0; padding: 0;}
@@ -80,7 +81,7 @@ table.week { width: 100%; border-collapse: collapse; border: 1px solid #ddd;
   .week tbody td { border: 1px solid #ddd; margin: 0;}
   .week td.hour { vertical-align: top; text-align: center; padding: 0 5px 0 5px;}
   .week td div.booked { background-color: #FCC; border: solid 1px #C66; margin-bottom: 2px;
-                     padding-left: 3px; cursor: pointer; }
+                     padding-left: 3px; cursor: pointer;  }
   .week td div.unbooked { background-color: #CFC; border: solid 1px #6C6; margin-bottom: 2px;
                      padding-left: 3px; cursor: pointer;}
 
@@ -161,3 +162,4 @@ div.field, div.actions { margin: 0 20px 10px 20px; }
 .pagination {float:right; margin: 4px 0 10px 0;}
 .slider-field{ margin: 0 10px 10px 20px; }
 .underline{ text-decoration:underline;}
+.tooltip { display: none; position: absolute; border: 1px solid #333; background-color: #ccc; padding: 2px 6px; font-size: 0.8em;}

@@ -18,40 +18,36 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
 <script type="text/javascript">
 $(document).ready(function() {
-  $("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ])	.change(function() {
-	writeCookie("date", $(this).datepicker("getDate").getTime(), 20 * 365);
-	refresh(true);
-  });
 
-  var cookieDate = getCookie("date");
-  if(cookieDate){
-	var date = new Date();
-	date.setTime(cookieDate);
-	$("#datepicker").datepicker( "setDate" , date);
-   }
-  
-  var cookieStartStop = getCookie("start_stop");
-  if(cookieStartStop){
-	var splitValue =  cookieStartStop.split("*");
-	var start = splitValue[0];
-	var stop = splitValue[1];
-  } else {
-	var start = 9;
-	var stop = 17
-  }
+	var cookieStartStop = getCookie("start_stop");
+	if(cookieStartStop){
+		var splitValue =  cookieStartStop.split("*");
+		var start = splitValue[0];
+		var stop = splitValue[1];
+	} else {
+		var start = 9;
+		var stop = 17
+	}
+	
+  $('<p/>').addClass("tooltip").appendTo("body");
   $("#slider-range").slider({
-      range: true, min: 0, max: 24, values: [start, stop],
-      slide: function(event, ui) {
-        $("#hourrange").html(ui.values[0] 
-        + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + ui.values[1] + ':00');
-     },
-     change: function(event,ui) {
-	    writeCookie("start_stop",ui.values[0].toString() + '*' + ui.values[1], 20 * 365);
-		refresh(true);
-	 }
+	orientation: "vertical",
+    range: true, min: 0, max: 24, values: [24 - stop, 24 - start],
+    change: function(event,ui) {
+		$('.tooltip').hide();
+	    var stop = 24 - ui.values[0];
+	    var start = 24 -  ui.values[1];
+	    writeCookie("start_stop",start.toString() + '*' + stop.toString(), 20 * 365);
+	    refresh(true);
+	 },
+	slide: function(e, ui){
+		var val = (24 - ui.value) + ":00";
+		if(ui.value == 0){
+			val = "0:00";
+		}
+		$('.tooltip').text(val).css('top', (e.pageY - 10) + 'px').css('left', (e.pageX + 15) + 'px').show();
+	}
   });
-  $("#hourrange").html($("#slider-range").slider("values", 0) 
-  + ':00 <span class="button icon-blank ui-icon-arrowthick-1-e"></span> ' + $("#slider-range").slider("values", 1) + ':00');
 
   $("#dayweek").buttonset().css("float","right").change(function(){
 	writeCookie("day_week",$("#dayweek input:checked").val(), 20 * 365);
@@ -86,15 +82,14 @@ $(document).ready(function() {
     },
     text: false
   }).click(function() {
-    var presDate = new Date($("#datepicker").datepicker("getDate"));
+    var presDate = getCurrentDate();
     var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
     if($("#view_dayweek_week").attr("checked")){
       var prevDate = presDate.getTime() - (60 * 60 * 24 * 7 * 1000);
     } else {
       var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
     }
-    $("#datepicker").datepicker( "setDate" , new Date(prevDate));
-	refresh(true);
+    setCurrentDate(new Date(prevDate));
   });
   $("#next").button({
     icons: {
@@ -102,14 +97,13 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    var presDate = new Date($("#datepicker").datepicker("getDate"));
+    var presDate = getCurrentDate();
     if($("#view_dayweek_week").attr("checked")){
       var nextDate = presDate.getTime() + (60 * 60 * 24 * 7 * 1000);
     } else {
       var nextDate = presDate.getTime() + (60 * 60 * 24 * 1000);
     }
-    $("#datepicker").datepicker( "setDate" , new Date(nextDate));
-    refresh(true);
+    setCurrentDate(new Date(nextDate));
   });
   $("#refresh").button({
     icons: {
@@ -122,31 +116,10 @@ $(document).ready(function() {
   refresh(true);
 });
 
-function setBars(){
-  $("div.bar").css('height',function(){
-    var height = $(this).parent().height();
-    return height + "px";
-  });
-
-  $("div.bar2").css('margin-top',function(){
-    var top = $(this).css('margin-top').substring(0,$(this).css('margin-top').length-2);
-    var height = $(this).parent().height();
-    var total = $(this).parent().parent().attr("rowspan")*15; 
-    return Math.round((top/total)*height) + "px";
-  });
-  
-  $("div.bar2").css('height',function(){
-    var dur = $(this).css('height').substring(0,$(this).css('height').length-2);
-    var height = $(this).parent().height();
-    var total = $(this).parent().parent().attr("rowspan")*15;
-    return Math.round((dur/total)*height) + "px";
-  });
-}
-
 function refresh(viewChanged){
 	if($("#dayweek input:checked").val() == "week"){
-		var beginTime = beginningOfWeek($("#datepicker").datepicker("getDate"));
-		var endTime = endOfWeek($("#datepicker").datepicker("getDate"));
+		var beginTime = beginningOfWeek(getCurrentDate());
+		var endTime = endOfWeek(getCurrentDate());
 		if(viewChanged){
 			drawWeekGrid(beginTime);
 		} else {
@@ -162,195 +135,129 @@ function refresh(viewChanged){
 		} else {
 			clearCalendar();
 		}
-		var beginTime = $("#datepicker").datepicker("getDate");
-		beginTime.setHours($("#slider-range").slider("values", 0));
-		var endTime = $("#datepicker").datepicker("getDate");
-		endTime.setHours($("#slider-range").slider("values", 1));
-		fetchAndDisplayDay(Math.round(beginTime.getTime() / 1000),Math.round((endTime.getTime() - 1000) / 1000));
+		var beginTime = getCurrentDate();
+		var endTime = beginTime.getTime() + (60 * 60 * 24 * 1000);
+		fetchAndDisplayDay(Math.round(beginTime.getTime() / 1000), Math.round(endTime / 1000));
 	}
 	
 }
 
 function clearCalendar(){
-	$(".booked, .unbooked, .empty").remove();
+	$(".booked, .unbooked").remove();
 }
 
 function drawDayGrid(){
-	$("#calendar table").remove();
+	$("#calendar-header").attr("class","span-10").empty();
+	$("#calendar-table").attr("class","span-14 last");
+	$("#calendar").css("margin-right", "24px").empty();
+	
+	$("<div />").attr("id","datedisplay").appendTo("#calendar-header");
+	
+	$("<div />").attr("id","datepicker").appendTo("#datedisplay");
+	$("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ])	.change(function() {
+	writeCookie("date", $(this).datepicker("getDate").getTime(), 20 * 365);
+	refresh(true);
+  }).css({ 'font-size' : '0.85em', "float":"right"});
+	$("#datepicker").datepicker( "setDate" , getCurrentDate());
+	
 	var dayNames = <%= raw t("txt.day_names") %>;
 	var monthNames = <%= raw t("txt.month_names") %>;
-	var presDate = $("#datepicker").datepicker("getDate");
+	var presDate = getCurrentDate();
 	if(presDate.getDay() == 0){
 		var day = 6;
 	} else {
 		var day = presDate.getDay() - 1;
 	}
-	var table = $("<table/>").addClass("day").appendTo("#calendar");
-	table.append("<thead/>");
-	$("<tr />").appendTo(".day thead");
-	var dateString = dayNames[day] + ", " + presDate.getDate().toString() + " " + monthNames[presDate.getMonth()] + " " + presDate.getFullYear().toString();
-	$("<th />").attr("colspan","2").html(dateString).appendTo(".day thead tr");
-	table.append("<tbody/>");
-		
-	var start = $("#slider-range").slider("values", 0);
-	var stop = $("#slider-range").slider("values", 1);
+	var dateString = dayNames[day] + ",<br />" + presDate.getDate().toString() + " " + monthNames[presDate.getMonth()] + " " + presDate.getFullYear().toString();
+	$("<span />").css({"font-size":"7em","margin-bottom" : "0","line-height":"1em"}).html(presDate.getDate().toString()).appendTo('#datedisplay');
+	$("<br />").appendTo('#datedisplay');
+	$("<span />").css("font-size","1.5em").html(dateString).appendTo('#datedisplay');	
 	
-	for(var i = 0; i < ((stop-start)*4); i++){
-		$("<tr />").addClass(i.toString()).appendTo(".day tbody");
+	var table = $("<table/>").addClass("day").appendTo("#calendar");
+	table.append("<tbody/>");
+	
+	var start = 4 * getStart();
+	var stop = 4 * getStop();
+	
+	for(var i = start; i < stop; i++){
+		$("<tr />").appendTo(".day tbody");
 		if ((i % 4) == 0){
-			var hour = i/4 + start;
+			var hour = i/4;
 			if(hour.toString().length < 2){
-				hour = "0" + hour.toString();
+				hour = "0" + hour.toString() +":00";
 			} else {
-				hour = hour.toString();
+				hour = hour.toString() +":00";
 			}
-			$("<td />").attr("rowspan","4").addClass("hour").html("<span class='big'>"+ hour +"</span><span class='superscript'>00</span>").appendTo(".day tbody tr:last");
+			$("<td />").attr("rowspan","4").addClass("hour").html("<span class='hour-text'>" + hour + "</span>").appendTo(".day tbody tr:last");
 		}
+		$("<td/>").addClass(i.toString() + "_" + presDate.getDate()).appendTo(".day tbody tr:last");
 	}
 	
 }
 
 function fetchAndDisplayDay(start_time,end_time){
-	$("<td/>").addClass("empty").appendTo(".day tbody tr");
-	var start =  $("#slider-range").slider("values", 0);
-	var stop = $("#slider-range").slider("values", 1);
-	var booked = 0;
-	var unbooked = 0;
-	var maxlength = 1;
-	var previousbegincell = null;
-	var previousendcell = null;
-	var currentlength = 0;
-	var begincell = null;
 	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
 		var begintime = new Date(app.begin);
 		var endtime = new Date(app.end);
 		var time = formatTime(begintime);
-		var time2 = formatTime(endtime);
 		if(app.patient_id != null){
-			if(endCell(begintime,endtime,start) > (((stop-start)*4)-1)){
-				return false;
-			}
-			booked++;
-			var begincell = beginCell(begintime,start);
-			var row = "."+ begincell.toString();
-			var rowspan = rowSpan(begintime,endtime);
 			var name = app.patient.last_name + ", " + app.patient.first_name;
-			$("<td/>").addClass("booked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(begintime) + "px;height:" + duration(begintime, endtime) + "px;'></div></div>" + time + "-" + time2 +" <span class='red'>" + name + "</span>").click(function() {
+			var div = getAppDiv("booked",begintime,endtime);
+			if(!div){
+				return true;
+			} 
+			$("<span />").addClass("red").html(name).appendTo(div);
+			div.click(function() {
 				$.get("/appointments/"+app.id.toString());
-			}).appendTo(row);
-			for(var j = begincell; j < (begincell + rowspan); j++ ){
-				$("." + j.toString() + " td.empty").remove();
-			}
-			if((previousbegincell != begincell) && (previousbegincell != null)){
-				if((previousendcell == begincell) && (currentlength == 1)){
-					currentlength = 2;
-				}
-				if(currentlength > maxlength){
-					maxlength = currentlength;
-				}
-				$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
-				currentlength = 0;
-			}
-			if((previousendcell == begincell) && (previousbegincell != begincell)) {
-				currentlength += 2;
-			} else {
-				currentlength += 1;
-			}
-			previousbegincell = begincell;
-			previousendcell = begincell + rowspan - 1;
+			});
 		} else {
 			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
 			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
-				if(endCell(begintime,endtime,start) > (((stop-start)*4)-1)){
-					return false;
+				var div = getAppDiv("unbooked",begintime,endtime);
+				if(!div){
+					return true;
 				}
-				unbooked++;
-				var begincell = beginCell(begintime,start);
-				var row = "."+ begincell.toString();
-				var rowspan = rowSpan(begintime,endtime);
-				var td = $("<td/>").addClass("unbooked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(begintime) + "px;height:" + duration(begintime, endtime) + "px;'></div></div>" + time + "-" + time2 + " ").click(function(e) {
+				div.click(function(e) {
 					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 						$.get("/appointments/"+app.id.toString());
 					}
-				}).appendTo(row);
+				});
 				$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
 					"data-remote": true,
 					href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
-				}).appendTo(td);
-				for(var j = begincell; j < (begincell + rowspan); j++ ){
-					$("." + j.toString() + " td.empty").remove();
-				}
-				if((previousbegincell != begincell) && (previousbegincell != null)){
-					if((previousendcell == begincell) && (currentlength == 1)){
-						currentlength = 2;
-					}
-					if(currentlength > maxlength){
-						maxlength = currentlength;
-					}
-					$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
-					currentlength = 0;
-				}
-				if((previousendcell == begincell) && (previousbegincell != begincell)) {
-					currentlength += 2;
-				} else {
-					currentlength += 1;
-				}
-				previousbegincell = begincell;
-				previousendcell = begincell + rowspan - 1;
+				}).appendTo(div);
 			} else {
 				var i = 0;
 				var newbegin = new Date(begintime);
 				while(newend <= endtime){
-					if(endCell(newbegin,newend) > (((stop-start)*4)-1)){
-						return false;
-					}
-					unbooked++;
 					var time_begin = formatTime(newbegin);
 					var time_end = formatTime(newend);
 					var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
-					var begincell = beginCell(newbegin,start);
-					var row = "."+ begincell.toString();
-					var rowspan = rowSpan(newbegin,newend);
-					var td = $("<td/>").addClass("unbooked").attr("rowspan",rowspan.toString()).html("<div class='bar'><div class='bar2' style='margin-top:" + top(newbegin) + "px;height:" + duration(newbegin, newend) + "px;'></div></div>" + time_begin + "-" + time_end + " ").click(function(e) {
+
+					if(!div){
+						return true;
+					}
+					var div = getAppDiv("unbooked",newbegin,newend);
+					div.click(function(e) {
 					    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 					      $.get($(this).children("a:first").attr("href"));
 					      return false;
 					    }
-					 }).appendTo(row);
+					 });
 					$("<a/>").addClass("hidden").attr({
 						"data-remote": true,
 						href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
-					}).appendTo(td);
+					}).appendTo(div);
 					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
 						"data-remote": true,
 						href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
-					}).appendTo(td);
-					for(var j = begincell; j < (begincell + rowspan); j++ ){
-						$("." + j.toString() + " td.empty").remove();
-					}
-					if((previousbegincell != begincell) && (previousbegincell != null)){
-						if((previousendcell == begincell) && (currentlength == 1)){
-							currentlength = 2;
-						}
-						if(currentlength > maxlength){
-							maxlength = currentlength;
-						}
-						$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
-						currentlength = 0;
-					}
-					if((previousendcell == begincell) && (previousbegincell != begincell)) {
-						currentlength += 2;
-					} else {
-						currentlength += 1;
-					}
-					previousbegincell = begincell;
-					previousendcell = begincell + rowspan - 1;
-
+					}).appendTo(div);
+					
 					i++;
 					newbegin = $.advance(newbegin,app.split);
 					newend = $.advance(newend,app.split);
-
+					
 					if((newend > endtime) && (newbegin < endtime)){
 						newend = endtime;
 					}
@@ -358,32 +265,71 @@ function fetchAndDisplayDay(start_time,end_time){
 			}
 		}
 	});
-	if((previousbegincell != begincell) && (previousbegincell != null)){
-		if(currentlength > maxlength){
-			maxlength = currentlength;
-		}
-		$("tr." + previousbegincell.toString()).children(".booked, .unbooked").attr("colspan",currentlength.toString());
-		currentlength = 0;
-	}
-	if((previousendcell == begincell) && (previousbegincell != begincell)) {
-		currentlength += 2;
-	} else {
-		currentlength += 1;
-	}
-	updateBookedCount(booked,unbooked);
-	maxlength = maxlength * 60;
-	$(".booked, .unbooked").attr("colspan",function(){
-		return maxlength/$(this).attr("colspan");
-	});
-	$(".empty").attr("colspan",maxlength.toString());
-	$(".day thead tr th").attr("colspan", maxlength+1);
-	setBars();
   });
-  
+}
+
+function getAppDiv(booked, begintime, endtime){
+	
+	var begincell = beginCell(begintime);
+	var endcell = endCell(begintime,endtime);
+	if((endcell >= (getStart()*4)) && (begincell < (getStart()*4))){
+		begintime.setUTCHours(getStart());
+		begintime.setUTCMinutes(0);
+		var row = "."+ (getStart()*4) + "_" + begintime.getDate().toString();
+		var rowtop = $(row).position().top;
+		var width = $(row).width() - 10;
+		var height = duration(begintime,endtime)*2;
+		if(height < 20){
+			height = 20;
+		}
+		var div = $("<div/>");
+		div.addClass(booked).css({ "top": rowtop, "height" : height, "width" : width}).hover(
+			function() {
+				$(this).css("z-index","3");
+			}, 
+			function() {
+				$(this).css("z-index","2");
+			}
+		).appendTo(row);
+		return div;
+	} else if((begincell < (getStart()*4)) || (begincell >= (getStop()*4))){
+		return false;
+	}
+	var time = formatTime(begintime);
+	var row = "."+ begincell.toString() + "_" + begintime.getDate().toString();
+	var rowtop = (top(begintime)*2) + $(row).position().top;
+	var width = $(row).width() - 10;
+	var height = duration(begintime,endtime)*2;
+	if(height < 20){
+		height = 20;
+	}
+	var tablebottom = $("#calendar table").position().top + $("#calendar table").height();
+	if((rowtop + height) >= (tablebottom)){
+		height =  tablebottom - rowtop ;
+	}
+	var div = $("<div/>");
+	div.addClass(booked).css({ "top": rowtop, "height" : height, "width" : width}).html(time + " ").hover(
+		function() {
+			$(this).css("z-index","3");
+		}, 
+		function() {
+			$(this).css("z-index","2");
+		}
+	).appendTo(row);
+	return div;
 }
 
 function top(beginTime){
 	return beginTime.getUTCMinutes() % 15;
+}
+
+function duration(beginTime, endTime){
+	return Math.round((endTime.getTime() - beginTime.getTime())/60000);
+}
+
+function beginCell(beginTime){
+  	var min = (beginTime.getUTCMinutes() - (beginTime.getUTCMinutes() % 15))/15;
+  	return (min + (beginTime.getUTCHours()*4));
 }
 
 function rowSpan(beginTime, endTime){
@@ -400,17 +346,8 @@ function rowSpan(beginTime, endTime){
   return dur
 }
 
-function duration(beginTime, endTime){
-	return Math.round((endTime.getTime() - beginTime.getTime())/60000);
-}
-
-function beginCell(beginTime,start){
-  	var min = (beginTime.getUTCMinutes() - (beginTime.getUTCMinutes() % 15))/15;
-  	return (min + ((beginTime.getUTCHours()-start)*4));
-}
-
-function endCell(beginTime,endTime,start){
-  return (beginCell(beginTime,start) + rowSpan(beginTime,endTime) - 1);
+function endCell(beginTime,endTime){
+  return (beginCell(beginTime) + rowSpan(beginTime,endTime) - 1);
 }
 
 function drawWeekGrid(beginning){
@@ -422,7 +359,7 @@ function drawWeekGrid(beginning){
 	table.append("<tbody/>");
 	var dayNames = <%= raw t("txt.day_names") %>;
 	var monthNames = <%= raw t("txt.abbr_month_names") %>;
-	var presDate = new Date($("#datepicker").datepicker("getDate"));
+	var presDate = new Date(getCurrentDate());
 	if($("#view_weekend").attr("checked")){
 		var y = 7;
 	} else {
@@ -435,8 +372,8 @@ function drawWeekGrid(beginning){
 		next = new Date(next.getTime() + (60 * 60 * 24 * 1 * 1000));
 	}
 	
-	var start = $("#slider-range").slider("values", 0);
-	var stop = $("#slider-range").slider("values", 1);
+	var start = getStart();
+	var stop = getStop();
 	for(var i = 0; i < (stop-start); i++){
 		$("<tr />").appendTo(".week tbody");
 		var hour = i + start;
@@ -479,10 +416,8 @@ function endOfWeek(presDate){
 }
 
 function fetchAndDisplayWeek(start_time,end_time){
-	var start =  $("#slider-range").slider("values", 0);
-	var stop = $("#slider-range").slider("values", 1);
-	var booked = 0;
-	var unbooked = 0;
+	var start =  getStart();
+	var stop = getStop();
 	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
 		var begintime = new Date(app.begin);
@@ -499,7 +434,6 @@ function fetchAndDisplayWeek(start_time,end_time){
 			if((row < 0) || (row >= (stop-start))){
 				return true;
 			}
-			booked++;
 			var name = app.patient.last_name + ", " + app.patient.first_name;
 			$("<div/>").addClass("booked").html(time + " <span class='red'>" + name + "</span>").click(function() {
 				$.get("/appointments/"+app.id.toString());
@@ -510,7 +444,6 @@ function fetchAndDisplayWeek(start_time,end_time){
 				if((row < 0) || (row >= (stop-start))){
 					return true;
 				}
-				unbooked++;
 				var div = $("<div/>").addClass("unbooked").html(time + " ").click(function(e) {
 					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 						$.get("/appointments/"+app.id.toString());
@@ -533,8 +466,6 @@ function fetchAndDisplayWeek(start_time,end_time){
 						newend = $.advance(newend,app.split);
 						continue;
 					}
-
-					unbooked++;
 					var cell = '.'+ row.toString() + "_" + column.toString();
 					var time_begin = formatTime(newbegin);
 					var time_end = formatTime(newend);
@@ -565,23 +496,8 @@ function fetchAndDisplayWeek(start_time,end_time){
 			}
 		}
 	});
-	updateBookedCount(booked,unbooked);
   });
   
-}
-
-function updateBookedCount(booked,unbooked){
-	if(booked != 1){
-		$("#booked_count").html(" " + booked.toString() + " " + "<%= t('appointments.booked_apps') %>");
-	} else{
-		$("#booked_count").html(" " + booked.toString() + " " + "<%= t('appointments.booked_app') %>");
-	}
-	
-	if(unbooked != 1){
-		$("#unbooked_count").html(" " + unbooked.toString() + " " + "<%= t('appointments.unbooked_apps') %>");
-	} else{
-		$("#unbooked_count").html(" " + unbooked.toString() + " " + "<%= t('appointments.unbooked_app') %>");
-	}
 }
 
 function formatTime(time){
@@ -591,23 +507,32 @@ function formatTime(time){
 		return time.getUTCHours() + ":" + time.getUTCMinutes()
 	}
 }
+
+function getCurrentDate(){
+	var cookieDate = getCookie("date");
+	var date = new Date();
+	if(cookieDate){
+	date.setTime(cookieDate);
+	}
+	return date;
+}
+
+function setCurrentDate(date){
+	writeCookie("date", date.getTime(), 20 * 365);
+	refresh(true);
+}
+
+function getStop(){
+  return (24 - $("#slider-range").slider("values", 0));
+}
+
+function getStart(){
+   return (24 - $("#slider-range").slider("values", 1));
+}
 </script>
 <% end %>
 <div id='dialog'></div>
-<div id="viewoption">
-  <div id="datepicker"></div>
-
-  <div id="doctor_info">
-	<h2><%= t("appointments.cal_for") + " " + current_user.name %></h2>
-	<p><span class="legend-icon booked-icon"></span><span id="booked_count"></span><br />
-	<span class="legend-icon unbooked-icon"></span><span id="unbooked_count"></span></p>
-  </div>
-
-  <div class="x"></div>
-  <div id="hourrange" class="quiet"></div>
-  <div id="slider-range"></div><br />
-
-  <div id="toolbar" class="ui-widget-header ui-corner-all">
+<div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
     <button id="refresh"><%= t("appointments.refresh") %></button>
     <span id="weekendcheck" class="right"><%= check_box_tag 'view[weekend]', "1", true %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
@@ -618,10 +543,12 @@ function formatTime(time){
     <button id="previous"><%= t("appointments.previous") %></button>
     <%= link_to t("appointments.newapp"), new_appointment_path, :remote => true, 
         :class => "newapp", :title => t("appointments.newapp")%>
-  </div>
 </div>
 
-<div id="calendar">
-
+<div id="calendar-header"></div>
+<div id="calendar-table">
+	<div id="slider-range"></div>
+	<div id="calendar"></div>
 </div>
+
 

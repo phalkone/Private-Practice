@@ -10,6 +10,7 @@
     $('<div />')
     .addClass("flash <%= escape_javascript(key.to_s)%>")
     .html("<%= escape_javascript(value)%>")
+	.css({"position" : "fixed", "top" : "10px", "left" : "10px"})
     .hide()
     .appendTo('.flashes')
     .show(300);
