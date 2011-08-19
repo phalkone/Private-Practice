@@ -111,7 +111,15 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    refresh(true);
+    refresh(false);
+  });
+ $("#today").button({
+    icons: {
+      primary: "ui-icon-home"
+    },
+    text: false
+  }).css("float","right").click(function() {
+    setCurrentDate(new Date());
   });
   refresh(true);
 });
@@ -143,12 +151,12 @@ function refresh(viewChanged){
 }
 
 function clearCalendar(){
-	$(".booked, .unbooked").remove();
+	$(".booked, .unbooked, .app").remove();
 }
 
 function drawDayGrid(){
-	$("#calendar-header").attr("class","span-10").empty();
-	$("#calendar-table").attr("class","span-14 last");
+	$("#calendar-header").attr("class","span-12").empty();
+	$("#calendar-table").attr("class","span-12 last");
 	$("#calendar").css("margin-right", "24px").empty();
 	
 	$("<div />").attr("id","datedisplay").appendTo("#calendar-header");
@@ -168,10 +176,16 @@ function drawDayGrid(){
 	} else {
 		var day = presDate.getDay() - 1;
 	}
-	var dateString = dayNames[day] + ",<br />" + presDate.getDate().toString() + " " + monthNames[presDate.getMonth()] + " " + presDate.getFullYear().toString();
+	var date = presDate.getDate().toString();
+	var dateString = dayNames[day] + ",<br />" + date + " " + monthNames[presDate.getMonth()] + " " + presDate.getFullYear().toString();
 	$("<span />").css({"font-size":"7em","margin-bottom" : "0","line-height":"1em"}).html(presDate.getDate().toString()).appendTo('#datedisplay');
 	$("<br />").appendTo('#datedisplay');
-	$("<span />").css("font-size","1.5em").html(dateString).appendTo('#datedisplay');	
+	$("<span />").css("font-size","1.5em").html(dateString).appendTo('#datedisplay');
+	
+	$("<div />").addClass("x").appendTo("#calendar-header");
+	$("<hr />").addClass("space").appendTo("#calendar-header");
+	$("<div />").attr("id","applist").addClass("list").appendTo("#calendar-header");
+	$("<table />").appendTo("#applist");
 	
 	var table = $("<table/>").addClass("day").appendTo("#calendar");
 	table.append("<tbody/>");
@@ -190,7 +204,7 @@ function drawDayGrid(){
 			}
 			$("<td />").attr("rowspan","4").addClass("hour").html("<span class='hour-text'>" + hour + "</span>").appendTo(".day tbody tr:last");
 		}
-		$("<td/>").addClass(i.toString() + "_" + presDate.getDate()).appendTo(".day tbody tr:last");
+		$("<td/>").addClass(i.toString() + "_" + date).appendTo(".day tbody tr:last");
 	}
 	
 }
@@ -203,56 +217,55 @@ function fetchAndDisplayDay(start_time,end_time){
 		var time = formatTime(begintime);
 		if(app.patient_id != null){
 			var name = app.patient.last_name + ", " + app.patient.first_name;
+			addApp("booked",time,formatTime(endtime),name,app.patient_id,app.id);
 			var div = getAppDiv("booked",begintime,endtime);
-			if(!div){
-				return true;
+			if(div){
+				$("<span />").addClass("red").html(name).appendTo(div);
+				div.click(function() {
+					$.get("/appointments/"+app.id.toString());
+				});
 			} 
-			$("<span />").addClass("red").html(name).appendTo(div);
-			div.click(function() {
-				$.get("/appointments/"+app.id.toString());
-			});
+			
 		} else {
+			addApp("unbooked",time,formatTime(endtime),null,null,app.id);
 			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
 			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
 				var div = getAppDiv("unbooked",begintime,endtime);
-				if(!div){
-					return true;
+				if(div){
+					div.click(function(e) {
+						  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+							$.get("/appointments/"+app.id.toString());
+						}
+					});
+					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+						"data-remote": true,
+						href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
+					}).appendTo(div);
 				}
-				div.click(function(e) {
-					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-						$.get("/appointments/"+app.id.toString());
-					}
-				});
-				$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
-					"data-remote": true,
-					href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
-				}).appendTo(div);
 			} else {
 				var i = 0;
 				var newbegin = new Date(begintime);
 				while(newend <= endtime){
-					var time_begin = formatTime(newbegin);
-					var time_end = formatTime(newend);
-					var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
-
-					if(!div){
-						return true;
-					}
 					var div = getAppDiv("unbooked",newbegin,newend);
-					div.click(function(e) {
-					    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-					      $.get($(this).children("a:first").attr("href"));
-					      return false;
-					    }
-					 });
-					$("<a/>").addClass("hidden").attr({
-						"data-remote": true,
-						href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
-					}).appendTo(div);
-					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
-						"data-remote": true,
-						href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
-					}).appendTo(div);
+					if(div){
+						div.click(function(e) {
+						    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+						      $.get($(this).children("a:first").attr("href"));
+						      return false;
+						    }
+						 });
+						$("<a/>").addClass("hidden").attr({
+							"data-remote": true,
+							href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
+						}).appendTo(div);
+						var time_begin = formatTime(newbegin);
+						var time_end = formatTime(newend);
+						var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
+						$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
+							"data-remote": true,
+							href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
+						}).appendTo(div);
+					}
 					
 					i++;
 					newbegin = $.advance(newbegin,app.split);
@@ -268,13 +281,48 @@ function fetchAndDisplayDay(start_time,end_time){
   });
 }
 
+function addApp(booked, begintime,endtime, name, patient_id, id){
+	var tr = $("<tr />");
+	$("<td />").addClass("check").html("<span class='legend-icon "+ booked +"-icon'>").appendTo(tr);
+	$("<td />").css("width","80px").html(begintime + "-" + endtime).appendTo(tr);
+	if(name != null){
+		var a = $("<a/>").html(name).attr("href", "/users/"+patient_id);
+		$("<td />").append(a).appendTo(tr);
+	} else {
+		var a = $("<a/>").html("<%= t("appointments.unbooked").downcase %>").attr({
+			"data-remote": true,
+			href: "/appointments/"+id
+		});
+		$("<td />").append(a).appendTo(tr);
+	}
+	var a = $("<a/>").addClass("button ui-icon-wrench").attr({
+		"data-remote": true,
+		href: "/appointments/"+id+"/edit"
+	});
+	$("<td />").addClass("icon").append(a).appendTo(tr);
+	var a = $("<a/>").addClass("button ui-icon-trash").attr({
+		"data-remote": true,
+		"data-method":"delete",
+		"rel":"nofollow",
+		"data-confirm":"<%= t("users.confirmation") %>",
+		href: "/appointments/"+id
+	});
+	$("<td />").addClass("icon").append(a).appendTo(tr);
+	tr.addClass("app").appendTo("#applist table");
+}
+
 function getAppDiv(booked, begintime, endtime){
 	
 	var begincell = beginCell(begintime);
 	var endcell = endCell(begintime,endtime);
-	if((endcell >= (getStart()*4)) && (begincell < (getStart()*4))){
+	var start = getStart()*4;
+	var stop = getStop()*4;
+	var div = $("<div/>");
+	
+	if((endcell >= start) && (begincell < start)){
 		begintime.setUTCHours(getStart());
 		begintime.setUTCMinutes(0);
+		var time = " ";
 		var row = "."+ (getStart()*4) + "_" + begintime.getDate().toString();
 		var rowtop = $(row).position().top;
 		var width = $(row).width() - 10;
@@ -282,32 +330,24 @@ function getAppDiv(booked, begintime, endtime){
 		if(height < 20){
 			height = 20;
 		}
-		var div = $("<div/>");
-		div.addClass(booked).css({ "top": rowtop, "height" : height, "width" : width}).hover(
-			function() {
-				$(this).css("z-index","3");
-			}, 
-			function() {
-				$(this).css("z-index","2");
-			}
-		).appendTo(row);
-		return div;
-	} else if((begincell < (getStart()*4)) || (begincell >= (getStop()*4))){
+		div.css("border-top" , "hidden");
+	} else if((begincell < start) || (begincell >= stop)){
 		return false;
+	} else {
+		var time = formatTime(begintime);
+		var row = "."+ begincell.toString() + "_" + begintime.getDate().toString();
+		var rowtop = (top(begintime)*2) + $(row).position().top;
+		var width = $(row).width() - 10;
+		var height = duration(begintime,endtime)*2;
+		if(height < 20){
+			height = 20;
+		}
+		var tablebottom = $("#calendar table").position().top + $("#calendar table").height();
+		if((rowtop + height) > (tablebottom+1)){
+			height =  tablebottom - rowtop ;
+			div.css("border-bottom" , "hidden");
+		}
 	}
-	var time = formatTime(begintime);
-	var row = "."+ begincell.toString() + "_" + begintime.getDate().toString();
-	var rowtop = (top(begintime)*2) + $(row).position().top;
-	var width = $(row).width() - 10;
-	var height = duration(begintime,endtime)*2;
-	if(height < 20){
-		height = 20;
-	}
-	var tablebottom = $("#calendar table").position().top + $("#calendar table").height();
-	if((rowtop + height) >= (tablebottom)){
-		height =  tablebottom - rowtop ;
-	}
-	var div = $("<div/>");
 	div.addClass(booked).css({ "top": rowtop, "height" : height, "width" : width}).html(time + " ").hover(
 		function() {
 			$(this).css("z-index","3");
@@ -351,14 +391,20 @@ function endCell(beginTime,endTime){
 }
 
 function drawWeekGrid(beginning){
-	$("#calendar table").remove();
+	$("#calendar-header").attr("class","span-24 last").empty();
+	$("#calendar-table").attr("class","span-24 last");
+	$("#calendar").css("margin-right", "24px").empty();
+
+	var monthNames = <%= raw t("txt.abbr_month_names") %>;
+	var selector = getWeekSelector(beginning, monthNames);
+	selector.appendTo("#calendar-header");
+	
 	var table = $("<table/>").addClass("week").appendTo("#calendar");
 	table.append("<thead/>").append("<tr/>");
 	$("<tr />").appendTo(".week thead");
 	$("<th />").appendTo(".week thead tr");
 	table.append("<tbody/>");
 	var dayNames = <%= raw t("txt.day_names") %>;
-	var monthNames = <%= raw t("txt.abbr_month_names") %>;
 	var presDate = new Date(getCurrentDate());
 	if($("#view_weekend").attr("checked")){
 		var y = 7;
@@ -368,7 +414,14 @@ function drawWeekGrid(beginning){
 	var next = beginning;
 	for(var i = 0; i < y; i++){
 		var dateString = next.getDate() + " " + monthNames[next.getMonth()] + " " + next.getFullYear();
-		$("<th/>").html(dayNames[i] + "<br />" + dateString).appendTo(".week thead tr");
+		var input = $("<input />");
+		input.attr("type","hidden").val(next.getTime());
+		$("<th/>").html(dayNames[i] + "<br />" + dateString).append(input).click(function(e){
+			var time = parseInt($(this).children("input").val());
+			$("#view_dayweek_day").attr("checked","checked");
+			$("#dayweek").buttonset("refresh");
+			setCurrentDate(new Date(time));
+		}).css("cursor","pointer").appendTo(".week thead tr");
 		next = new Date(next.getTime() + (60 * 60 * 24 * 1 * 1000));
 	}
 	
@@ -393,6 +446,29 @@ function drawWeekGrid(beginning){
 		}
 	}
 	
+}
+
+function getWeekSelector(beginning, monthNames){
+	var table = $("<table />").addClass("weekselector");
+	var tr = $("<tr />");
+	
+	for(var i = -2; i < 10; i++){
+		var begin = new Date(beginning.getTime() + (i *60 * 60 * 24 * 7 * 1000));
+		var end = endOfWeek(begin);
+		var td = $("<td />");
+		td.addClass('ui-widget-header ui-corner-all').html(begin.getDate()+"-"+end.getDate()+" "+monthNames[end.getMonth()]).appendTo(tr);
+		$("<input />").attr("type","hidden").val(begin.getTime()).appendTo(td);
+		td.click(function(e) {
+			var time = parseInt($(this).children("input").val());
+		    setCurrentDate(new Date(time));
+		 });
+		if(i == 0){
+			td.css("background-color","#fff");
+		}
+		
+	}
+	tr.appendTo(table);
+	return table;
 }
 
 function beginningOfWeek(presDate){
@@ -502,10 +578,16 @@ function fetchAndDisplayWeek(start_time,end_time){
 
 function formatTime(time){
 	if(time.getUTCMinutes().toString().length == 1){
-		return time.getUTCHours() + ":0" + time.getUTCMinutes()
+		var minutes = "0" + time.getUTCMinutes();
 	} else {
-		return time.getUTCHours() + ":" + time.getUTCMinutes()
+		var minutes = time.getUTCMinutes();
 	}
+	if(time.getUTCHours().toString().length == 1){
+		var hours = "0" + time.getUTCHours();
+	} else {
+		var hours = time.getUTCHours();
+	}
+	return hours.toString() + ":" + minutes.toString();
 }
 
 function getCurrentDate(){
@@ -535,6 +617,7 @@ function getStart(){
 <div id="toolbar" class="ui-widget-header ui-corner-all">
     <button id="next"><%= t("appointments.next") %></button>
     <button id="refresh"><%= t("appointments.refresh") %></button>
+    <button id="today"><%= t("appointments.today") %></button>
     <span id="weekendcheck" class="right"><%= check_box_tag 'view[weekend]', "1", true %><%= label_tag "view[weekend]", t("appointments.weekend") %></span>
     <span id="dayweek">
       <%= radio_button "view", "dayweek", "day" %><%= label_tag 'view_dayweek_day', t("appointments.day") %>

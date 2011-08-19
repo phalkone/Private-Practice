@@ -128,13 +128,14 @@ table.calendar tbody tr:nth-child(even) td, tbody tr.even td { background: #ffff
 .unbooked-icon { background-color: #CFC; border: solid 1px #6C6; }
 .booked-icon { background-color: #FCC; border: solid 1px #C66; }
 
-.list { margin-left: 20px; }
   .list table { border: 0; border-collapse:separate; border-spacing:0;
                      vertical-align:middle; width: 100%; padding: 0; }
   .list table tr { height:30px; text-indent:10px;}
   .list table th { text-align:left; }
 
-.flash { padding: 5px 8px; margin: 10px 0;}
+table.weekselector{width:100%; border-collapse:separate; border-spacing:3px;}
+    .weekselector td {font-weight: normal; text-align:center;cursor: pointer;}
+.flash { padding: 5px 8px; margin: 10px 0; text-align: center;}
 .field_with_errors { display: inline; }
 .field_with_errors > label { font-weight: bold; color:#d40000; } 
 .fixed_width_errors { width: 450px; margin-left: 20px;}

@@ -24,7 +24,7 @@
   <b><%= t('appointments.split') + " " + @appointment.split.to_s %>  min.</b>
 </p>
 <% end %>
-<% if @appointment.sub_appointments.length > 1 %>
+<% if @subid %>
 <p>
   <b><%= t('appointments.sel_period_begin') %>:</b>
   <%= l(@appointment.sub_appointments[@subid].begin, :format => :long) %>
@@ -45,7 +45,7 @@
 <%= link_to "", @appointment, :remote => true, :method => :delete, 
      :class => "hidden delete" %>
 
-<% if @appointment.unbooked? && (@appointment.sub_appointments.length == 1) %>
+<% if @appointment.unbooked? && (!@subid) %>
   <%= link_to "", edit_appointment_path(@appointment, :mode => "registered"), :remote => true, 
     :class => "hidden book" %>
 <% elsif @appointment.unbooked? %>
