@@ -22,6 +22,7 @@ PrivatePractice::Application.routes.draw do
   resources :appointments do
     member do
       get :unbook
+      post :move
     end
   end
 

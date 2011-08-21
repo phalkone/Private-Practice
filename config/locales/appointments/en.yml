@@ -44,3 +44,4 @@
     monthly: monthly
     until: until
     today: Today
+    error_move: Appointment cannot be moved

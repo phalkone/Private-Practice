@@ -119,7 +119,11 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    setCurrentDate(new Date());
+	var date = new Date();
+	date.setHours(0);
+	date.setMinutes(0);
+	date.setSeconds(0);
+    setCurrentDate(date);
   });
   refresh(true);
 });
@@ -218,7 +222,7 @@ function fetchAndDisplayDay(start_time,end_time){
 		if(app.patient_id != null){
 			var name = app.patient.last_name + ", " + app.patient.first_name;
 			addApp("booked",time,formatTime(endtime),name,app.patient_id,app.id);
-			var div = getAppDiv("booked",begintime,endtime);
+			var div = getAppDiv("booked",begintime,endtime,app.id);
 			if(div){
 				$("<span />").addClass("red").html(name).appendTo(div);
 				div.click(function() {
@@ -230,7 +234,7 @@ function fetchAndDisplayDay(start_time,end_time){
 			addApp("unbooked",time,formatTime(endtime),null,null,app.id);
 			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
 			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
-				var div = getAppDiv("unbooked",begintime,endtime);
+				var div = getAppDiv("unbooked",begintime,endtime,app.id);
 				if(div){
 					div.click(function(e) {
 						  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
@@ -246,7 +250,7 @@ function fetchAndDisplayDay(start_time,end_time){
 				var i = 0;
 				var newbegin = new Date(begintime);
 				while(newend <= endtime){
-					var div = getAppDiv("unbooked",newbegin,newend);
+					var div = getAppDiv("unbooked",newbegin,newend,app.id);
 					if(div){
 						div.click(function(e) {
 						    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
@@ -311,7 +315,7 @@ function addApp(booked, begintime,endtime, name, patient_id, id){
 	tr.addClass("app").appendTo("#applist table");
 }
 
-function getAppDiv(booked, begintime, endtime){
+function getAppDiv(booked, begintime, endtime, id){
 	
 	var begincell = beginCell(begintime);
 	var endcell = endCell(begintime,endtime);
@@ -348,7 +352,35 @@ function getAppDiv(booked, begintime, endtime){
 			div.css("border-bottom" , "hidden");
 		}
 	}
-	div.addClass(booked).css({ "top": rowtop, "height" : height, "width" : width}).html(time + " ").hover(
+	$("<span />").html(time + " ").appendTo(div);
+	div.addClass(booked).draggable({ 
+		axis: "y", 
+		containment: "#calendar",
+		stop: function(event, ui) {
+			var date = getCurrentDate();
+			date.setUTCHours(parseInt(getStart()));
+			var top = $(this).position().top;
+			var tabletop = $("#calendar table").position().top;
+			var minutes = Math.round((top-tabletop)/2);
+			var newbegin = new Date(date.getTime() + (minutes * 60 *1000) );
+			var newend = newbegin.getTime() + (endtime.getTime()-begintime.getTime());
+			$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
+			}
+		}).resizable({
+			handles: "n,s",
+			containment: "#calendar",
+			stop: function(event, ui) {
+				var date = getCurrentDate();
+				date.setUTCHours(parseInt(getStart()));
+				var top = $(this).position().top;
+				var tabletop = $("#calendar table").position().top;
+				var minutes = Math.round((top-tabletop)/2);
+				var newbegin = new Date(date.getTime() + (minutes * 60 *1000) );
+				var duration = Math.round($(this).height()/2);
+				var newend = newbegin.getTime() + (duration * 60 * 1000);
+				$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
+				}
+		}).css({ "top": rowtop, "height" : height, "width" : width, "overflow": "hidden", "z-index" : "2", "position" : "absolute"}).hover(
 		function() {
 			$(this).css("z-index","3");
 		}, 
