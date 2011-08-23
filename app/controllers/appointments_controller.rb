@@ -15,6 +15,12 @@ class AppointmentsController < ApplicationController
   def show
     @appointment = Appointment.find(params[:id])
     @subid = params[:sub_id].to_i if params[:sub_id]
+    respond_to do |format|
+      format.js
+      format.json  { render :json => @appointment.to_json(
+        :include => {:patient => {:only => [:id, :first_name, :last_name]}},
+        :only => [:id, :begin, :end, :split, :patient_id]) }
+    end
   end
 
   def new

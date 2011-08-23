@@ -17,17 +17,35 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.dialog.min.js" %>
 <script type="text/javascript">
-$(document).ready(function() {
 
-	var cookieStartStop = getCookie("start_stop");
-	if(cookieStartStop){
-		var splitValue =  cookieStartStop.split("*");
-		var start = splitValue[0];
-		var stop = splitValue[1];
-	} else {
-		var start = 9;
-		var stop = 17
-	}
+var dayNames = <%= raw t("txt.day_names") %>;
+var monthNames = <%= raw t("txt.month_names") %>;
+var abbrMonthNames = <%= raw t("txt.abbr_month_names") %>;
+var start = 9;
+var startTime = null;
+var stop = 17;
+var stopTime = null;
+var currentDate = new Date();
+var dayTableTop = null;
+var dayTableBottom = null;
+var dayWidth = null;
+
+$(document).ready(function() {
+	
+  var cookieStartStop = getCookie("start_stop");
+  if(cookieStartStop){
+	var splitValue =  cookieStartStop.split("*");
+	start = splitValue[0];
+	stop = splitValue[1];
+  }
+	
+  var cookieDate = getCookie("date");
+  if(cookieDate){
+	currentDate.setTime(cookieDate);
+  } else {
+	currentDate = beginningOfDay(currentDate);
+  }
+  setStartStopTime();
 	
   $('<p/>').addClass("tooltip").appendTo("body");
   $("#slider-range").slider({
@@ -35,8 +53,9 @@ $(document).ready(function() {
     range: true, min: 0, max: 24, values: [24 - stop, 24 - start],
     change: function(event,ui) {
 		$('.tooltip').hide();
-	    var stop = 24 - ui.values[0];
-	    var start = 24 -  ui.values[1];
+	    stop = 24 - ui.values[0];
+	    start = 24 -  ui.values[1];
+		setStartStopTime();
 	    writeCookie("start_stop",start.toString() + '*' + stop.toString(), 20 * 365);
 	    refresh(true);
 	 },
@@ -82,12 +101,11 @@ $(document).ready(function() {
     },
     text: false
   }).click(function() {
-    var presDate = getCurrentDate();
-    var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
+    var prevDate = currentDate.getTime() - (60 * 60 * 24 * 1000);
     if($("#view_dayweek_week").attr("checked")){
-      var prevDate = presDate.getTime() - (60 * 60 * 24 * 7 * 1000);
+      var prevDate = currentDate.getTime() - (60 * 60 * 24 * 7 * 1000);
     } else {
-      var prevDate = presDate.getTime() - (60 * 60 * 24 * 1000);
+      var prevDate = currentDate.getTime() - (60 * 60 * 24 * 1000);
     }
     setCurrentDate(new Date(prevDate));
   });
@@ -97,11 +115,10 @@ $(document).ready(function() {
     },
     text: false
   }).css("float","right").click(function() {
-    var presDate = getCurrentDate();
     if($("#view_dayweek_week").attr("checked")){
-      var nextDate = presDate.getTime() + (60 * 60 * 24 * 7 * 1000);
+      var nextDate = currentDate.getTime() + (60 * 60 * 24 * 7 * 1000);
     } else {
-      var nextDate = presDate.getTime() + (60 * 60 * 24 * 1000);
+      var nextDate = currentDate.getTime() + (60 * 60 * 24 * 1000);
     }
     setCurrentDate(new Date(nextDate));
   });
@@ -120,9 +137,7 @@ $(document).ready(function() {
     text: false
   }).css("float","right").click(function() {
 	var date = new Date();
-	date.setHours(0);
-	date.setMinutes(0);
-	date.setSeconds(0);
+	date = beginningOfDay(date);
     setCurrentDate(date);
   });
   refresh(true);
@@ -130,8 +145,8 @@ $(document).ready(function() {
 
 function refresh(viewChanged){
 	if($("#dayweek input:checked").val() == "week"){
-		var beginTime = beginningOfWeek(getCurrentDate());
-		var endTime = endOfWeek(getCurrentDate());
+		var beginTime = beginningOfWeek(currentDate);
+		var endTime = endOfWeek(currentDate);
 		if(viewChanged){
 			drawWeekGrid(beginTime);
 		} else {
@@ -147,9 +162,8 @@ function refresh(viewChanged){
 		} else {
 			clearCalendar();
 		}
-		var beginTime = getCurrentDate();
-		var endTime = beginTime.getTime() + (60 * 60 * 24 * 1000);
-		fetchAndDisplayDay(Math.round(beginTime.getTime() / 1000), Math.round(endTime / 1000));
+		var endTime = currentDate.getTime() + (60 * 60 * 24 * 1000);
+		fetchAndDisplayDay(Math.round(currentDate.getTime() / 1000), Math.round(endTime / 1000));
 	}
 	
 }
@@ -167,22 +181,21 @@ function drawDayGrid(){
 	
 	$("<div />").attr("id","datepicker").appendTo("#datedisplay");
 	$("#datepicker").datepicker($.datepicker.regional[ "<%= I18n.locale %>" ])	.change(function() {
-	writeCookie("date", $(this).datepicker("getDate").getTime(), 20 * 365);
-	refresh(true);
+		var date = $(this).datepicker("getDate");
+		var utctime = date.getTime() - (date.getTimezoneOffset() * 60 * 1000);
+		setCurrentDate(new Date(utctime));
   }).css({ 'font-size' : '0.85em', "float":"right"});
-	$("#datepicker").datepicker( "setDate" , getCurrentDate());
+	var localdate = currentDate.getTime() + ((new Date().getTimezoneOffset()) * 60 * 1000);
+	$("#datepicker").datepicker( "setDate" , new Date(localdate));
 	
-	var dayNames = <%= raw t("txt.day_names") %>;
-	var monthNames = <%= raw t("txt.month_names") %>;
-	var presDate = getCurrentDate();
-	if(presDate.getDay() == 0){
+	if(currentDate.getUTCDay() == 0){
 		var day = 6;
 	} else {
-		var day = presDate.getDay() - 1;
+		var day = currentDate.getUTCDay() - 1;
 	}
-	var date = presDate.getDate().toString();
-	var dateString = dayNames[day] + ",<br />" + date + " " + monthNames[presDate.getMonth()] + " " + presDate.getFullYear().toString();
-	$("<span />").css({"font-size":"7em","margin-bottom" : "0","line-height":"1em"}).html(presDate.getDate().toString()).appendTo('#datedisplay');
+	var date = currentDate.getUTCDate().toString();
+	var dateString = dayNames[day] + ",<br />" + date + " " + monthNames[currentDate.getUTCMonth()] + " " + currentDate.getUTCFullYear().toString();
+	$("<span />").css({"font-size":"7em","margin-bottom" : "0","line-height":"1em"}).html(currentDate.getUTCDate().toString()).appendTo('#datedisplay');
 	$("<br />").appendTo('#datedisplay');
 	$("<span />").css("font-size","1.5em").html(dateString).appendTo('#datedisplay');
 	
@@ -194,10 +207,7 @@ function drawDayGrid(){
 	var table = $("<table/>").addClass("day").appendTo("#calendar");
 	table.append("<tbody/>");
 	
-	var start = 4 * getStart();
-	var stop = 4 * getStop();
-	
-	for(var i = start; i < stop; i++){
+	for(var i = (start*4); i < (stop*4); i++){
 		$("<tr />").appendTo(".day tbody");
 		if ((i % 4) == 0){
 			var hour = i/4;
@@ -208,9 +218,11 @@ function drawDayGrid(){
 			}
 			$("<td />").attr("rowspan","4").addClass("hour").html("<span class='hour-text'>" + hour + "</span>").appendTo(".day tbody tr:last");
 		}
-		$("<td/>").addClass(i.toString() + "_" + date).appendTo(".day tbody tr:last");
+		$("<td/>").addClass("grid").appendTo(".day tbody tr:last");
 	}
-	
+	dayTableTop = $("#calendar table").position().top;
+	dayTableBottom = dayTableTop + $("#calendar table").height();
+	dayWidth = $(".grid").width() - 10;
 }
 
 function fetchAndDisplayDay(start_time,end_time){
@@ -228,7 +240,7 @@ function fetchAndDisplayDay(start_time,end_time){
 				div.click(function() {
 					$.get("/appointments/"+app.id.toString());
 				});
-			} 
+			}
 			
 		} else {
 			addApp("unbooked",time,formatTime(endtime),null,null,app.id);
@@ -316,53 +328,32 @@ function addApp(booked, begintime,endtime, name, patient_id, id){
 }
 
 function getAppDiv(booked, begintime, endtime, id){
-	
-	var begincell = beginCell(begintime);
-	var endcell = endCell(begintime,endtime);
-	var start = getStart()*4;
-	var stop = getStop()*4;
+
 	var div = $("<div/>");
+	var rowtop = topDiv(begintime);
 	
-	if((endcell >= start) && (begincell < start)){
-		begintime.setUTCHours(getStart());
-		begintime.setUTCMinutes(0);
+	
+	if((endtime >= startTime) && (begintime < startTime)){
 		var time = " ";
-		var row = "."+ (getStart()*4) + "_" + begintime.getDate().toString();
-		var rowtop = $(row).position().top;
-		var width = $(row).width() - 10;
-		var height = duration(begintime,endtime)*2;
-		if(height < 20){
-			height = 20;
-		}
+		rowtop = dayTableTop;
 		div.css("border-top" , "hidden");
-	} else if((begincell < start) || (begincell >= stop)){
+		var height = heightDiv(startTime,endtime);
+	} else if((begintime < startTime) || (begintime >= stopTime)){
 		return false;
 	} else {
 		var time = formatTime(begintime);
-		var row = "."+ begincell.toString() + "_" + begintime.getDate().toString();
-		var rowtop = (top(begintime)*2) + $(row).position().top;
-		var width = $(row).width() - 10;
-		var height = duration(begintime,endtime)*2;
-		if(height < 20){
-			height = 20;
-		}
-		var tablebottom = $("#calendar table").position().top + $("#calendar table").height();
-		if((rowtop + height) > (tablebottom+1)){
-			height =  tablebottom - rowtop ;
+		var height = heightDiv(begintime,endtime);
+		if((rowtop + height) > (dayTableBottom+1)){
+			height =  dayTableBottom - rowtop ;
 			div.css("border-bottom" , "hidden");
 		}
 	}
 	$("<span />").html(time + " ").appendTo(div);
-	div.addClass(booked).draggable({ 
+	div.addClass(booked + " " + id).draggable({ 
 		axis: "y", 
 		containment: "#calendar",
 		stop: function(event, ui) {
-			var date = getCurrentDate();
-			date.setUTCHours(parseInt(getStart()));
-			var top = $(this).position().top;
-			var tabletop = $("#calendar table").position().top;
-			var minutes = Math.round((top-tabletop)/2);
-			var newbegin = new Date(date.getTime() + (minutes * 60 *1000) );
+			var newbegin = beginDiv($(this).position().top);
 			var newend = newbegin.getTime() + (endtime.getTime()-begintime.getTime());
 			$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
 			}
@@ -370,56 +361,43 @@ function getAppDiv(booked, begintime, endtime, id){
 			handles: "n,s",
 			containment: "#calendar",
 			stop: function(event, ui) {
-				var date = getCurrentDate();
-				date.setUTCHours(parseInt(getStart()));
-				var top = $(this).position().top;
-				var tabletop = $("#calendar table").position().top;
-				var minutes = Math.round((top-tabletop)/2);
-				var newbegin = new Date(date.getTime() + (minutes * 60 *1000) );
-				var duration = Math.round($(this).height()/2);
-				var newend = newbegin.getTime() + (duration * 60 * 1000);
+				var newbegin = beginDiv($(this).position().top);
+				var newend = newbegin.getTime() + (duration($(this).height()) * 60 * 1000);
 				$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
 				}
-		}).css({ "top": rowtop, "height" : height, "width" : width, "overflow": "hidden", "z-index" : "2", "position" : "absolute"}).hover(
+		}).css({ "top": rowtop, "height" : height, "width" : dayWidth, "overflow": "hidden", "z-index" : "2", "position" : "absolute"}).hover(
 		function() {
 			$(this).css("z-index","3");
 		}, 
 		function() {
 			$(this).css("z-index","2");
 		}
-	).appendTo(row);
+	).appendTo(".grid:first");
 	return div;
 }
 
-function top(beginTime){
-	return beginTime.getUTCMinutes() % 15;
+function beginDiv(top){
+	var minutes = Math.round((top-dayTableTop)/2);
+	return new Date(startTime.getTime() + (minutes * 60 *1000) );
 }
 
-function duration(beginTime, endTime){
-	return Math.round((endTime.getTime() - beginTime.getTime())/60000);
+function topDiv(beginTime){
+	var diff = beginTime.getTime() - startTime.getTime();
+	var top = Math.round(diff/(60 * 1000));
+	return dayTableTop + (top *2);
 }
 
-function beginCell(beginTime){
-  	var min = (beginTime.getUTCMinutes() - (beginTime.getUTCMinutes() % 15))/15;
-  	return (min + (beginTime.getUTCHours()*4));
+function heightDiv(beginTime, endTime){
+	var dur = Math.round((endTime.getTime() - beginTime.getTime())/60000);
+	var height = dur * 2;
+	if(height < 20){
+		height = 20;
+	}
+	return height;
 }
 
-function rowSpan(beginTime, endTime){
-  var duration = Math.round((endTime.getTime() - beginTime.getTime())/1000);
-  var a = 15 - top(beginTime);
-  var dur = parseInt(((duration - (a*60))/900));
-  if ((duration - (a*60)) <= 0){
-    dur = 1;
-  } else if ( ((duration - (a*60)) % 900) != 0){
-    dur += 2;
-  } else {
-    dur += 1
-  }
-  return dur
-}
-
-function endCell(beginTime,endTime){
-  return (beginCell(beginTime) + rowSpan(beginTime,endTime) - 1);
+function duration(height){
+	return Math.round(height/2);
 }
 
 function drawWeekGrid(beginning){
@@ -427,8 +405,7 @@ function drawWeekGrid(beginning){
 	$("#calendar-table").attr("class","span-24 last");
 	$("#calendar").css("margin-right", "24px").empty();
 
-	var monthNames = <%= raw t("txt.abbr_month_names") %>;
-	var selector = getWeekSelector(beginning, monthNames);
+	var selector = getWeekSelector(beginning);
 	selector.appendTo("#calendar-header");
 	
 	var table = $("<table/>").addClass("week").appendTo("#calendar");
@@ -436,8 +413,6 @@ function drawWeekGrid(beginning){
 	$("<tr />").appendTo(".week thead");
 	$("<th />").appendTo(".week thead tr");
 	table.append("<tbody/>");
-	var dayNames = <%= raw t("txt.day_names") %>;
-	var presDate = new Date(getCurrentDate());
 	if($("#view_weekend").attr("checked")){
 		var y = 7;
 	} else {
@@ -445,20 +420,19 @@ function drawWeekGrid(beginning){
 	}
 	var next = beginning;
 	for(var i = 0; i < y; i++){
-		var dateString = next.getDate() + " " + monthNames[next.getMonth()] + " " + next.getFullYear();
+		var dateString = next.getUTCDate() + " " + abbrMonthNames[next.getUTCMonth()] + " " + next.getUTCFullYear();
 		var input = $("<input />");
 		input.attr("type","hidden").val(next.getTime());
 		$("<th/>").html(dayNames[i] + "<br />" + dateString).append(input).click(function(e){
 			var time = parseInt($(this).children("input").val());
 			$("#view_dayweek_day").attr("checked","checked");
 			$("#dayweek").buttonset("refresh");
+			writeCookie("day_week",$("#dayweek input:checked").val(), 20 * 365);
 			setCurrentDate(new Date(time));
 		}).css("cursor","pointer").appendTo(".week thead tr");
 		next = new Date(next.getTime() + (60 * 60 * 24 * 1 * 1000));
 	}
 	
-	var start = getStart();
-	var stop = getStop();
 	for(var i = 0; i < (stop-start); i++){
 		$("<tr />").appendTo(".week tbody");
 		var hour = i + start;
@@ -480,7 +454,7 @@ function drawWeekGrid(beginning){
 	
 }
 
-function getWeekSelector(beginning, monthNames){
+function getWeekSelector(beginning){
 	var table = $("<table />").addClass("weekselector");
 	var tr = $("<tr />");
 	
@@ -488,7 +462,7 @@ function getWeekSelector(beginning, monthNames){
 		var begin = new Date(beginning.getTime() + (i *60 * 60 * 24 * 7 * 1000));
 		var end = endOfWeek(begin);
 		var td = $("<td />");
-		td.addClass('ui-widget-header ui-corner-all').html(begin.getDate()+"-"+end.getDate()+" "+monthNames[end.getMonth()]).appendTo(tr);
+		td.addClass('ui-widget-header ui-corner-all').html(begin.getUTCDate()+"-"+end.getUTCDate()+" "+abbrMonthNames[end.getUTCMonth()]).appendTo(tr);
 		$("<input />").attr("type","hidden").val(begin.getTime()).appendTo(td);
 		td.click(function(e) {
 			var time = parseInt($(this).children("input").val());
@@ -501,6 +475,13 @@ function getWeekSelector(beginning, monthNames){
 	}
 	tr.appendTo(table);
 	return table;
+}
+
+function beginningOfDay(date){
+	date.setUTCHours(0);
+	date.setUTCMinutes(0);
+	date.setUTCSeconds(0);
+	return date;
 }
 
 function beginningOfWeek(presDate){
@@ -524,13 +505,12 @@ function endOfWeek(presDate){
 }
 
 function fetchAndDisplayWeek(start_time,end_time){
-	var start =  getStart();
-	var stop = getStop();
+
 	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
 		var begintime = new Date(app.begin);
 		var endtime = new Date(app.end);
-		if(begintime.getDay() == 0){
+		if(begintime.getUTCDay() == 0){
 			var column = 6;
 		} else {
 			var column = begintime.getUTCDay() - 1;
@@ -622,27 +602,20 @@ function formatTime(time){
 	return hours.toString() + ":" + minutes.toString();
 }
 
-function getCurrentDate(){
-	var cookieDate = getCookie("date");
-	var date = new Date();
-	if(cookieDate){
-	date.setTime(cookieDate);
-	}
-	return date;
-}
-
 function setCurrentDate(date){
+	currentDate = date;
+	setStartStopTime();
 	writeCookie("date", date.getTime(), 20 * 365);
 	refresh(true);
 }
 
-function getStop(){
-  return (24 - $("#slider-range").slider("values", 0));
+function setStartStopTime(){
+	startTime = new Date(currentDate);
+	startTime.setUTCHours(start);
+	stopTime = new Date(currentDate);
+	stopTime.setUTCHours(stop);
 }
 
-function getStart(){
-   return (24 - $("#slider-range").slider("values", 1));
-}
 </script>
 <% end %>
 <div id='dialog'></div>
