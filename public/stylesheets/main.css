@@ -68,8 +68,8 @@ table.day { border-collapse: collapse; border: 1px solid #ddd;
   .day tbody td { border: 1px solid #ddd; margin: 0; padding: 0; vertical-align: top;  max-height: 30px;}
   .day td.hour { width: 60px; text-indent:0px; vertical-align: top; text-align: center; background: #ffffff; margin-top: 0px; padding-top: 0; }
   .hour-text{font-size: 1.2em; position: relative; top: -10px; background-color: #ffffff;}
-  .day div.booked { background-color: #FCC; text-align: left; cursor: pointer; padding: 0 5px 0 5px; border: solid 1px #C66; overflow: hidden; z-index: 2; position: absolute;}
-  .day div.unbooked { background-color: #CFC; text-align: left; cursor: pointer; padding: 0 5px 0 5px; border: solid 1px #6C6; overflow: hidden; z-index: 2; position: absolute; width: 452px;}
+  .day div.booked { background-color: #FCC; text-align: left; cursor: pointer;  border: solid 1px #C66;}
+  .day div.unbooked { background-color: #CFC; text-align: left; cursor: pointer; border: solid 1px #6C6;}
 table.day tbody tr:nth-child(odd) td, tbody tr.odd td { background: #ffffff;}
 table.day tbody tr:nth-child(even) td, tbody tr.even td { background: #ffffff;}
 

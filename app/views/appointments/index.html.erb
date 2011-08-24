@@ -226,120 +226,74 @@ function drawDayGrid(){
 }
 
 function fetchAndDisplayDay(start_time,end_time){
-	$.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
+  $.getJSON('/appointments.json',{begintime: start_time, endtime: end_time}, function(data) {
 	$.each(data, function(i,app){
-		var begintime = new Date(app.begin);
-		var endtime = new Date(app.end);
-		var time = formatTime(begintime);
-		if(app.patient_id != null){
-			var name = app.patient.last_name + ", " + app.patient.first_name;
-			addApp("booked",time,formatTime(endtime),name,app.patient_id,app.id);
-			var div = getAppDiv("booked",begintime,endtime,app.id);
-			if(div){
-				$("<span />").addClass("red").html(name).appendTo(div);
-				div.click(function() {
-					$.get("/appointments/"+app.id.toString());
-				});
-			}
-			
-		} else {
-			addApp("unbooked",time,formatTime(endtime),null,null,app.id);
-			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
-			if((app.split == null) || (app.split == 0) || (newend >= endtime)){
-				var div = getAppDiv("unbooked",begintime,endtime,app.id);
-				if(div){
-					div.click(function(e) {
-						  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-							$.get("/appointments/"+app.id.toString());
-						}
-					});
-					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
-						"data-remote": true,
-						href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
-					}).appendTo(div);
-				}
-			} else {
-				var i = 0;
-				var newbegin = new Date(begintime);
-				while(newend <= endtime){
-					var div = getAppDiv("unbooked",newbegin,newend,app.id);
-					if(div){
-						div.click(function(e) {
-						    if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-						      $.get($(this).children("a:first").attr("href"));
-						      return false;
-						    }
-						 });
-						$("<a/>").addClass("hidden").attr({
-							"data-remote": true,
-							href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
-						}).appendTo(div);
-						var time_begin = formatTime(newbegin);
-						var time_end = formatTime(newend);
-						var date_begin = newbegin.getUTCDate().toString() +"/"+ (newend.getUTCMonth()+1).toString() +"/"+ newbegin.getUTCFullYear().toString();
-						$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
-							"data-remote": true,
-							href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
-						}).appendTo(div);
-					}
-					
-					i++;
-					newbegin = $.advance(newbegin,app.split);
-					newend = $.advance(newend,app.split);
-					
-					if((newend > endtime) && (newbegin < endtime)){
-						newend = endtime;
-					}
-				}
-			}
-		}
+		addApp(app);
+		addDiv(app);
 	});
   });
 }
 
-function addApp(booked, begintime,endtime, name, patient_id, id){
+function addApp(app){
 	var tr = $("<tr />");
-	$("<td />").addClass("check").html("<span class='legend-icon "+ booked +"-icon'>").appendTo(tr);
-	$("<td />").css("width","80px").html(begintime + "-" + endtime).appendTo(tr);
-	if(name != null){
-		var a = $("<a/>").html(name).attr("href", "/users/"+patient_id);
-		$("<td />").append(a).appendTo(tr);
+	
+	//Legend
+	$("<td />").addClass("check").html("<span class='legend-icon "+ appBooked(app) +"-icon'>").appendTo(tr);
+	
+	//Time
+	$("<td />").css("width","80px").html(formattedBeginTime(app) + "-" + formattedEndTime(app)).appendTo(tr);
+	
+	//Name
+	if(app.patient_id != null){
+		var name = app.patient.last_name + ", " + app.patient.first_name;
+		var a = $("<a/>").html(name).attr("href", "/users/"+app.patient_id);
 	} else {
 		var a = $("<a/>").html("<%= t("appointments.unbooked").downcase %>").attr({
 			"data-remote": true,
-			href: "/appointments/"+id
+			href: "/appointments/"+app.id
 		});
-		$("<td />").append(a).appendTo(tr);
 	}
+	$("<td />").append(a).appendTo(tr);
+	
+	//Edit
 	var a = $("<a/>").addClass("button ui-icon-wrench").attr({
 		"data-remote": true,
-		href: "/appointments/"+id+"/edit"
+		href: "/appointments/"+app.id+"/edit"
 	});
 	$("<td />").addClass("icon").append(a).appendTo(tr);
+	
+	//Delete
 	var a = $("<a/>").addClass("button ui-icon-trash").attr({
 		"data-remote": true,
 		"data-method":"delete",
 		"rel":"nofollow",
 		"data-confirm":"<%= t("users.confirmation") %>",
-		href: "/appointments/"+id
+		href: "/appointments/"+app.id
 	});
 	$("<td />").addClass("icon").append(a).appendTo(tr);
-	tr.addClass("app").appendTo("#applist table");
+	
+	
+	tr.addClass("app " + app.id).appendTo("#applist table");
 }
 
-function getAppDiv(booked, begintime, endtime, id){
+function addDiv(app){
 
 	var div = $("<div/>");
+	var type = typeDiv(app);
+	var booked = appBooked(app);
+	div.addClass(app.id + " "+ booked).appendTo(".grid:first");
+	var begintime = new Date(app.begin);
+	var endtime = new Date(app.end);
+	
 	var rowtop = topDiv(begintime);
-	
-	
-	if((endtime >= startTime) && (begintime < startTime)){
+	//Get settings
+	if((endtime <= startTime) || (begintime >= stopTime)){
+		return false
+	} else 	if((endtime >= startTime) && (begintime < startTime)){
 		var time = " ";
 		rowtop = dayTableTop;
 		div.css("border-top" , "hidden");
 		var height = heightDiv(startTime,endtime);
-	} else if((begintime < startTime) || (begintime >= stopTime)){
-		return false;
 	} else {
 		var time = formatTime(begintime);
 		var height = heightDiv(begintime,endtime);
@@ -348,32 +302,156 @@ function getAppDiv(booked, begintime, endtime, id){
 			div.css("border-bottom" , "hidden");
 		}
 	}
-	$("<span />").html(time + " ").appendTo(div);
-	div.addClass(booked + " " + id).draggable({ 
+	
+	//Set settings
+	div.css({ "top": rowtop, "height" : height, "width" : dayWidth, "overflow": "hidden", "z-index" : "2", "position" : "absolute"});
+
+	if(type != "split"){
+		$("<span />").addClass("time").html(time + " ").appendTo(div);
+		div.css("padding", "0 5px 0 5px");
+		hoverDiv(div);
+		clickDiv(div,app.id,null);
+		linkDiv(div,app.id,app.patient,null);
+	} else {
+		addSubDivs(div,app)
+	}
+	
+	draggableDiv(div,app.id);
+	resizableDiv(div,app.id);
+}
+
+function addSubDivs(maindiv,app){
+	var begintime = new Date(app.begin);
+	var endtime = new Date(app.end);
+	var newbegin = new Date(begintime);
+	var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
+	var width = maindiv.width();
+	maindiv.css("width",width+10);
+	var i = 0;
+	
+	while(newend <= endtime){
+		var div = $("<div/>");
+		
+		if((newend <= startTime) || (newbegin >= stopTime)){
+			i++;
+			newbegin = $.advance(newbegin,app.split);
+			newend = $.advance(newend,app.split);
+
+			if((newend > endtime) && (newbegin < endtime)){
+				newend = endtime;
+			}
+			continue;
+		} else 	if((newend >= startTime) && (newbegin < startTime)){
+			var time = " ";
+			var height = heightDiv(startTime,newend);
+		} else {
+			var time = formatTime(newbegin);
+			var height = heightDiv(newbegin,newend);
+		}
+		
+		div.addClass("unbooked");
+		div.css({ "height" : height -1, "width" : width,"position":"relative", "padding": "0 5px 0 5px","overflow": "hidden", "z-index" : "2", "border-top" : "hidden", "border-left": "hidden", "border-right": "hidden"});
+		$("<span />").addClass("time").html(time + " ").appendTo(div);	
+		hoverDiv(div);
+		clickDiv(div,app.id,i);
+		linkDiv(div,app.id,null,i);
+		div.appendTo(maindiv);
+		
+		i++;
+		newbegin = $.advance(newbegin,app.split);
+		newend = $.advance(newend,app.split);
+		
+		if((newend > endtime) && (newbegin < endtime)){
+			newend = endtime;
+		}
+	}
+	div.css("border-bottom","hidden");
+}
+
+function appBooked(app){
+	if(app.patient_id != null){
+		return "booked";
+	} else {
+		return "unbooked";
+	}
+}
+
+function formattedBeginTime(app){
+	var date = new Date(app.begin);
+	return formatTime(date);
+}
+
+function formattedEndTime(app){
+	var date = new Date(app.end);
+	return formatTime(date);
+}
+
+function draggableDiv(div, id){
+	div.draggable({ 
 		axis: "y", 
 		containment: "#calendar",
 		stop: function(event, ui) {
 			var newbegin = beginDiv($(this).position().top);
-			var newend = newbegin.getTime() + (endtime.getTime()-begintime.getTime());
+			var newend = newbegin.getTime() + (duration($(this).height()) * 60 * 1000);
 			$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
 			}
-		}).resizable({
-			handles: "n,s",
-			containment: "#calendar",
-			stop: function(event, ui) {
-				var newbegin = beginDiv($(this).position().top);
-				var newend = newbegin.getTime() + (duration($(this).height()) * 60 * 1000);
-				$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
-				}
-		}).css({ "top": rowtop, "height" : height, "width" : dayWidth, "overflow": "hidden", "z-index" : "2", "position" : "absolute"}).hover(
+	});
+}
+
+function resizableDiv(div, id){
+	div.resizable({
+		handles: "n,s",
+		containment: "#calendar",
+		stop: function(event, ui) {
+			var newbegin = beginDiv($(this).position().top);
+			var newend = newbegin.getTime() + (duration($(this).height()) * 60 * 1000);
+			$.post("/appointments/"+ id +"/move", { begintime: Math.round(newbegin.getTime()/1000), endtime: Math.round(newend/1000) } );
+		}
+	});
+}
+
+function clickDiv(div, id, subid){
+	div.click(function(e) {
+		  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
+			if(subid != null){
+				$.get("/appointments/"+ id.toString() + "?sub_id=" + subid.toString());
+			} else {
+				$.get("/appointments/"+ id.toString());
+			}
+		}
+	});
+}
+
+function linkDiv(div,id,patient,subid){
+	a = $("<a/>");
+	if(patient != null){
+		var name = patient.last_name + ", " + patient.first_name;
+		var href = "/users/"+patient.id.toString();
+		var data = false;
+	} else {
+		var name = "<%= t("appointments.book_now").upcase %>";
+		var data = true;
+		if(subid != null){
+			var href = "/appointments/"+id.toString()+"/edit?mode=registered&sub_id=" + subid.toString();
+		} else {
+			var href = "/appointments/"+id.toString()+"/edit?mode=registered";
+		}
+	}
+	if(data){
+		a.attr("data-remote",true);
+	}
+	a.html(name).attr("href", href).appendTo(div);
+}
+
+function hoverDiv(div){
+	div.hover(
 		function() {
 			$(this).css("z-index","3");
 		}, 
 		function() {
 			$(this).css("z-index","2");
 		}
-	).appendTo(".grid:first");
-	return div;
+	);
 }
 
 function beginDiv(top){
@@ -394,6 +472,21 @@ function heightDiv(beginTime, endTime){
 		height = 20;
 	}
 	return height;
+}
+
+function typeDiv(app){
+	if(app.patient_id != null){
+		return "booked";
+	} else {
+		var begintime = new Date(app.begin);
+		var endtime = new Date(app.end);
+		var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
+		if((app.split == null) || (app.split == 0) || (newend >= endtime)){
+			return "unbooked";
+		} else {
+			return "split";
+		}
+	}
 }
 
 function duration(height){

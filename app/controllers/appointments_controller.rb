@@ -65,6 +65,7 @@ class AppointmentsController < ApplicationController
 
   def edit
     @appointment = Appointment.find(params[:id])
+    @appointment =  @appointment.sub_appointments[params[:sub_id].to_i] if params[:sub_id]
     @appointment.date = l(@appointment.begin, :format => :datepicker)
     @appointment.begin_time = l(@appointment.begin.to_time, :format => :time)
     @appointment.end_time = l(@appointment.end.to_time, :format => :time)
