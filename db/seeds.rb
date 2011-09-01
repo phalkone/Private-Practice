@@ -12,8 +12,7 @@ roles = Role.create([{:title => "admin"}, {:title => "doctor"}, {:title => "pati
 user = User.create(:first_name => "Tim", :last_name => "Pintens", 
   :email => "tim@air.local", :email_confirmation => "tim@air.local",
   :password => "secret", :password_confirmation => "secret")
-user.roles<<roles.first
-user.roles<<roles.find_by_title("doctor")
+user.roles << Role.find_by_title("admin")
 user.update_attribute("confirmed",true)
 
 #Sample pages
@@ -27,4 +26,3 @@ pages.last.page_contents.create([{:title => "Behandelingen", :body => "Tweede pa
                                   :locale => "nl", :html => false},
                                   {:title => "Treatments", :body => "Seconde page",
                                    :locale => "en", :html => false}])
-  

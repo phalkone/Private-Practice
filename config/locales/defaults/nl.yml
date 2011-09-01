@@ -181,6 +181,7 @@
         less_than_or_equal_to: "moet minder of gelijk zijn aan %{count}"
         odd: "moet oneven zijn"
         even: "moet even zijn"
+        record_invalid: "is ongeldig"
 
   authlogic:
     error_messages:
