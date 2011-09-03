@@ -11,9 +11,9 @@ class UsersController < ApplicationController
     @term = params[:term] ? params[:term] : t("users.search")
     params[:term] ||= ""
     if role?("admin")
-      @users = User.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
+      @users = User.where(search_term(params[:term])).order(cookies[:sort]).paginate :page => params[:page], :per_page => 10
     else
-      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).all.paginate :page => params[:page], :per_page => 10
+      @users = Role.where("title = ?","patient").first.users.where(search_term(params[:term])).order(cookies[:sort]).paginate :page => params[:page], :per_page => 10
     end
     @title = t("users.menutitle")
   end

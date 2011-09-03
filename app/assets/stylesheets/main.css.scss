@@ -1,7 +1,7 @@
 a { color: #d40000; text-decoration: none; }
   a:hover { color: #8f0000; }
 
-body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
+body { background: #fff url(headerbg.gif) repeat-x 0px 25px; }
 
 #login_box { position:absolute; top:0; right:15px; padding: 5px 5px 5px 5px; 
              background-color: #bfbfbf; border-radius: 0 0 10px 10px; 
@@ -11,7 +11,7 @@ body { background: #fff url(../images/headerbg.gif) repeat-x 0px 25px; }
   #login_box p { margin: 0 3px 3px 3px; }
 
 #header { height: 70px; position: relative; margin: 0 0 17px; border:none;
-	      background: #fff url(../images/headerbg.gif) repeat-x bottom; } 
+	      background: #fff url(headerbg.gif) repeat-x bottom; } 
 	
 #logo { float:left; margin-top:5px;}
 
@@ -116,7 +116,7 @@ table.calendar tbody tr:nth-child(even) td, tbody tr.even td { background: #ffff
     .day, .specialDay { text-align: center; border-bottom: 1px dotted #bbbbbb;}
     .selected { font-weight:bold; }
 
-.button { width: 16px; height: 16px; background-image: url(../images/icons_red.png);
+.button { width: 16px; height: 16px; background-image: url(icons_red.png);
           display: inline-block; position: relative; padding: 0; margin-right: .1em;
           text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1;
           overflow: visible; }
