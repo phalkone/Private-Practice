@@ -6,15 +6,12 @@ class ApplicationController < ActionController::Base
   include CalendarHelper
   include BookingsHelper
   
-  def set_locale 
-    I18n.locale = extract_locale_from_subdomain
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
   end
-
-  def extract_locale_from_subdomain
-    parsed_locale = request.subdomains.first
-    if !parsed_locale.nil?
-      I18n.available_locales.include?(parsed_locale.to_sym) ? parsed_locale  : nil
-    end
+  
+  def default_url_options(options={})
+    { :locale => I18n.locale }
   end
 
   protected

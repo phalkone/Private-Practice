@@ -29,6 +29,7 @@ var currentDate = new Date();
 var dayTableTop = null;
 var dayTableBottom = null;
 var dayWidth = null;
+var locale = "<%= I18n.locale.to_s %>";
 
 $(document).ready(function() {
 	
@@ -250,7 +251,7 @@ function addApp(app){
 	} else {
 		var a = $("<a/>").html("<%= t("appointments.unbooked").downcase %>").attr({
 			"data-remote": true,
-			href: "/appointments/"+app.id
+			href: "/" + locale + "/appointments/"+app.id
 		});
 	}
 	$("<td />").append(a).appendTo(tr);
@@ -258,7 +259,7 @@ function addApp(app){
 	//Edit
 	var a = $("<a/>").addClass("button ui-icon-wrench").attr({
 		"data-remote": true,
-		href: "/appointments/"+app.id+"/edit"
+		href: "/" + locale + "/appointments/"+app.id+"/edit"
 	});
 	$("<td />").addClass("icon").append(a).appendTo(tr);
 	
@@ -268,7 +269,7 @@ function addApp(app){
 		"data-method":"delete",
 		"rel":"nofollow",
 		"data-confirm":"<%= t("users.confirmation") %>",
-		href: "/appointments/"+app.id
+		href: "/" + locale + "/appointments/"+app.id
 	});
 	$("<td />").addClass("icon").append(a).appendTo(tr);
 	
@@ -414,9 +415,9 @@ function clickDiv(div, id, subid){
 	div.click(function(e) {
 		  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
 			if(subid != null){
-				$.get("/appointments/"+ id.toString() + "?sub_id=" + subid.toString());
+				$.get("/" + locale + "/appointments/"+ id.toString() + "?sub_id=" + subid.toString());
 			} else {
-				$.get("/appointments/"+ id.toString());
+				$.get("/" + locale + "/appointments/"+ id.toString());
 			}
 		}
 	});
@@ -432,9 +433,9 @@ function linkDiv(div,id,patient,subid){
 		var name = "<%= t("appointments.book_now").upcase %>";
 		var data = true;
 		if(subid != null){
-			var href = "/appointments/"+id.toString()+"/edit?mode=registered&sub_id=" + subid.toString();
+			var href = "/" + locale + "/appointments/"+id.toString()+"/edit?mode=registered&sub_id=" + subid.toString();
 		} else {
-			var href = "/appointments/"+id.toString()+"/edit?mode=registered";
+			var href = "/" + locale + "/appointments/"+id.toString()+"/edit?mode=registered";
 		}
 	}
 	if(data){
@@ -617,7 +618,7 @@ function fetchAndDisplayWeek(start_time,end_time){
 			}
 			var name = app.patient.last_name + ", " + app.patient.first_name;
 			$("<div/>").addClass("booked").html(time + " <span class='red'>" + name + "</span>").click(function() {
-				$.get("/appointments/"+app.id.toString());
+				$.get("/" + locale + "/appointments/"+app.id.toString());
 			}).appendTo(cell);
 		} else {
 			var newend = new Date(begintime.getTime() + (app.split * 60 * 1000));
@@ -627,12 +628,12 @@ function fetchAndDisplayWeek(start_time,end_time){
 				}
 				var div = $("<div/>").addClass("unbooked").html(time + " ").click(function(e) {
 					  if((e.target == "[object HTMLTableCellElement]") || (e.target == "[object HTMLDivElement]")){
-						$.get("/appointments/"+app.id.toString());
+						$.get("/" + locale + "/appointments/"+app.id.toString());
 					}
 				}).appendTo(cell);
 				$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
 					"data-remote": true,
-					href: "/appointments/"+app.id.toString()+"/edit?mode=registered"
+					href: "/" + locale + "/appointments/"+app.id.toString()+"/edit?mode=registered"
 				}).appendTo(div);
 			} else {
 				var i = 0;
@@ -659,11 +660,11 @@ function fetchAndDisplayWeek(start_time,end_time){
 					 }).appendTo(cell);
 					$("<a/>").addClass("hidden").attr({
 						"data-remote": true,
-						href: "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
+						href: "/" + locale + "/appointments/"+app.id.toString() + "?sub_id=" + i.toString()
 					}).appendTo(div);
 					$("<a/>").html("<%= t("appointments.book_now").upcase %>").attr({
 						"data-remote": true,
-						href: "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
+						href: "/" + locale + "/appointments/new?appointment[begin_time]=" + time_begin + "&appointment[end_time]=" + time_end + "&appointment[date]=" + date_begin
 					}).appendTo(div);
 
 					i++;

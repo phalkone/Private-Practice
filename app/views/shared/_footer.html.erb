@@ -3,7 +3,7 @@
     <% if locale == I18n.locale.to_s %>
       <span class="red"><%= locale %></span>
     <% else %>
-      <a href="<%= 'http://' + locale +'.'+ domain+request.path %>" class="grey"><%= locale %></a>
+      <%= link_to locale.to_s, {:controller => controller_name, :action => action_name, :locale => locale.to_sym},  :class => "grey" %>
     <% end %>
       <% if locale != available_locales[available_locales.length-1] %>
          · 

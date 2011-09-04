@@ -9,7 +9,7 @@ module ApplicationHelper
   
   def domain
     # FIXME for production mode
-    request.host.split(".")[1] + "." + request.host.split(".").last + ":" + request.port.to_s
+    request.host + ":" + request.port.to_s
   end
 
   def title

@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-PrivatePractice::Application.config.session_store :cookie_store, :key => '_private_practice_session', :domain => "app.local"
+PrivatePractice::Application.config.session_store :cookie_store, :key => '_private_practice_session', :domain => :all
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information

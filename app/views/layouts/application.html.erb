@@ -2,17 +2,16 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title><%= title %></title>
+	<title><%= title %></title>
 
-<%= render 'layouts/stylesheets' %>
-<%= stylesheet_link_tag "application" %>
-<%= javascript_include_tag "application" %>
+	<%= render 'layouts/stylesheets' %>
+	<%= stylesheet_link_tag "application" %>
+	<%= yield :styles %>
+	
+	<%= javascript_include_tag "application" %>
+	<%= yield :scripts %>
 
-<%= yield :styles %>
-
-<%= yield :scripts %>
-
-<%= csrf_meta_tag %>
+	<%= csrf_meta_tag %>
 </head>
 <body>
 <div class="container">
