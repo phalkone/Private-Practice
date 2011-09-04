@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
-gem 'sqlite3'
+gem 'jquery-rails'
 
 # Project specific gems
 gem 'bluecloth', '~> 2.0.0'
@@ -16,15 +16,19 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
+group :production do
+  gem 'pg'
+end
 
 group :development do
+  gem 'sqlite3'
   gem 'rspec-rails', '~> 2.6.1'
   gem "annotate", "~> 2.4.0"
   gem 'faker', '~> 0.3.1'
 end
 
 group :test do
+  gem 'sqlite3'
   gem 'rspec', '~> 2.6.0'
   gem 'webrat', '~> 0.7.1'
   gem 'spork', '~> 0.9.0.rc4'
