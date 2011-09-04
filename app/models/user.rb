@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30
-  validates_format_of :postcode, :with => /\A([1-9]){1}(\d){3}\Z/
+  validates_format_of :postcode, :with => /\A([1-9]){1}(\d){3}\Z/, :allow_blank => true
   validates :email, :format       => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
                     :uniqueness   => { :case_sensitive => false},
                     :presence     => { :if => :required? },
