@@ -64,6 +64,18 @@ class PagesController < ApplicationController
       redirect_to Page.order("sequence ASC").first unless Page.count == 0
     end
   end
+  
+  def route
+    @title = t("txt.route")
+    @menu_active = "route"
+    @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
+    if params[:doctor]
+      @user = User.find(params[:doctor])
+      @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
+    else
+      @doctor = @doctors.first
+    end
+  end
 
   def show
     @showpage = Page.find(params[:id].to_i)

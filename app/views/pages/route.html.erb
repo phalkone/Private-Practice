@@ -1,0 +1,37 @@
+<% content_for :styles do %>
+<%= stylesheet_link_tag "jquery/jquery.ui.all" %>
+<% end %>
+<% content_for :scripts do %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.core.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.widget.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
+<%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<script type="text/javascript">
+$(document).ready(function() {
+  	$("#doctor_picker").change(function() {
+			$.post("<%= update_contact_messages_path %>", { id: $("#doctor").val()} );
+			$("#message_user").val($("#doctor").val());
+			$("#doctor_name").html($("#doctor option:selected").text());
+	 });
+	$("#doctor_picker input:submit").remove();
+	$("input:submit").button().css("font-size","0.9em");
+}); 
+</script>
+<% end %>
+<h2><%= t("txt.route") %></h2>
+<div id="subcontent" class="span-18 colborder">
+
+	
+</div>
+<div id="submenu" class="span-5 last">
+	<div id="doctor_picker">
+		<%= form_tag(new_message_path, :method => :get) do %>
+			<%= select_tag :doctor, options_from_collection_for_select( @doctors , "id", "name", @doctor.id) %>
+			<%= submit_tag t("messages.refresh") %>
+		<% end %>
+	</div>
+	<div id="contact_info">
+		<%= render "messages/contact_info"%>
+	</div>
+</div>

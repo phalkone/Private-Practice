@@ -62,6 +62,7 @@ PrivatePractice::Application.routes.draw do
   match '/:locale/signin' => 'user_sessions#new', :as => 'signin'
   match '/:locale/signout' => 'user_sessions#destroy', :as => 'signout'
   match '/:locale/contact' => 'users#contact', :as => 'contact'
+  match '/:locale/route' => 'pages#route', :as => 'route'
   
   match '/:locale' => "pages#homepage"
   root :to => "pages#homepage"
