@@ -64,6 +64,6 @@ PrivatePractice::Application.routes.draw do
   match '/:locale/contact' => 'users#contact', :as => 'contact'
   match '/:locale/route' => 'pages#route', :as => 'route'
   
-  match '/:locale' => "pages#homepage"
+  match '(/:locale)' => "pages#homepage"
   root :to => "pages#homepage"
 end

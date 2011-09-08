@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
-  before_filter :authenticate, :except => [:homepage, :show]
-
+  before_filter :authenticate, :except => [:homepage, :show, :route]
+  respond_to :html, :js, :json
+  
   def index
     session[:locale] = I18n.locale
     @title = t("pages.title")
@@ -69,11 +70,16 @@ class PagesController < ApplicationController
     @title = t("txt.route")
     @menu_active = "route"
     @doctors = Role.where("title = ?","doctor").first.users.order("last_name ASC")
-    if params[:doctor]
-      @user = User.find(params[:doctor])
+    if params[:id]
+      @user = User.find(params[:id])
       @doctor = @user.roles.exists?(:title => "doctor") ? @user : @doctors.first
     else
       @doctor = @doctors.first
+    end
+    respond_to do |format|
+      format.html
+      format.json  { render :json => @doctor.to_json(
+        :only => [:address, :postcode, :town]) }
     end
   end
 

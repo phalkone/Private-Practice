@@ -7,22 +7,52 @@
 <%= javascript_include_tag "jquery-ui/jquery.ui.button.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.mouse.min.js" %>
 <%= javascript_include_tag "jquery-ui/jquery.ui.resizable.min.js" %>
+<%= javascript_include_tag "http://maps.googleapis.com/maps/api/js?sensor=false&amp;key=ABQIAAAAcsO1U-clFVv7lyvkzf6CvhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTTj_ljfqBTvPc4qXl0RiDfVoQIKA" %>
 <script type="text/javascript">
+var geocoder;
+var map;
+
 $(document).ready(function() {
   	$("#doctor_picker").change(function() {
-			$.post("<%= update_contact_messages_path %>", { id: $("#doctor").val()} );
-			$("#message_user").val($("#doctor").val());
-			$("#doctor_name").html($("#doctor option:selected").text());
-	 });
+	  	$.getJSON('/nl/route.json', {id: $("#doctor").val() }, function(json) {
+		    codeAddress(json.address + ", "+ json.postcode + " " + json.town);
+			$("#address").html(json.address + "<br />"+ json.postcode + " " + json.town);
+		});
+	});
 	$("#doctor_picker input:submit").remove();
 	$("input:submit").button().css("font-size","0.9em");
+	maps();
+	codeAddress("<%= @doctor.address + ", " + @doctor.postcode + " " + @doctor.town %>");
 }); 
+
+function codeAddress(address) {
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+
+function maps() {
+    var myOptions = {
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+  }
 </script>
 <% end %>
 <h2><%= t("txt.route") %></h2>
 <div id="subcontent" class="span-18 colborder">
-
-	
+  <div id="map_canvas" style="width:100%; height:600px"></div>
 </div>
 <div id="submenu" class="span-5 last">
 	<div id="doctor_picker">
@@ -32,6 +62,10 @@ $(document).ready(function() {
 		<% end %>
 	</div>
 	<div id="contact_info">
-		<%= render "messages/contact_info"%>
-	</div>
+		<p>
+		  <b><%= User.human_attribute_name("address") %>:</b><br />
+		  	<span id="address"><%= @doctor.address unless @doctor.address.nil? %><br />
+			<%= @doctor.postcode unless @doctor.postcode.nil? %>
+			<%= @doctor.town unless @doctor.town.nil? %></span>
+		</p></div>
 </div>
